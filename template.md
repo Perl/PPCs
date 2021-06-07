@@ -40,10 +40,10 @@ If proposing syntax changes, think in terms of "can this be detected by"/"misund
 
 and how does this affect things like
 
-* B::Deparse
-* Devel::Cover
-* Devel::NYTProf
-* PPI (hence Perl::Critic etc)
+* [`B::Deparse`](https://metacpan.org/pod/B::Deparse)
+* [`Devel::Cover`](https://metacpan.org/pod/Devel::Cover)
+* [`Devel::NYTProf`](https://metacpan.org/pod/Devel::NYTProf)
+* [`PPI`](https://metacpan.org/pod/PPI) (hence [`Perl::Critic`](https://metacpan.org/pod/Perl::Critic) etc)
 
 Also, is it possible to emulate this for earlier Perl versions (or at least, a useful and correct subset), even if slow? And if **not**, what sort of API or functionality is missing that if added would make similar future "polyfill"s possible?
 
