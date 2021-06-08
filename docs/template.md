@@ -4,6 +4,7 @@
     Sponsor:
     ID:      ADOPTME-2038
     Status:  Exploratory
+    Title:   A short and accurate title
 
 The preamble should be RFC-822 like headers.
 Author, Sponsor and similar should be valid e-mail addresses, or CPAN IDs.
