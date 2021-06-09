@@ -1,36 +1,37 @@
-# Preamble
+# A short and accurate title
+
+## Preamble
 
     Author:  A. U. Thor <author@example.com>
     Sponsor:
     ID:      ADOPTME-2038
     Status:  Exploratory
-    Title:   A short and accurate title
 
 The preamble should be RFC-822 like headers.
 Author, Sponsor and similar should be valid e-mail addresses, or CPAN IDs.
 
-# Abstract
+## Abstract
 
 * 100 to 200 words summarising the entire RFC.
 * The most important section is **Motivation**.
 
-# Motivation
+## Motivation
 
 * What problem are we trying to solve?
 * Why doesn't the existing syntax/functionality cover it?
 
-# Rationale
+## Rationale
 
 * Why does the new syntax/functionality solve the problem described above?
 * Why choose this solution, and reject others?
 
-# Specification
+## Specification
 
 Perl doesn't have a formal specification. Effectively it's defined by the documentation and the regression tests. Likely the best way to specify a new feature **is** to write the documentation for it.
 
 You don't need to know the internals to do this - hence the *Author* can contribute directly by working on these, with the *Sponsor* acting as a mentor and guide as needed.
 
-# Backwards Compatibility
+## Backwards Compatibility
 
 If proposing syntax changes, think in terms of "can this be detected by"/"misunderstood by":
 
@@ -48,17 +49,17 @@ and how does this affect things like
 
 Also, is it possible to emulate this for earlier Perl versions (or at least, a useful and correct subset), even if slow? And if **not**, what sort of API or functionality is missing that if added would make similar future "polyfill"s possible?
 
-# Security Implications
+## Security Implications
 
 CVEs are not fun. Try to foresee problems.
 
-# Examples
+## Examples
 
 PEPs have this as "How to Teach This". That's a valid goal, but there are different audiences (from newcomers, to experienced Perl programmers unfamiliar with your plan).
 
 Most of us are not experienced teachers, but many folks reading your RFC are experienced programmers. So probably the best way to demonstrate the benefits of your proposal is to take some existing code in the core or on CPAN (and not your own code) and show how using your new feature can improve it (easier to read, less buggy, etc)
 
-# Prototype Implementation
+## Prototype Implementation
 
 Is there something that shows the idea is feasible, and lets other people
 play with it? Such as
@@ -67,7 +68,7 @@ play with it? Such as
 * A source filter
 * Hack the core C code - fails tests, but lets folks play
 
-# Rejected Ideas
+## Rejected Ideas
 
 Why this solution/this syntax was better than the obvious alternatives.
 
@@ -78,11 +79,11 @@ Likely the answer is in the previous discussion **somewhere**, but most people w
 
 Hence it **needs** to be in the RFC itself. Without this, the RFC process as a whole won't scale.
 
-# Open Issues
+## Open Issues
 
 Use this to summarise any points that are still to be resolved.
 
-# Copyright
+## Copyright
 
 Copyright (C) 2038, A.U. Thor.
 
