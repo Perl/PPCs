@@ -21,6 +21,24 @@ We'd like to record proposals to improve the language and their status as "Reque
 We have a [template](template.md) for what an completed implemented RFC should end up as, but if all you have is an idea - don't worry, we'll help you get there.  We're still figuring this process out, so for now we're doing it as mail messages sent to p5p, not as "pull requests" to the RFC repository (or "issues" on the source repository). This way we can see if the process works as hoped, and fix the parts that don't.
 
 
+## What makes a good idea?
+
+Strictly speaking, as Perl is a Turing complete language, no changes to Perl are **necessary** because any task that can be implemented at all can be implemented with or without a proposed change. Arguing against a new feature because it is already possible is tautological. New features are suggested because they might make the language *better*. Better is subjective - we can't avoid different people weighing trade offs differently. Perl tries to make *easy things easy and hard things possible*, and is fine with *There Is More Than One Way To Do It*.
+
+All changes have costs and benefits. Benefits of a new approach could be that it
+
+* is less verbose than existing syntax
+* has fewer ways to make mistakes
+* is more efficient internally
+* opens up new ways to express problems
+
+Costs are
+
+* yet another way to do it - Perl becomes incrementally harder to learn, remember and read
+* existing tooling has to adapt to cope
+* linearly more implementation to maintain
+* exponentially more combinations of features to define and debug
+
 Not every good idea belongs in the Perl core. Some are better implemented on CPAN. For some ideas, the RFC process is overkill. And the other way - for some issues or PRs, the reviewer is going to realise that it's more complex than it seemed, and needs to become an RFC.
 
 ## The straight through process is
