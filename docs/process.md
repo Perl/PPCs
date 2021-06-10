@@ -1,3 +1,5 @@
+# Bootstrapping an RFC process
+
 80% of our feature requests are for changes to the language.
 
 In the past 5 years most work on the parser and tokeniser came from just 5 people. All of them are busy, and none of them are employed by "Perl 5 Porters".
@@ -21,7 +23,7 @@ We have a [template](template.md) for what an completed implemented RFC should e
 
 Not every good idea belongs in the Perl core. Some are better implemented on CPAN. For some ideas, the RFC process is overkill. And the other way - for some issues or PRs, the reviewer is going to realise that it's more complex than it seemed, and needs to become an RFC.
 
-The straight through process is
+## The straight through process is
 
                                  idea
                                    |
@@ -90,7 +92,7 @@ What's an appropriate period?
 Don't panic: changes can be reverted.
 
 
-What needs an RFC? What can just be a PR?
+## What needs an RFC? What can just be a PR?
 
 There's no obvious answer, because there's no clear cut off, and there never will be, even when the process is "out of beta". For now we think we should use RFCs for
 
