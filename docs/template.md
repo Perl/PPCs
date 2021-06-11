@@ -68,6 +68,10 @@ play with it? Such as
 * A source filter
 * Hack the core C code - fails tests, but lets folks play
 
+## Future Scope
+
+Were there any ideas or variations considered that seemed reasonable follow-ons from the initial suggestions, that we don't need to do now, but want to revisit in the future? If there are parts of the design marked as "intended for future expansion", then give an idea here of what direction is planned.
+
 ## Rejected Ideas
 
 Why this solution/this syntax was better than the obvious alternatives.
