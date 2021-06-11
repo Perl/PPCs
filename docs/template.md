@@ -72,6 +72,8 @@ play with it? Such as
 
 Were there any ideas or variations considered that seemed reasonable follow-ons from the initial suggestions, that we don't need to do now, but want to revisit in the future? If there are parts of the design marked as "intended for future expansion", then give an idea here of what direction is planned.
 
+If that future expansion relies on extending the syntax, then ensure that the first implementation has tests to assert that the extended syntax remains a syntax error.
+
 ## Rejected Ideas
 
 Why this solution/this syntax was better than the obvious alternatives.
