@@ -64,7 +64,7 @@ Means "we think this idea is worth implementing"
 * MUST have viably complete Motivation, Rational, Specification, Examples
 * MUST have Prototype Implementation/Proof Of Concept/Specific Plan
 
-Means "we think this idea looks viable"
+Means "we think this plan looks viable"
 
 ## Implemented
 

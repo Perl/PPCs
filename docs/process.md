@@ -63,7 +63,7 @@ Not every good idea belongs in the Perl core. Some are better implemented on CPA
                                    |
                                    v
                                Accepted RFC
-                  "we think this idea looks viable"
+                  "we think this plan looks viable"
                (There is a sane plan for how to do it)
                                    |
                                    v

@@ -22,7 +22,7 @@ None yet
 
 ### Accepted
 
-*we think that this idea looks viable*
+*we think that this plan looks viable*
 
 None yet
 
