@@ -36,7 +36,7 @@ None yet
 
 <!-- If some RFCs are "Deferred", they should be in a second table here -->
 
-### Draft
+### Exploratory
 
 *we think this idea is worth exploring*
 

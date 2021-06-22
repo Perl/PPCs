@@ -52,7 +52,7 @@ Not every good idea belongs in the Perl core. Some are better implemented on CPA
                     on     <-------?------->   with
                    CPAN            |         reasoning
                                    v
-                               Draft RFC
+                            Exploratory RFC
                 "we think this idea is worth exploring"
                 (Help us figure out how this will work)
                                    |
@@ -83,11 +83,13 @@ Not every good idea belongs in the Perl core. Some are better implemented on CPA
 
 If there are better names, we should change them. The intent is the important part. Also RFCs might still fail at any point (before "Stable") and hence become "Rejected". RFCs might also be "Withdrawn" by their Author(s), or "Superseded" by a newer RFC, so these states and transitions exist.
 
-Part of this discussion to get from "Draft" to "Accepted" should include whether a feature guard is needed, concerns on CPAN breakage, security etc, helping to fill out the "Backwards Compatibility" and "Security Implications" sections. This is the point where a subject-matter expert may raise concerns about the proposal, and may effectively veto it. For example, if you propose a change related to Unicode, and Karl says "it's a really bad idea for the following reasons", then it's not likely to progress.  Similarly, as the discussion progresses, it may become clear to everyone that the idea should be rejected. We might figure out that the idea is better implemented on CPAN, that something we thought was better on CPAN should return as an RFC. (eg try/catch and Moose/Moo leading to Cor).
+Part of this discussion to get from "Exploratory" to "Accepted" should include whether a feature guard is needed, concerns on CPAN breakage, security etc, helping to fill out the "Backwards Compatibility" and "Security Implications" sections. This is the point where a subject-matter expert may raise concerns about the proposal, and may effectively veto it. For example, if you propose a change related to Unicode, and Karl says "it's a really bad idea for the following reasons", then it's not likely to progress.  Similarly, as the discussion progresses, it may become clear to everyone that the idea should be rejected. We might figure out that the idea is better implemented on CPAN, that something we thought was better on CPAN should return as an RFC. (eg try/catch and Moose/Moo leading to Cor).
 
 Any RFC (before merging) can be marked "Deferred" if work has paused, or if they have no-one implementing them. RFCs have at least on *Author*, who acts as champion for the idea, and ideally writes documentation and tests. "Accepted" RFCs should have a core team member as a *Sponsor*, who acts as mentor and point of contact. If the *Author* can't implement their idea alone, and no-one else volunteers, then the PSC will try to find someone to implement an "Accepted" RFC, but this may not be possible, and the RFC will stall.
 
-The PSC approves the transitions Draft => Provisional => Accepted
+Anyone with commit access to the RFC repository can assign an ID and create an Exploratory RFC, if an idea or draft RFC sent to p5p isn't obviously flawed or better on CPAN.
+
+The PSC approves the transitions Exploratory => Provisional => Accepted
 but will actively seek opinion from people familiar with the subject.
 
 The transition from Accepted => Implemented is made by merging the PR that implements the RFC. At least one reviewer should be neither the *Author* nor the *Sponsor*. (Even if all that they can say is that the other two are **the** subject experts and that it all looks good.)

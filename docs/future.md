@@ -25,7 +25,7 @@ The Author is the champion for the RFC. Their motivation and enthusiasm to have 
 * shepherding discussion to some sort of consensus (or appealing to the PSC to resolve an impasse)
 * ensuring all sections in the RFC are complete (working with implementers and others as necessary)
 
-RFCs live in version control. Anyone can create an "Exploratory" RFC, self-assign it an ID, and start to flesh it out. "Draft" status gets you an official RFC ID, and from that point onwards the RFC and history is mirrored/merged into the official repository.
+RFCs live in version control. Anyone can create an "Draft" RFC, self-assign it an ID, and start to flesh it out. "Exploratory" status gets you an official RFC ID, and from that point onward the RFC and history is mirrored/merged into the official repository.
 
 To make this workable, the RFC should be in a source code repository that the *Author* can edit directly (GitHub, GitLab, Bitbucket, self-hosted git, etc). The minimal workable requirements are that
 
@@ -39,12 +39,12 @@ Hence GitHub PRs might not be the best forum for discussion, unless they can be 
 As we get better at this, I think that the status transitions should aim for these minimum requirements
 
 
-## Exploratory
+## Draft
 
 * *Author* self-assigns RFC ID
 * *Author* seeks input/feedback
 
-## Draft
+## Exploratory
 
 * MUST have *Sponsor* (on the core team, or PSC can delegate externally)
 * MUST have (at least minimal) Motivation, Rational and Examples
