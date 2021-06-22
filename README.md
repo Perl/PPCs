@@ -33,6 +33,7 @@ None yet
 | ID | Title |
 |----|-------|
 |0001|[Multiple-alias syntax for foreach](rfc/rfc0001.md)|
+|0004|[Deferred block syntax](rfc/rfc0004.md)|
 
 <!-- If some RFCs are "Deferred", they should be in a second table here -->
 
