@@ -30,7 +30,7 @@ None yet
 
 ### Provisional
 
-*we think this idea is worth implementing*
+*we think that this idea is worth implementing*
 
 | ID | Title |
 |----|-------|
@@ -40,7 +40,7 @@ None yet
 
 ### Exploratory
 
-*we think this idea is worth exploring*
+*we think that this idea is worth exploring*
 
 | ID | Title |
 |----|-------|
