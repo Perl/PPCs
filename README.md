@@ -42,11 +42,12 @@ None yet
 
 | ID | Title |
 |----|-------|
-|0003|[Issue a warning "-np better written as -p"](rfc/rfc0003.md)|
 |0002|Re-implement number to string conversion|
 
 ### Rejected
 
 *we don't think that this is a good idea - here's why...*
 
-None yet
+| ID | Title |
+|----|-------|
+|0003|[Issue a warning "-np better written as -p"](rfc/rfc0003.md)|
