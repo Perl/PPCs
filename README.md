@@ -1,6 +1,21 @@
 This repository is for *Requests For Comments* - proposals to change the Perl language.
 
-Right now, we're [trialling the process](docs/process.md). If you would like to submit a feature request, please [send a short email describing your idea](mailto:perl5-porters@perl.org). You don't need to subscribe to the list to send an idea (or see updates). By keeping all discussion there during the trial, we can see if the process works as hoped, and fix the parts that don't.
+Right now, we're [trialling the process](docs/process.md). If you would like to submit a feature request, please [email an *elevator pitch*](mailto:perl5-porters@perl.org) - a short message with 4 paragraphs:
+
+1. Here is a problem
+2. Here is the syntax that I'm proposing
+3. Here are the benefits of this
+4. Here are potential problems
+
+and if a "paragraph" is 1 sentence, great.
+
+That will be enough to make it obvious whether the idea is
+
+0) worth drafting an RFC for
+1) better on CPAN first
+2) "nothing stops you putting it on CPAN, but it doesn't seem viable"
+
+You don't need to subscribe to the list to send an idea (or see updates). By keeping all discussion there during the trial, we can see if the process works as hoped, and fix the parts that don't.
 
 Please **don't** submit ideas as *issues* or *PRs* on this repository. (We can disable issues, but not PRs). Please follow the instructions above.
 
