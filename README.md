@@ -42,7 +42,7 @@ None yet
 
 | ID | Title |
 |----|-------|
-|0001|[Multiple-alias syntax for foreach](rfc/rfc0001.md)|
+|0001|[Multiple-alias syntax for foreach](rfcs/rfc0001.md)|
 
 ### Provisional
 
@@ -50,7 +50,7 @@ None yet
 
 | ID | Title |
 |----|-------|
-|0004|[Deferred block syntax](rfc/rfc0004.md)|
+|0004|[Deferred block syntax](rfcs/rfc0004.md)|
 
 <!-- If some RFCs are "Deferred", they should be in a second table here -->
 
@@ -68,4 +68,4 @@ None yet
 
 | ID | Title |
 |----|-------|
-|0003|[Issue a warning "-np better written as -p"](rfc/rfc0003.md)|
+|0003|[Issue a warning "-np better written as -p"](rfcs/rfc0003.md)|
