@@ -11,9 +11,10 @@ and if a "paragraph" is 1 sentence, great.
 
 That will be enough to make it obvious whether the idea is
 
+0) actually a **bug** - a change we'd also consider back porting to maintenance releases (so should be a opened as [*Report a Perl 5 bug*](https://github.com/Perl/perl5/issues/new/choose))
 0) worth drafting an RFC for
-1) better on CPAN first
-2) "nothing stops you putting it on CPAN, but it doesn't seem viable"
+0) better on CPAN first
+0) "nothing stops you putting it on CPAN, but it doesn't seem viable"
 
 You don't need to subscribe to the list to send an idea (or see updates). By keeping all discussion there during the trial, we can see if the process works as hoped, and fix the parts that don't.
 
