@@ -63,6 +63,7 @@ These files describe the process we are trialling
 |----|-------|
 |0002|Re-implement number to string conversion|
 |0005|Everything slices|
+|0008|Stable SV Boolean Type|
 
 ### Rejected
 
