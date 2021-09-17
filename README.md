@@ -61,6 +61,7 @@ None yet
 | ID | Title |
 |----|-------|
 |0002|Re-implement number to string conversion|
+|0005|Everything slices|
 
 ### Rejected
 
