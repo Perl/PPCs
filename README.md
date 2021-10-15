@@ -34,7 +34,9 @@ These files describe the process we are trialling
 
 *docs, tests and implementation*
 
-None yet
+| ID | Title |
+|----|-------|
+|0004|[Deferred block syntax](rfcs/rfc0004.md)|
 
 ### Accepted
 
@@ -50,7 +52,6 @@ None yet
 
 | ID | Title |
 |----|-------|
-|0004|[Deferred block syntax](rfcs/rfc0004.md)|
 
 <!-- If some RFCs are "Deferred", they should be in a second table here -->
 
