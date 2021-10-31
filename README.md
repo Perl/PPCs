@@ -65,6 +65,7 @@ These files describe the process we are trialling
 |0005|Everything slices|
 |0008|Stable SV Boolean Type|
 |0009|Namespace for Builtin Functions|
+|0010|A built-in for getting key-and-value pairs|
 
 ### Rejected
 
