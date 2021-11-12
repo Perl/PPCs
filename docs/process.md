@@ -123,7 +123,7 @@ Note that there are no commits on the left side - 731a976bef is a direct parent 
 
 See [`perlgit.pod`](https://github.com/Perl/perl5/blob/blead/pod/perlgit.pod#on-merging-and-rebasing) for how to do this with `git merge --no-ff`. This **has** to be done at the command-line - this style of merging does **not** correspond to any of the "merge" options in the GitHub UI.
 
-There is an ongoing discussion how how we decide whether to merge a PR, with the latest proposal being:
+There is an ongoing discussion on how we decide whether to merge a PR, with the latest proposal being:
 
 * After an appropriate period, if there are not strong disagreements, and the PSC haven't rejected it, a committer will merge the PR.
 * Trivial or obviously-correct changes may be committed directly. I.e., the appropriate length is sometimes zero.
