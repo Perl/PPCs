@@ -94,6 +94,35 @@ but will actively seek opinion from people familiar with the subject.
 
 The transition from Accepted => Implemented is made by merging the PR that implements the RFC. At least one reviewer should be neither the *Author* nor the *Sponsor*. (Even if all that they can say is that the other two are **the** subject experts and that it all looks good.)
 
+The actual merge of the implementation branch should be done by someone other than the implementer of the changes. This person does not **need** to be one of reviewers, but they should be independent of the implementers, as the last steps involve a rebase **after** the review. This way it's clear that the code hasn't been (intentionally) changed post-review (assuming no collusion). The merge should be
+
+1. first rebase the implementation branch onto blead
+2. then create a non-fast-forward merge with a commit message including a reference to the RFC
+
+The intent is that the final commit history looks something like
+
+```
+*   commit 4a1b9dd524007193213d3919d6a331109608b90c (blead)
+|\  Merge: 731a976bef ba9a3fe252
+| |
+| |     Merge implementation of foozles - RFC 1337
+| |
+| * commit ba9a3fe252d20d64d0f17968e2c47d3c4009776d
+
+...
+
+| * commit cdba169fcf0819be8f02efe3edc7aac796fb9433
+|/
+|
+|       first commit of foozles
+|
+* commit 731a976bef573afb7b94562b4b34473f6b714d5d
+```
+
+Note that there are no commits on the left side - 731a976bef is a direct parent of 4a1b9dd524. The structure is chosen as it simultaneously gives most of the benefits of squashing all the work into one commit ("this is all one logical change"), but also keeps the detail of the implementation steps, which is very useful for automatic bisection when bug hunting.
+
+See [`perlgit.pod`](https://github.com/Perl/perl5/blob/blead/pod/perlgit.pod#on-merging-and-rebasing) for how to do this with `git merge --no-ff`. This **has** to be done at the command-line - this style of merging does **not** correspond to any of the "merge" options in the GitHub UI.
+
 There is an ongoing discussion how how we decide whether to merge a PR, with the latest proposal being:
 
 * After an appropriate period, if there are not strong disagreements, and the PSC haven't rejected it, a committer will merge the PR.
