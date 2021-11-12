@@ -62,7 +62,6 @@ These files describe the process we are trialling
 | ID | Title |
 |----|-------|
 |0002|Re-implement number to string conversion|
-|0005|Everything slices|
 |0008|Stable SV Boolean Type|
 |0009|Namespace for Builtin Functions|
 
@@ -73,3 +72,4 @@ These files describe the process we are trialling
 | ID | Title |
 |----|-------|
 |0003|[Issue a warning "-np better written as -p"](rfcs/rfc0003.md)|
+|0005|Everything slices|
