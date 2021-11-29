@@ -33,7 +33,7 @@ deficiency, (the [`join` function of
 universally.
 
 The CPAN module
-`[overload::substr](https://metacpan.org/pod/overload::substr)`) is a
+[`overload::substr`](https://metacpan.org/pod/overload::substr)) is a
 complete solution, but we think that deferring to CPAN when Perl should
 do the right thing is not a satisfying answer.
 
@@ -68,18 +68,26 @@ overloaded `substr`?
 
 ## Backwards Compatibility
 
-If code relies upon the `join` function to convert objects to plain
-strings, this would break that code, thus a feature flag seems
-necessary.
+### `substr`
 
 There is no need autogenerate an implementation for `substr` if it is
 missing, as the stringification will happen as it does now.
 
-Modules which implement their own `join` would need to add
-version-conditional logic to work with different versions of Perl.
-
 `overload::substr` would become an optional dependency for modules
 that needs to support older Perls.
+
+### `join`
+
+If code relies upon the `join` function to convert objects to plain
+strings, this would break that code, thus a feature flag seems
+necessary.
+
+Modules with overloading, which had to implement their own `join` (to
+get a different behaviour than the stringification of the builtin
+`join`) could add version-conditional logic to work with different
+versions of Perl and delegate to the builtin `join` if the feature is
+available. New modules may choose not to implement their own `join`,
+thus dropping support for older versions of perl.
 
 ## Security Implications
 
@@ -89,32 +97,34 @@ We do not yet foresee security issues. Guidance is welcome.
 
 For `join`:
 
-    ```perl
-    # when @list contains elements with concat overloading,
-    # we expect this code:
-    my $ret = join $sep, @list;
+```perl
+# when @list contains elements with concat overloading,
+# we expect this code:
+my $ret = join $sep, @list;
 
-    # to behave like this code:
-    my $ret = reduce { ( $a . $sep ) . $b } @list;
-    ```
+# to behave like this code:
+my $ret = reduce { ( $a . $sep ) . $b } @list;
+```
 
 For `substr`, the `overload::substr` module will be the guide for an
 initial implementation. Its documentation includes the following example:
 
-    package My::Stringlike::Object;
+```perl
+package My::Stringlike::Object;
 
-    use overload::substr;
+use overload::substr;
 
-    sub _substr
-    {
-       my $self = shift;
-       if( @_ > 2 ) {
-          $self->replace_substr( @_ );
-       }
-       else {
-          return $self->get_substr( @_ );
-       }
-    }
+sub _substr
+{
+   my $self = shift;
+   if( @_ > 2 ) {
+      $self->replace_substr( @_ );
+   }
+   else {
+      return $self->get_substr( @_ );
+   }
+}
+```
 
 ## Prototype Implementation
 
