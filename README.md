@@ -37,6 +37,7 @@ These files describe the process we are trialling
 | ID | Title |
 |----|-------|
 |0004|[Deferred block syntax](rfcs/rfc0004.md)|
+|0008|[Stable SV Boolean Type](rfcs/rfc0008.md)|
 
 ### Accepted
 
@@ -62,7 +63,6 @@ These files describe the process we are trialling
 | ID | Title |
 |----|-------|
 |0002|Re-implement number to string conversion|
-|0008|Stable SV Boolean Type|
 |0009|Namespace for Builtin Functions|
 
 ### Rejected
