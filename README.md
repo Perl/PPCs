@@ -48,6 +48,7 @@ These files describe the process we are trialling
 | ID | Title |
 |----|-------|
 |0006|[New module loading function](rfcs/rfc0006.md)|
+|0011|[Command-line flag for slurping](rfcs/rfc0011.md)|
 |0013|[Support overloaded objects in join(), substr() builtins](rfcs/rfc0013.md)|
 
 ### Provisional
