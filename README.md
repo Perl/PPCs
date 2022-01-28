@@ -47,6 +47,8 @@ These files describe the process we are trialling
 
 | ID | Title |
 |----|-------|
+|0006|[New module loading function](rfcs/rfc0006.md)|
+|0013|[Support overloaded objects in join(), substr() builtins](rfcs/rfc0013.md)|
 
 ### Provisional
 
@@ -64,6 +66,7 @@ These files describe the process we are trialling
 | ID | Title |
 |----|-------|
 |0002|Re-implement number to string conversion|
+|0007|source::encoding to declare encoding of source|
 
 ### Rejected
 
