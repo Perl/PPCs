@@ -36,6 +36,7 @@ These files describe the process we are trialling
 
 | ID | Title |
 |----|-------|
+|0001|[Multiple-alias syntax for foreach](rfcs/rfc0001.md)|
 |0004|[Deferred block syntax](rfcs/rfc0004.md)|
 |0008|[Stable SV Boolean Type](rfcs/rfc0008.md)|
 |0009|[Namespace for Builtin Functions](rfcs/rfc0009.md)|
@@ -46,7 +47,6 @@ These files describe the process we are trialling
 
 | ID | Title |
 |----|-------|
-|0001|[Multiple-alias syntax for foreach](rfcs/rfc0001.md)|
 
 ### Provisional
 
