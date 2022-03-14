@@ -40,6 +40,7 @@ These files describe the process we are trialling
 |0004|[Deferred block syntax](rfcs/rfc0004.md)|
 |0008|[Stable SV Boolean Type](rfcs/rfc0008.md)|
 |0009|[Namespace for Builtin Functions](rfcs/rfc0009.md)|
+|0016|[ A built-in for getting index-and-value pairs from a list](rfcs/rfc0016.md)|
 
 ### Accepted
 
@@ -50,7 +51,6 @@ These files describe the process we are trialling
 |0006|[New module loading function](rfcs/rfc0006.md)|
 |0011|[Command-line flag for slurping](rfcs/rfc0011.md)|
 |0013|[Support overloaded objects in join(), substr() builtins](rfcs/rfc0013.md)|
-|0016|[ A built-in for getting index-and-value pairs from a list](rfcs/rfc0016.md)|
 
 ### Provisional
 
