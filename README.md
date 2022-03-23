@@ -50,6 +50,7 @@ These files describe the process we are trialling
 | ID | Title |
 |----|-------|
 |0006|[New module loading function](rfcs/rfc0006.md)|
+|0012|[Configure option for not including taint support](rfcs/rfc0012.md)|
 |0013|[Support overloaded objects in join(), substr() builtins](rfcs/rfc0013.md)|
 
 ### Provisional
