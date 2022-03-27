@@ -52,6 +52,7 @@ These files describe the process we are trialling
 |0006|[New module loading function](rfcs/rfc0006.md)|
 |0012|[Configure option for not including taint support](rfcs/rfc0012.md)|
 |0013|[Support overloaded objects in join(), substr() builtins](rfcs/rfc0013.md)|
+|0017|[built-in functions for checking the original type of a scalar](rfcs/rfc0017.md)|
 
 ### Provisional
 
