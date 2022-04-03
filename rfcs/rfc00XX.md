@@ -10,7 +10,7 @@
 ## Abstract
 
 This RFC proposes adding built-in lexical exporting via an `:export`
-eattribute.
+attribute.
 
 ## Motivation
 
@@ -58,7 +58,7 @@ the new feature.
 
 The above can be written as this:
 
-	package My::Module {
+    package My::Module {
         use base 'Exporter';
 
         our @EXPORT    = qw(quux);
@@ -81,7 +81,7 @@ The above can be written as this:
 
 
 Imported functions do not remain in the namespace, removing the need for
-namespace::clean and relateed modules
+namespace::clean and related modules
 
 Upper-case `:export` attribute arguments are reserved for Perl to avoid
 clashing with user-defined tags. This is because in this author's experience,
@@ -96,18 +96,18 @@ backwards-compatibility issues. There are, however a few surprises.
 
 When using the debugger, it's common to test the return value of a subroutine:
 
-	auto(-1)  DB<2> v
-	30
-	31:	if (@errors) {
-	32:	    warn join "\n" => @errors;
-	33==>	say status();
-	34 	}
-	35
-	36:	unless ( $opt_for{description} ) {
-	37:	    say "Please enter a description for this $opt_for{type} entry:";
-	38:	    chomp( my $description = <STDIN> );
-	39:	    $opt_for{description} = $description;
-	DB<2> x status()
+    auto(-1)  DB<2> v
+    30
+    31:    if (@errors) {
+    32:        warn join "\n" => @errors;
+    33==>    say status();
+    34     }
+    35
+    36:    unless ( $opt_for{description} ) {
+    37:        say "Please enter a description for this $opt_for{type} entry:";
+    38:        chomp( my $description = <STDIN> );
+    39:        $opt_for{description} = $description;
+    DB<2> x status()
     Undefined subroutine &main::status called at ...
 
 The subroutine is bound a compile-time and removed from the namespace. You can
@@ -119,8 +119,8 @@ considered.
 We often have the following near the top of our code:
 
     our @EXPORT    = qw(quux);
-	our @EXPORT_OK = qw(
-		bar
+    our @EXPORT_OK = qw(
+        bar
         baz
         bay
     )
@@ -146,10 +146,10 @@ If there is no `import()` method defined in the class (inheriting does not
 count?), then any attempt to import a function not designated for export should
 be a fatal error:
 
-	$ perl -MMy::Module=whee -E 1
-	"whee" is not exported by the My::Module module
-	Can't continue after import errors at -e line 0.
-	BEGIN failed--compilation aborted.
+    $ perl -MMy::Module=whee -E 1
+    "whee" is not exported by the My::Module module
+    Can't continue after import errors at -e line 0.
+    BEGIN failed--compilation aborted.
 
 For the following, we'll use the following stub example of an `import()`
 method:
@@ -170,7 +170,7 @@ method:
 If an `import()` method is defined, it's possible that it might have special
 importing functionality provided, but we will _still_ allowing importing of
 functions with `:export` tags. We pass the import arguments unchanged to the
-`import()` method (in `@args`, abovce) and the module author will be
+`import()` method (in `@args`, above) and the module author will be
 responsible for filtering those manually. This seems unfortunate, but if
 someone uses `use v5XX`, their import mechanism shouldn't suddenly break.
 
@@ -208,7 +208,7 @@ code might have a harder time replacing these functions.
         sub whee                    {...} # not exported
     }
 
-	use My::Package 'bar';     # imports bar() and quux
+    use My::Package 'bar';     # imports bar() and quux
 
     use My::Package ':strings' # imports baz, bay, and quux
 
@@ -228,7 +228,7 @@ the closest.
 
 ## Future Scope
 
-We might want to allow variables and constands to be exported. We might always
+We might want to allow variables and constants to be exported. We might always
 want export tags to contain other export tags to allow "grouping" of groups.
 
 The 'is not exported' error message could list what is actually exported by
@@ -241,7 +241,7 @@ to POD.
 
 ## Rejected Ideas
 
-This was part of larger "AMORES" spec to improve the overall state of
+This was part of larger "AMORES" pre-RFC to improve the overall state of
 procedural code. That pre-RFC was rejected, but I was asked to put this into
 its own RFC.
 
