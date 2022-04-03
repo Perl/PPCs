@@ -52,7 +52,7 @@ the new feature.
         sub bar  :export            {...} # @EXPORT_OK
         sub baz  :export(:strings)  {...} # %EXPORT_TAGS
         sub bay  :export(:strings)  {...} # %EXPORT_TAGS
-        sub quux :export(:ALWAYS)   {...} # @EXPORT
+        sub quux :export(:DEFAULT)  {...} # @EXPORT
         sub whee                    {...} # not exported
     }
 
@@ -162,7 +162,7 @@ method:
         sub bar  :export            {...} # @EXPORT_OK
         sub baz  :export(:strings)  {...} # %EXPORT_TAGS
         sub bay  :export(:strings)  {...} # %EXPORT_TAGS
-        sub quux :export(:ALWAYS)   {...} # @EXPORT
+        sub quux :export(:DEFAULT)  {...} # @EXPORT
         sub whee                    {...} # not exported
     }
 
@@ -203,7 +203,7 @@ code might have a harder time replacing these functions.
         sub bar  :export            {...} # @EXPORT_OK
         sub baz  :export(:strings)  {...} # %EXPORT_TAGS
         sub bay  :export(:strings)  {...} # %EXPORT_TAGS
-        sub quux :export(:ALWAYS)   {...} # @EXPORT
+        sub quux :export(:DEFAULT)  {...} # @EXPORT
         sub whee                    {...} # not exported
     }
 
