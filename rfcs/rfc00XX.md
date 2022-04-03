@@ -238,6 +238,9 @@ provided. As part of this, it could provide an export spec. This could allow
 Perl to start providing "smart" documentation that reads the code in addition
 to POD.
 
+We could also determine a syntax as importing as a different name. This should
+be safe because they're lexical imports.
+
 ## Rejected Ideas
 
 This was part of larger "AMORES" pre-RFC to improve the overall state of
