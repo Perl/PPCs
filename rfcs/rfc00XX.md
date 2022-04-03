@@ -47,38 +47,42 @@ we do not need a feature guard. Instead, we can simply `use v5.XX` to pull in
 the new feature. However, even that might not be needed if they're using a
 future Perl since it doesn't conflict with anything default.
 
-    package My::Module {
-        use v5.38;
+```perl
+package My::Module {
+    use v5.38;
 
-        sub bar  :export            {...} # @EXPORT_OK
-        sub baz  :export(:strings)  {...} # %EXPORT_TAGS
-        sub bay  :export(:strings)  {...} # %EXPORT_TAGS
-        sub quux :export(:DEFAULT)  {...} # @EXPORT
-        sub whee                    {...} # not exported
-    }
+    sub bar  :export            {...} # @EXPORT_OK
+    sub baz  :export(:strings)  {...} # %EXPORT_TAGS
+    sub bay  :export(:strings)  {...} # %EXPORT_TAGS
+    sub quux :export(:DEFAULT)  {...} # @EXPORT
+    sub whee                    {...} # not exported
+}
+```
 
 The above can be written as this:
 
-    package My::Module {
-        use base 'Exporter';
+```perl
+package My::Module {
+    use base 'Exporter';
 
-        our @EXPORT    = qw(quux);
-        our @EXPORT_OK = qw(
-            bar
-            baz
-            bay
-        )
-        our %EXPORT_TAGS = qw(
-            'all'     => \@EXPORT_OK,
-            'strings' => qw(bay baz),
-        );
+    our @EXPORT    = qw(quux);
+    our @EXPORT_OK = qw(
+        bar
+        baz
+        bay
+    )
+    our %EXPORT_TAGS = qw(
+        'all'     => \@EXPORT_OK,
+        'strings' => qw(bay baz),
+    );
 
-        sub bar  {...}
-        sub baz  {...}
-        sub bay  {...}
-        sub quux {...}
-        sub whee {...}
-    }
+    sub bar  {...}
+    sub baz  {...}
+    sub bay  {...}
+    sub quux {...}
+    sub whee {...}
+}
+```
 
 Imported functions are lexical and do not exist in the importing namespace,
 removing the need for namespace::clean and related modules.
@@ -96,19 +100,21 @@ backwards-compatibility issues. There are, however a few surprises.
 
 When using the debugger, it's common to test the return value of a subroutine:
 
-    auto(-1)  DB<2> v
-    30
-    31:    if (@errors) {
-    32:        warn join "\n" => @errors;
-    33==>    say status();
-    34     }
-    35
-    36:    unless ( $opt_for{description} ) {
-    37:        say "Please enter a description for this $opt_for{type} entry:";
-    38:        chomp( my $description = <STDIN> );
-    39:        $opt_for{description} = $description;
-    DB<2> x status()
-    Undefined subroutine &main::status called at ...
+```
+auto(-1)  DB<2> v
+30
+31:    if (@errors) {
+32:        warn join "\n" => @errors;
+33==>    say status();
+34     }
+35
+36:    unless ( $opt_for{description} ) {
+37:        say "Please enter a description for this $opt_for{type} entry:";
+38:        chomp( my $description = <STDIN> );
+39:        $opt_for{description} = $description;
+DB<2> x status()
+Undefined subroutine &main::status called at ...
+```
 
 The subroutine is bound a compile-time and removed from the namespace. You can
 step into it, but you can't call it directly from the debugger. This should be
@@ -118,25 +124,29 @@ considered.
 
 We often have the following near the top of our code:
 
-    our @EXPORT    = qw(quux);
-    our @EXPORT_OK = qw(
-        bar
-        baz
-        bay
-    )
-    our %EXPORT_TAGS = qw(
-        'all'     => \@EXPORT_OK,
-        'strings' => qw(bay baz),
-    );
+```perl
+our @EXPORT    = qw(quux);
+our @EXPORT_OK = qw(
+    bar
+    baz
+    bay
+)
+our %EXPORT_TAGS = qw(
+    'all'     => \@EXPORT_OK,
+    'strings' => qw(bay baz),
+);
+```
 
 Note that there is a need to duplicate some function names.
 
 Some developers like a single exporting spec at the top of a module. Others
 like viewing a function and seeing directly if it can be exported:
 
-    sub foo :export () {
-        ...
-    }
+```perl
+sub foo :export () {
+    ...
+}
+```
 
 * The `import()` method
 
@@ -146,26 +156,30 @@ If there is no `import()` method defined in the class (inheriting does not
 count?), then any attempt to import a function not designated for export should
 be a fatal error:
 
-    $ perl -MMy::Module=whee -E 1
-    "whee" is not exported by the My::Module module
-    Can't continue after import errors at -e line 0.
-    BEGIN failed--compilation aborted.
+```
+$ perl -MMy::Module=whee -E 1
+"whee" is not exported by the My::Module module
+Can't continue after import errors at -e line 0.
+BEGIN failed--compilation aborted.
+```
 
 For the following, we'll use the following stub example of an `import()`
 method:
 
-    package My::Module {
-        use v5.38;
+```perl
+package My::Module {
+    use v5.38;
 
-        sub import ($class, @args) {
-            ...
-        }
-        sub bar  :export            {...} # @EXPORT_OK
-        sub baz  :export(:strings)  {...} # %EXPORT_TAGS
-        sub bay  :export(:strings)  {...} # %EXPORT_TAGS
-        sub quux :export(:DEFAULT)  {...} # @EXPORT
-        sub whee                    {...} # not exported
+    sub import ($class, @args) {
+        ...
     }
+    sub bar  :export            {...} # @EXPORT_OK
+    sub baz  :export(:strings)  {...} # %EXPORT_TAGS
+    sub bay  :export(:strings)  {...} # %EXPORT_TAGS
+    sub quux :export(:DEFAULT)  {...} # @EXPORT
+    sub whee                    {...} # not exported
+}
+```
 
 If an `import()` method is defined, it's possible that it might have special
 importing functionality provided, but we will _still_ allowing importing of
@@ -180,8 +194,10 @@ attributes, so we could simply filter out all subnames so they don't populate
 
 For the above, that means that these are problematic:
 
-    use My::Module ':srtings';
-    use My::Module 'whee';
+```perl
+use My::Module ':srtings';
+use My::Module 'whee';
+```
 
 For `:srtings`, that's almost certainly misspelled. For `whee`, that's not
 supposed to be exported, but perhaps the module author wants to allow that in
@@ -198,27 +214,29 @@ code might have a harder time replacing these functions.
 
 ## Examples
 
-    package My::Module {
-        use v5.38;
+```perl
+package My::Module {
+    use v5.38;
 
-        sub bar  :export            {...} # @EXPORT_OK
-        sub baz  :export(:strings)  {...} # %EXPORT_TAGS
-        sub bay  :export(:strings)  {...} # %EXPORT_TAGS
-        sub quux :export(:DEFAULT)  {...} # @EXPORT
-        sub whee                    {...} # not exported
-    }
+    sub bar  :export            {...} # @EXPORT_OK
+    sub baz  :export(:strings)  {...} # %EXPORT_TAGS
+    sub bay  :export(:strings)  {...} # %EXPORT_TAGS
+    sub quux :export(:DEFAULT)  {...} # @EXPORT
+    sub whee                    {...} # not exported
+}
 
-    use My::Package 'bar';     # imports bar() and quux
+use My::Package 'bar';     # imports bar() and quux
 
-    use My::Package ':strings' # imports baz, bay, and quux
+use My::Package ':strings' # imports baz, bay, and quux
 
-    use My::Package;           # imports quux
+use My::Package;           # imports quux
 
-    use My::Package ();        # imports nothing
+use My::Package ();        # imports nothing
 
-    use My::Package qw/bar :strings -quux/; # don't import quux
+use My::Package qw/bar :strings -quux/; # don't import quux
 
-    use My::Module 'whee'; # fatal error
+use My::Module 'whee'; # fatal error
+```
 
 ## Prototype Implementation
 
