@@ -59,7 +59,7 @@ package My::Module {
 }
 ```
 
-The above can be written as this:
+The above behaves similarly to:
 
 ```perl
 package My::Module {
@@ -84,8 +84,11 @@ package My::Module {
 }
 ```
 
-Imported functions are lexical and do not exist in the importing namespace,
-removing the need for namespace::clean and related modules.
+The requested functions are imported lexically, rather than appearing in the
+package symbol table. This means that code within that lexical scope can see
+and call them as normal, but they are not visible from outside the scope to
+which they are exported, such as from other callers or as object or class
+methods. This removes the need for `namespace::clean` and related modules.
 
 Upper-case `:export` attribute arguments are reserved for Perl to avoid
 clashing with user-defined tags. This is because in this author's experience,
