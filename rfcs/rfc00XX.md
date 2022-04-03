@@ -44,7 +44,8 @@ And so on.
 
 Because lower-case attribute names are reserved for Perl's future expansion,
 we do not need a feature guard. Instead, we can simply `use v5.XX` to pull in
-the new feature.
+the new feature. However, even that might not be needed if they're using a
+future Perl since it doesn't conflict with anything default.
 
     package My::Module {
         use v5.38;
