@@ -79,9 +79,8 @@ The above can be written as this:
         sub whee {...}
     }
 
-
-Imported functions do not remain in the namespace, removing the need for
-namespace::clean and related modules
+Imported functions are lexical and do not exist in the importing namespace,
+removing the need for namespace::clean and related modules.
 
 Upper-case `:export` attribute arguments are reserved for Perl to avoid
 clashing with user-defined tags. This is because in this author's experience,
