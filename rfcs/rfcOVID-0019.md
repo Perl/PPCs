@@ -37,6 +37,7 @@ There are also many attribute-based exporters:
 * [Exporter::Simple](https://metacpan.org/pod/Exporter::Simple)
 * [Perl6::Export](https://metacpan.org/pod/Perl6::Export) (not really attributes)
 * [Perl6::Export::Attrs](https://metacpan.org/pod/Perl6::Export::Attrs)
+* [Exporter::Attributes](https://metacpan.org/pod/Exporter::Attributes)
 
 And so on.
 
