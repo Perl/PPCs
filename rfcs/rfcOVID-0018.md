@@ -32,11 +32,10 @@ side-effect.
 
 Code using the above does not need to return a magic true value when compiled.
 
-If the module explicitly returns a false value, we should consider if this can
-be ignored (I suspect this is usually a bug). However, the module author
-_might_ have conditional logic to explicitly return a false value in case
-there's a missing dependency (or for some other reason). Discussion might be
-useful here.
+If the module explicitly returns a false value, module loading will fail as it
+does now. If the module author wants the module to fail to load under certain
+conditions, they should die with an appropriate error message rather than
+returning false.
 
 ## Backwards Compatibility
 
