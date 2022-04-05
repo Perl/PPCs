@@ -43,6 +43,8 @@ And so on.
 
 ## Specification
 
+### Usage
+
 Because lower-case attribute names are reserved for Perl's future expansion,
 we do not need a feature guard. Instead, we can simply `use v5.XX` to pull in
 the new feature. However, even that might not be needed if they're using a
@@ -94,6 +96,39 @@ methods. This removes the need for `namespace::clean` and related modules.
 Upper-case `:export` attribute arguments are reserved for Perl to avoid
 clashing with user-defined tags. This is because in this author's experience,
 export tags are _usually_ lower-case.
+
+### Interface
+
+The various incantations of `:export` should populate the respective
+`@EXPORT`, `@EXPORT_OK`, and `%EXPORT_TAGS` package variables to maintain a
+consistent API with the `Exporter` module.
+
+### Implementation
+
+Per [an email from Ricardo
+Signes](https://www.nntp.perl.org/group/perl.perl5.porters/2022/02/msg262791.html),
+the basic lexical exporting functionality should be implemented via a core
+module that we will call `lexport` (for the sake of argument). The interface
+might look similar to this:
+
+```perl
+lexport->export(
+    name1 => coderef1,
+    name2 => coderef2,
+    ...
+);
+```
+
+That would export lexical functions into the current namespace.
+
+This module will not allow unexporting lexical functions.
+
+Only coderefs are supported (variables can be wrapped in coderefs). We may
+revisit this decision in the future.
+
+We might also wish to [implement `UNIVERSAL::import()` in `universal.c` to
+deal with some historical
+baggage](https://www.nntp.perl.org/group/perl.perl5.porters/2022/02/msg262979.html).
 
 ## Backwards Compatibility
 
