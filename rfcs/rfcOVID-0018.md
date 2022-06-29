@@ -1,4 +1,4 @@
-# No Longer Requiring a True Value at the End of a Module
+# No Longer Require a True Value at the End of a Module
 
 ## Preamble
 
