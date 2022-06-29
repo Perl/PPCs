@@ -1,18 +1,17 @@
-# A feature to automatically "yield true" at the end of a file
+# No Longer Requiring a True Value at the End of a Module
 
 ## Preamble
 
     Author:  Curtis "Ovid" Poe <curtis.poe@gmail.com>
     Sponsor:
-    ID:      OVID-0018
+    ID:      0018
     Status:  Draft
 
 ## Abstract
 
-This RFC proposes a `yield_true` feature. When used, the current Perl _file_
-containing `use feature 'yield_true';` will automatically return a true value
-after successful compilation, eliminating the need for a "1" (or other true
-value) at the end of the file.
+This RFC proposes a feature which, when used, causes the current Perl file to
+to yield a true value when C<require>d, eliminating the need for a "1" (or
+other true value) at the end of the file.
 
 ## Motivation
 
@@ -28,18 +27,23 @@ side-effect.
 
 ## Specification
 
-    use feature 'yield_true';
+    use feature 'module_true';
 
-Code using the above does not need to return a magic true value when compiled.
+B<Note>: the feature name is not settled, C<yield_true>, C<module_true>, and
+C<module_is_true> have all been suggested.
+
+Code using the above does not need to end in a true value when required.
 
 If the module explicitly returns a false value, module loading will fail as it
 does now. If the module author wants the module to fail to load under certain
-conditions, they should die with an appropriate error message rather than
-returning false.
+conditions, they should use C<die> or a similar mechanism with an appropriate
+error message rather than returning false.
 
 ## Backwards Compatibility
 
-There are no compatibility concerns I'm aware of.
+There are no compatibility concerns I'm aware of because we're only suggesting
+changing behaviour in the presence of a newly-added feature that is not
+present in any existing code.
 
 ## Security Implications
 
