@@ -55,28 +55,41 @@ You are taking the temperature of the list.  If there is a great outcry that thi
 
 During this "Pre-RFC" phase, your proposal isn't in the RFC tracker.  It's not an RFC yet!
 
+During this phase, the proposer is responsible for moving things forward.  If
+they contact the PSC for approval to file a draft, and the PSC does not
+respond, it's the proposer who should be keeping track of that.
+
 ### Draft Proposal
 
 The PSC has agreed that you should write a formal draft proposal.  You get the template document and fill it out.  You take its advice, thinking hard about what goes in each section.  Then you post it to p5p as an email with the subject "PROPOSAL:  my great idea".  Members of the list will reply with more questions and suggested amendments.  You should read them and amend the proposal to clarify your ideas or react to valid criticism.
 
-When you think your idea has been sufficiently scrutinized, and you gotten all the feedback you're going to benefit from, submit your updated document to the PSC.  At this point, it will be assigned a row in the tracker.  Its status will be Exploratory.  The PSC (or other deputized folk) will begin the process of vetting the idea.  They will review discussion about the idea, they will produce a list of questions not yet answered, and they will press existing core team members (or other experts) for input.
+During this phase, you (the proposer) are responsible for moving things
+forward.
+
+When you think your idea has been sufficiently scrutinized, and you gotten all the feedback you're going to benefit from, submit your updated document to the PSC.  They will either request more discussion, reject the proposal, or enter it into the tracker with the status **Exploratory**.
+
+### Exploratory Status
+
+When a formal draft has been discussed sufficiently, submitted to the PSC, and is under consideration, it is entered into the proposal tracker, with the status **Exploratory**.  The PSC (or other deputized folk) will begin the process of vetting the idea.  They will review discussion about the idea, they will produce a list of questions not yet answered, and they will press existing core team members (or other experts) for input.
 
 The PSC (or deputies) will eventually either:
  * move the document to **Ready for Implementation** status (see below) because they believe it is ready for implementation
  * move the document to **Rejected** status because they believe it should not be implemented; This may come with advice on how to formulate an alternate proposal that has more chance of being accepted.  This isn't used for "it needs some edits", but for "it's fundamentally deeply flawed."
  * move the document to the **Expired** status because the original proposer (or other vital personnel) are not responsive
 
-"This didn't get nearly enough pre-submission discussion" is a valid reason to reject, but the PSC is likely to say "go discuss more and then come back" rather than, "we filed it and marked it rejected, tough luck."
+During this phase, the PSC is responsible for moving the proposal forward.
 
 ### Ready for Implementation
 
-When a proposal is accepted, the PSC is stating that they'd like to see the idea implemented, and that they are likely to merge an implementation if it doesn't bring with it any unwelcome surprises or complications.  It is now the responsibility of the proposer or some other volunteer to produce an implementation.  The PSC will keep the item on the tracker while waiting for an implementation.  They should make a regular note of accepted-but-not-implemented proposals on perl5-porters.
+When a proposal is accepted, the PSC is stating that they'd like to see the idea implemented, and that they are likely to merge an implementation if it doesn't bring with it any unwelcome surprises or complications.
 
 If no implementation has made progress for three months, the document moves to **Expired**.
 
 If an implementation exposes serious problems that mean the PSC no longer believes the proposal can work, the document moves to **Rejected**.
 
 If an implementation is delivered and it isn't clear that it's broken as designed, the document moves to **Testing** status.
+
+During this phase, the proposer or other named implementor is responsible for moving the proposal forward.  The PSC will only review proposals in this status when work is delivered or when status updates cease.  The PSC will make a regular note of proposals in this status to perl5-porters.  The implementors of proposals in this status will post regular updates -- regular enough, at any rate, to avoid becoming Expired.
 
 ### Testing
 
@@ -86,6 +99,8 @@ Now there's an accepted proposal and an implementation.  At this point, it needs
  * marked **Rejected**, because the quality or behavior of the feature or its implementation are not acceptable
 
 Also, of course, the document may move to **Expired** if workers vanish.
+
+During the Testing phase, the PSC and the proposer (or implementor) will be working together and communicating regularly to keep track of what work remains to complete the testing phase.
 
 ## What needs an RFC? What can just be a PR?
 
