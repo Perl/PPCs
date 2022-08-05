@@ -73,13 +73,13 @@ When you think your idea has been sufficiently scrutinized, and you gotten all t
 When a formal draft has been discussed sufficiently, submitted to the PSC, and is under consideration, it is entered into the proposal tracker, with the status **Exploratory**.  The PSC (or other deputized folk) will begin the process of vetting the idea.  They will review discussion about the idea, they will produce a list of questions not yet answered, and they will press existing core team members (or other experts) for input.
 
 The PSC (or deputies) will eventually either:
- * move the document to **Ready for Implementation** status (see below) because they believe it is ready for implementation
+ * move the document to **Implementing** status (see below) because they believe it is ready for implementation
  * move the document to **Rejected** status because they believe it should not be implemented; This may come with advice on how to formulate an alternate proposal that has more chance of being accepted.  This isn't used for "it needs some edits", but for "it's fundamentally deeply flawed."
  * move the document to the **Expired** status because the original proposer (or other vital personnel) are not responsive
 
 During this phase, the PSC is responsible for moving the proposal forward.
 
-### Ready for Implementation
+### Implementing
 
 When a proposal is accepted, the PSC is stating that they'd like to see the idea implemented, and that they are likely to merge an implementation if it doesn't bring with it any unwelcome surprises or complications.
 
