@@ -51,7 +51,9 @@ Not every good idea belongs in the Perl core. Some are better implemented on CPA
 
 The RFC process starts with an formal proposal to add or change a language feature in Perl.  But you, the prospective author of an RFC, shouldn't start by writing one.  Start by posting to p5p that you have an idea.  Explain what problem you're solving, how you think you can solve it, and what prior art you looked at.  Be clear and concise.  Make it easy for the rest of the list to see what you're suggesting without reading an enormous wall of text, but don't lose so much detail as to be meaningless.
 
-You are taking the temperature of the list.  If there is a great outcry that this is a bad idea, or has been tried before, or was explicitly rejected before, you should probably stop.  If everyone says, "Sounds great, flesh it out!", or if you're not sure, you should post, requesting that the PSC approve producing a draft.  If they do, move on to "Draft Proposal" below.  If not, they'll provide more feedback like "this is definitely impossible" or "you need to provide more information" or so on.
+You are taking the temperature of the list.  If there is a great outcry that this is a bad idea, or has been tried before, or was explicitly rejected before, you should probably stop.  No hard feelings!
+
+Otherwise, you're ready to move on to the next step. You should post a follow-up, requesting that the PSC approve producing a draft.  If they do, move on to "Draft Proposal" below.  If not, they'll provide more feedback like "this is definitely impossible" or "you need to provide more information" or so on.
 
 During this "Pre-RFC" phase, your proposal isn't in the RFC tracker.  It's not an RFC yet!
 
