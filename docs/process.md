@@ -57,9 +57,7 @@ Otherwise, you're ready to move on to the next step. You should post a follow-up
 
 During this "Pre-RFC" phase, your proposal isn't in the RFC tracker.  It's not an RFC yet!
 
-During this phase, the proposer is responsible for moving things forward.  If
-they contact the PSC for approval to file a draft, and the PSC does not
-respond, it's the proposer who should be keeping track of that.
+During this phase, you (the proposer) are responsible for moving things forward.  If you contact the PSC for approval to file a draft, and the PSC does not respond, it's you who should be keeping track of that.
 
 ### Draft Proposal
 
@@ -68,7 +66,7 @@ The PSC has agreed that you should write a formal draft proposal.  You get the t
 During this phase, you (the proposer) are responsible for moving things
 forward.
 
-When you think your idea has been sufficiently scrutinized, and you gotten all the feedback you're going to benefit from, submit your updated document to the PSC.  They will either request more discussion, reject the proposal, or enter it into the tracker with the status **Exploratory**.
+When you think your idea has been sufficiently scrutinized, and you have gotten all the feedback you're going to benefit from, submit your updated document to the PSC.  They will either request more discussion, reject the proposal, or enter it into the tracker with the status **Exploratory**.
 
 ### Exploratory Status
 
@@ -76,7 +74,7 @@ When a formal draft has been discussed sufficiently, submitted to the PSC, and i
 
 The PSC (or deputies) will eventually either:
  * move the document to **Implementing** status (see below) because they believe it is ready for implementation
- * move the document to **Rejected** status because they believe it should not be implemented; This may come with advice on how to formulate an alternate proposal that has more chance of being accepted.  This isn't used for "it needs some edits", but for "it's fundamentally deeply flawed."
+ * move the document to **Rejected** status because they believe it should not be implemented.  This may come with advice on how to formulate an alternate proposal that has more chance of being accepted.  This isn't used for "it needs some edits", but for "it's fundamentally deeply flawed."
  * move the document to the **Expired** status because the original proposer (or other vital personnel) are not responsive
 
 During this phase, the PSC is responsible for moving the proposal forward.
