@@ -98,7 +98,7 @@ Now there's an accepted proposal and an implementation.  At this point, it needs
  * marked **Accepted**, with the code merged as a new (probably experimental!) feature of perl
  * marked **Rejected**, because the quality or behavior of the feature or its implementation are not acceptable
 
-Also, of course, the document may move to **Expired** if workers vanish.
+If no progress is reported for three months, the document moves to **Expired**.
 
 During the Testing phase, the PSC and the proposer (or implementor) will be working together and communicating regularly to keep track of what work remains to complete the testing phase.
 
