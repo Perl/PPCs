@@ -49,7 +49,7 @@ Not every good idea belongs in the Perl core. Some are better implemented on CPA
 
 ### Pre-RFC
 
-The RFC process starts with a formal proposal to add or change a language feature in Perl.  But you, the prospective author of an RFC, shouldn't start by writing one.  Start by posting to p5p that you have an idea.  Explain what problem you're solving, how you think you can solve it, and what prior art you looked at.  Be clear and concise.  Make it easy for the rest of the list to see what you're suggesting without reading an enormous wall of text, but don't lose so much detail as to be meaningless.
+The RFC process starts with a formal proposal to add or change a language feature in Perl.  But you, the prospective author of an RFC, shouldn't start by writing that formal proposal.  Start by posting to p5p that you have an idea.  Explain what problem you're solving, how you think you can solve it, and what prior art you looked at.  Be clear and concise.  Make it easy for the rest of the list to see what you're suggesting without reading an enormous wall of text, but don't lose so much detail as to be meaningless.
 
 You are taking the temperature of the list.  If there is a great outcry that this is a bad idea, or has been tried before, or was explicitly rejected before, you should probably stop.  No hard feelings!
 
