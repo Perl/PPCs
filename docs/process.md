@@ -61,7 +61,7 @@ During this phase, you (the proposer) are responsible for moving things forward.
 
 ### Draft Proposal
 
-The PSC has agreed that you should write a formal draft proposal.  You get the template document and fill it out.  You take its advice, thinking hard about what goes in each section.  Then you post it to p5p as an email with the subject "PROPOSAL:  my great idea".  Members of the list will reply with more questions and suggested amendments.  You should read them and amend the proposal to clarify your ideas or react to valid criticism.
+The PSC has agreed that you should write a formal draft proposal.  You get the [template document](template.md) and fill it out.  You take its advice, thinking hard about what goes in each section.  Then you post it to p5p as an email with the subject "PROPOSAL:  my great idea".  Members of the list will reply with more questions and suggested amendments.  You should read them and amend the proposal to clarify your ideas or react to valid criticism.
 
 During this phase, you (the proposer) are responsible for moving things
 forward.
