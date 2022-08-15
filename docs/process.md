@@ -66,7 +66,7 @@ The PSC has agreed that you should write a formal draft proposal.  You get the t
 During this phase, you (the proposer) are responsible for moving things
 forward.
 
-When you think your idea has been sufficiently scrutinized, and you have gotten all the feedback you're going to benefit from, submit your updated document to the PSC.  They will either request more discussion, reject the proposal, or enter it into the tracker with the status **Exploratory**.
+When you think your idea has been sufficiently scrutinized, and you have gotten all the feedback you're going to benefit from, post to perl5-porters, requesting the PSC accept the draft.  In reply, they will either request more discussion, reject the proposal, or enter it into the tracker with the status **Exploratory**.
 
 ### Exploratory Status
 
