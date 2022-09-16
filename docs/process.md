@@ -13,6 +13,7 @@ Hence we need a process that
 * enables the originator of an idea to help us as much as possible
 * summarises and records discussion and decisions, to iteratively improve
 * prioritises proposals, to optimise the value we get from contributors
+* clarifies who is meant to be pushing work forward at any given time
 
 
 We'd like to record proposals to improve the language and their status as "Request For Comment" documents in their own repository under the Perl organisation on GitHub.
@@ -41,105 +42,65 @@ Costs are
 
 Not every good idea belongs in the Perl core. Some are better implemented on CPAN. For some ideas, the RFC process is overkill. And the other way - for some issues or PRs, the reviewer is going to realise that it's more complex than it seemed, and needs to become an RFC.
 
-## The straight through process is
+## The Process
 
-                                 idea
-                                   |
-                                   v
-                                mail p5p
-                                   |
-                  better           |         rejected
-                    on     <-------?------->   with
-                   CPAN            |         reasoning
-                                   v
-                            Exploratory RFC
-                "we think this idea is worth exploring"
-                (Help us figure out how this will work)
-                                   |
-                                   v
-                             Provisional RFC
-              "we think this idea is worth implementing"
-              (We have a firm idea of what we want to do)
-                                   |
-                                   v
-                               Accepted RFC
-                  "we think this plan looks viable"
-               (There is a sane plan for how to do it)
-                                   |
-                                   v
-                             Implemented RFC
-                   "docs, tests and implementation"
-                (And we can support it in the future)
-                                   |
-                                   v
-                                Shipped
-    In a stable release, subject to "experimental features" process
-                                   |
-                                   v
-                                 Stable
-    In a stable release, now subject to normal "deprecation" rules
+![a flowchart of the process described below](/images/flowchart.png)
 
 
+### Pre-RFC
 
-If there are better names, we should change them. The intent is the important part. Also RFCs might still fail at any point (before "Stable") and hence become "Rejected". RFCs might also be "Withdrawn" by their Author(s), or "Superseded" by a newer RFC, so these states and transitions exist.
+The RFC process starts with a formal proposal to add or change a language feature in Perl.  But you, the prospective author of an RFC, shouldn't start by writing that formal proposal.  Start by posting to p5p that you have an idea.  Explain what problem you're solving, how you think you can solve it, and what prior art you looked at.  Be clear and concise.  Make it easy for the rest of the list to see what you're suggesting without reading an enormous wall of text, but don't lose so much detail as to be meaningless.
 
-Part of this discussion to get from "Exploratory" to "Accepted" should include whether a feature guard is needed, concerns on CPAN breakage, security etc, helping to fill out the "Backwards Compatibility" and "Security Implications" sections. This is the point where a subject-matter expert may raise concerns about the proposal, and may effectively veto it. For example, if you propose a change related to Unicode, and Karl says "it's a really bad idea for the following reasons", then it's not likely to progress.  Similarly, as the discussion progresses, it may become clear to everyone that the idea should be rejected. We might figure out that the idea is better implemented on CPAN, that something we thought was better on CPAN should return as an RFC. (eg try/catch and Moose/Moo leading to Cor).
+You are taking the temperature of the list.  If there is a great outcry that this is a bad idea, or has been tried before, or was explicitly rejected before, you should probably stop.  No hard feelings!
 
-Any RFC (before merging) can be marked "Deferred" if work has paused, or if they have no-one implementing them. RFCs have at least one *Author*, who acts as champion for the idea, and ideally writes documentation and tests. "Accepted" RFCs should have a core team member as a *Sponsor*, who acts as mentor and point of contact. If the *Author* can't implement their idea alone, and no-one else volunteers, then the PSC will try to find someone to implement an "Accepted" RFC, but this may not be possible, and the RFC will stall.
+Otherwise, you're ready to move on to the next step. You should post a follow-up, requesting that the PSC approve producing a draft.  If they do, move on to "Draft Proposal" below.  If not, they'll provide more feedback like "this is definitely impossible" or "you need to provide more information" or so on.
 
-Anyone with commit access to the RFC repository can assign an ID and create an Exploratory RFC, if an idea or draft RFC sent to p5p isn't obviously flawed or better on CPAN.
+During this "Pre-RFC" phase, your proposal isn't in the RFC tracker.  It's not an RFC yet!
 
-The PSC approves the transitions Exploratory => Provisional => Accepted
-but will actively seek opinion from people familiar with the subject.
+During this phase, you (the proposer) are responsible for moving things forward.  If you contact the PSC for approval to file a draft, and the PSC does not respond, it's you who should be keeping track of that.
 
-The transition from Accepted => Implemented is made by merging the PR that implements the RFC. At least one reviewer should be neither the *Author* nor the *Sponsor*. (Even if all that they can say is that the other two are **the** subject experts and that it all looks good.)
+### Draft Proposal
 
-The actual merge of the implementation branch should be done by someone other than the implementer of the changes. This person does not **need** to be one of reviewers, but they should be independent of the implementers, as the last steps involve a rebase **after** the review. This way it's clear that the code hasn't been (intentionally) changed post-review (assuming no collusion). The merge should be
+The PSC has agreed that you should write a formal draft proposal.  You get the [template document](template.md) and fill it out.  You take its advice, thinking hard about what goes in each section.  Then you post it to p5p as an email with the subject "PROPOSAL:  my great idea".  Members of the list will reply with more questions and suggested amendments.  You should read them and amend the proposal to clarify your ideas or react to valid criticism.
 
-1. first rebase the implementation branch onto blead
-2. then create a non-fast-forward merge with a commit message including a reference to the RFC
+During this phase, you (the proposer) are responsible for moving things
+forward.
 
-The intent is that the final commit history looks something like
+When you think your idea has been sufficiently scrutinized, and you have gotten all the feedback you're going to benefit from, post to perl5-porters, requesting the PSC accept the draft.  In reply, they will either request more discussion, reject the proposal, or enter it into the tracker with the status **Exploratory**.
 
-```
-*   commit 4a1b9dd524007193213d3919d6a331109608b90c (blead)
-|\  Merge: 731a976bef ba9a3fe252
-| |
-| |     Merge implementation of foozles - RFC 1337
-| |
-| * commit ba9a3fe252d20d64d0f17968e2c47d3c4009776d
+### Exploratory Status
 
-...
+When a formal draft has been discussed sufficiently, submitted to the PSC, and is under consideration, it is entered into the proposal tracker, with the status **Exploratory**.  The PSC (or other deputized folk) will begin the process of vetting the idea.  They will review discussion about the idea, they will produce a list of questions not yet answered, and they will press existing core team members (or other experts) for input.
 
-| * commit cdba169fcf0819be8f02efe3edc7aac796fb9433
-|/
-|
-|       first commit of foozles
-|
-* commit 731a976bef573afb7b94562b4b34473f6b714d5d
-```
+The PSC (or deputies) will eventually either:
+ * move the document to **Implementing** status (see below) because they believe it is ready for implementation
+ * move the document to **Rejected** status because they believe it should not be implemented.  This may come with advice on how to formulate an alternate proposal that has more chance of being accepted.  This isn't used for "it needs some edits", but for "it's fundamentally deeply flawed."
+ * move the document to the **Expired** status because the original proposer (or other vital personnel) are not responsive
 
-Note that there are no commits on the left side - 731a976bef is a direct parent of 4a1b9dd524. The structure is chosen as it simultaneously gives most of the benefits of squashing all the work into one commit ("this is all one logical change"), but also keeps the detail of the implementation steps, which is very useful for automatic bisection when bug hunting.
+During this phase, the PSC is responsible for moving the proposal forward.
 
-See [`perlgit.pod`](https://github.com/Perl/perl5/blob/blead/pod/perlgit.pod#on-merging-and-rebasing) for how to do this with `git merge --no-ff`. This **has** to be done at the command-line - this style of merging does **not** correspond to any of the "merge" options in the GitHub UI.
+### Implementing
 
-There is an ongoing discussion on how we decide whether to merge a PR, with the latest proposal being:
+When a proposal is accepted, the PSC is stating that they'd like to see the idea implemented, and that they are likely to merge an implementation if it doesn't bring with it any unwelcome surprises or complications.
 
-* After an appropriate period, if there are not strong disagreements, and the PSC haven't rejected it, a committer will merge the PR.
-* Trivial or obviously-correct changes may be committed directly. I.e., the appropriate length is sometimes zero.
-* If objections are raised, they need to be addressed (meaning "clearly replied to", and for an RFC the reasoning recorded in "Rejected Ideas")
-* If the objection is from a subject matter expert, you need to come to an agreement.
-* If the PR stalls, ping the PSC for adjudication. We expect this will be quite rare either you should have gone through the proposal process, or it's straightforward.
-* PRs from non-committers are expected to have more scrutiny.
+If no implementation has made progress for three months, the document moves to **Expired**.
 
-What's an appropriate period?
+If an implementation exposes serious problems that mean the PSC no longer believes the proposal can work, the document moves to **Rejected**.
 
-* For "I think this is right but want to give a chance for comments", a couple of days is probably fine.
-* For "this is a significant change that I could really use feedback on," a week or more is probably best, and the PR should probably be flagged to the list as wanting attention.
-* The later in the release cycle, the stricter we should be with ourselves.
+If an implementation is delivered and it isn't clear that it's broken as designed, the document moves to **Testing** status.
 
-Don't panic: changes can be reverted.
+During this phase, the proposer or other named implementor is responsible for moving the proposal forward.  The PSC will only review proposals in this status when work is delivered or when status updates cease.  The PSC will make a regular note of proposals in this status to perl5-porters.  The implementors of proposals in this status will post regular updates -- regular enough, at any rate, to avoid becoming Expired.
 
+### Testing
+
+Now there's an accepted proposal and an implementation.  At this point, it needs to have enough tests, showing how it will work in real world conditions.  The PSC will consult with the author, each other, perl5-porters, and other experts to produce a list of needed test cases.  The proposer, implementer, or other volunteers will provide the testing.  Once enough testing is done, then the document will be either…
+
+ * marked **Accepted**, with the code merged as a new (probably experimental!) feature of perl
+ * marked **Rejected**, because the quality or behavior of the feature or its implementation are not acceptable
+
+If no progress is reported for three months, the document moves to **Expired**.
+
+During the Testing phase, the PSC and the proposer (or implementor) will be working together and communicating regularly to keep track of what work remains to complete the testing phase.
 
 ## What needs an RFC? What can just be a PR?
 

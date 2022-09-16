@@ -42,6 +42,7 @@ These files describe the process we are trialling
 |0009|[Namespace for Builtin Functions](rfcs/rfc0009.md)|5.36.0|
 |0011|[Command-line flag for slurping](rfcs/rfc0011.md)|5.36.0|
 |0016|[A built-in for getting index-and-value pairs from a list](rfcs/rfc0016.md)|5.36.0|
+|0017|[built-in functions for checking the original type of a scalar](rfcs/rfc0017.md)|5.36.0|
 
 ### Implemented
 
@@ -59,7 +60,6 @@ These files describe the process we are trialling
 |0006|[New module loading function](rfcs/rfc0006.md)|
 |0012|[Configure option for not including taint support](rfcs/rfc0012.md)|
 |0013|[Support overloaded objects in join(), substr() builtins](rfcs/rfc0013.md)|
-|0017|[built-in functions for checking the original type of a scalar](rfcs/rfc0017.md)|
 
 ### Provisional
 
