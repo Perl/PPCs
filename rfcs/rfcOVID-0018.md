@@ -48,7 +48,40 @@ None expected.
 
 ## Examples
 
-None. See above.
+Imagine this module:
+
+```perl
+package Demo1;
+use feature 'module_true';
+
+sub import {
+  warn "You imported a module!\n";
+}
+```
+
+When loaded by `require` or `use` anywhere in perl, this would import
+successfully, despite the lack of a true value at the end.
+
+This module shows an (almost certainly never useful) way to croak anyway:
+
+```perl
+package Demo2;
+use feature 'module_true';
+
+return 1 if $main::test_1;
+return 0 if $main::test_2;
+
+{
+  no feature 'module_true';
+  return 0 if $main::test_3;
+}
+```
+
+In this example, the only case in which requiring Demo2 would fail is if
+`$main::test_3` was true.  The previous `return 0 if $main::test_2` would still
+be within the scope of the `module_true` feature, so the return value would be
+ignored.  When `0` is returned outside the effect of `module_true`, though, the
+old behavior of testing the return value is back in effect.
 
 ## Prototype Implementation
 
