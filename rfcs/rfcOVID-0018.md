@@ -94,11 +94,6 @@ However, per haarg:
 
 Thus, we prefer simply returning `true` (or `1`).
 
-## Open Issues
-
-* Should returning a false value be ignored?
-* Should any explicit return be an error?
-
 ## Copyright
 
 Copyright (C) 2022, Curtis "Ovid" Poe
