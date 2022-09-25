@@ -9,9 +9,8 @@
 
 ## Abstract
 
-This RFC proposes a feature which, when used, causes the current Perl file to
-to yield a true value when `require`, eliminating the need for a "1" (or
-other true value) at the end of the file.
+This RFC proposes a feature which, when used, eliminates the need to end a Perl
+module with the conventional "1" or other true value.
 
 ## Motivation
 
@@ -27,17 +26,15 @@ side-effect.
 
 ## Specification
 
-    use feature 'module_true';
+First, a new `feature` is added:
 
-**Note**: the feature name is not settled, `yield_true`, `module_true`, and
-`module_is_true` have all been suggested.
+```perl
+use feature 'module_true';
+```
 
-Code using the above does not need to end in a true value when required.
-
-If the module explicitly returns a false value, module loading will fail as it
-does now. If the module author wants the module to fail to load under certain
-conditions, they should use `die` or a similar mechanism with an appropriate
-error message rather than returning false.
+Then, *whenever* a module is loaded with `require` (or an equivalent, like
+`use`), the "croak if false" test is skipped if the `module_true` feature was
+in effect at the last statement executed in the required module.
 
 ## Backwards Compatibility
 
