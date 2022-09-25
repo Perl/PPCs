@@ -10,7 +10,7 @@
 ## Abstract
 
 This RFC proposes a feature which, when used, causes the current Perl file to
-to yield a true value when C<require>d, eliminating the need for a "1" (or
+to yield a true value when `require`, eliminating the need for a "1" (or
 other true value) at the end of the file.
 
 ## Motivation
@@ -29,14 +29,14 @@ side-effect.
 
     use feature 'module_true';
 
-B<Note>: the feature name is not settled, C<yield_true>, C<module_true>, and
-C<module_is_true> have all been suggested.
+**Note**: the feature name is not settled, `yield_true`, `module_true`, and
+`module_is_true` have all been suggested.
 
 Code using the above does not need to end in a true value when required.
 
 If the module explicitly returns a false value, module loading will fail as it
 does now. If the module author wants the module to fail to load under certain
-conditions, they should use C<die> or a similar mechanism with an appropriate
+conditions, they should use `die` or a similar mechanism with an appropriate
 error message rather than returning false.
 
 ## Backwards Compatibility
@@ -67,7 +67,9 @@ when `use v5.XX;` is used.
 It's been discussed that we should return the package name instead. This
 supports:
 
-    my $obj = (require Some::Object::Class)->new;
+```perl
+my $obj = (require Some::Object::Class)->new;
+```
 
 However, per haarg:
 
