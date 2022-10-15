@@ -57,6 +57,8 @@ $metapackage = meta::add_package($name);
 
 Creates a new package of the given name, and returns a meta-package object instance to represent it.
 
+It remains an open question on what the behaviour should be if asked to add a package that already exists. See below.
+
 #### `list_packages`
 
 ```perl
@@ -125,6 +127,8 @@ $metasymbol = $metapackage->add_symbol($name, $value);
 
 Creates a new named symbol. If a value is passed it must be a reference to an item of the compatible type. If no initialisation is provided for variables, an empty variable is created. If no initialisation is provided for a subroutine then a forward declaration is created which has no body yet.
 
+It remains an open question on what the behaviour should be if asked to add a symbol that already exists. See below.
+
 #### `remove_symbol`
 
 ```perl
@@ -132,6 +136,8 @@ $metapackage->remove_symbol($name);
 ```
 
 Removes a symbol. Nothing is returned.
+
+It remains an open question on what the behaviour should be if asked to remove a symbol that does not exist. See below.
 
 #### `list_symbols`
 
@@ -183,7 +189,7 @@ Returns the fully-qualified name for this symbol, including its sigil and packag
 $name = $metasymbol->sigil . join "::", $metasymbol->package->name, $metasymbol->basename;
 ```
 
-#### `is_scalar`, `is_array`, `is_hash`, `is_subroutine`
+#### `is_`*\**
 
 ```perl
 $bool = $metasymbol->is_scalar;
@@ -204,6 +210,8 @@ These methods are available on any meta-symbol object that represents a variable
 $scalar = $metavar->value;
 @array  = $metavar->value;
 %hash   = $metavar->value;
+
+$count  = scalar $metavar->value;
 ```
 
 Returns the current value of the variable. Behaves as the variable itself would in either scalar or list context. Scalars variables yield their value in both scalar and list context. Arrays and hashes yield the count of items contained within when in scalar context, or a list of their (keys and) values in list context.
@@ -217,7 +225,7 @@ $ref = $metavar->reference;
 Returns a SCALAR, ARRAY or HASH reference to the variable itself. This allows the caller to potentially modify the variable, or perform operations on it other than simply listing all its values with `value`.
 
 ```perl
-foreach my $k ( keys $metavar->reference->%@ ) { ... }
+foreach my $k ( keys $metavar->reference->%* ) { ... }
 
 push $metavar->reference->@*, @more_items;
 ```
@@ -274,7 +282,7 @@ Returns the meta-subroutine object instance itself so as to be useful for chaini
 
 ## Backwards Compatibility
 
-As this RFC only adds new functions in a new namespace there are not expected to be any large concerns about backwards compatibility. The individual abilities added are all things that perl already has the ability to do - either natively, or with the help of existing CPAN modules - so these functions are not able to put the interpreter into any new states that could not already be encountered.
+As this RFC only adds new functions in a new namespace there are not expected to be any large concerns about backwards compatibility. The individual abilities added are all things that perl already has the ability to do - either natively, or with the help of existing core or CPAN modules - so these functions are not able to put the interpreter into any new states that could not already be encountered.
 
 Additionally, the entire API specified by this RFC should be possible to implement on top of existing perl core using only an additional XS module. As such it would be easily possible to provide it as a dual-life XS module on CPAN for the benefit of at least a few previous versions of perl.
 
@@ -319,6 +327,10 @@ It may be useful to add support for these kinds of abilities somewhere in core p
 ## Open Issues
 
 * Currently it is unspecified what the "add"-type functions will do if an existing item is already found under the proposed new name. Do they warn before replacing? Is it an error and the user must delete the old one first? Should we provide a "replace"-type function, for which it is an error for the original *not* to exist? Or maybe the semantic should be "add-or-replace" silently.
+
+* Relatedly, it is unspecified what the "remove"-type functions will do if asked to remove an item that does not even exist. Should it fail, or should it just silently accept that it doesn't have to do anything?
+
+* For that matter, is the specified behaviour of the "get"-type functions the best approach? They are specified to throw an exception if the requested item does not exist. It might be more helpful to return `undef` instead and let the caller deal with it, avoiding the separate need to "has"-test it first.
 
 ## Copyright
 
