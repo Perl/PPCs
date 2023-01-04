@@ -83,7 +83,7 @@ Or anonymous subroutines:
 
     my $foo = sub :void {...};
 
-Or a block `eval` (this is for completeness and may be be needed):
+Or a block `eval` (this is for completeness and may be needed):
 
     my $result = eval :scalar {...};
 
@@ -131,7 +131,7 @@ developer expectations.
 If `some_sub()` is  marked as `:scalar`, the above should still
 work, but the assignment is in list context, not scalar context.
 
-# Exaamples
+# Examples
 
     # munges arguments directly and has no guaranteed return value,
     # so calling this is void context is required
