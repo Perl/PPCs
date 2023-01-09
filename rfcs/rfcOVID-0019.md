@@ -134,6 +134,17 @@ also use the special `DEFAULT` tag: `:export(DEFAULT,strings)`.
 * `use Mod qw(foo bar baz)` Import functions iff declared with `:export`
 * `use Mod ':strings';` Import only functions tagged with `strings`
 * `use Mod ':all';` All function with any form of `:export` tag are imported
+* `use Mod qw(:all !foo);` Import all functions except `foo`.
+
+Note that the venerable `Exporter` module also allows importing based on
+patterns:
+
+```perl
+use Socket qw(!/^[AP]F_/ !SOMAXCONN !SOL_SOCKET);
+use POSIX  qw(:errno_h :termios_h !TCSADRAIN !/^EXIT/);
+```
+
+This RFC does not include support for this.
 
 ### Implementation
 
