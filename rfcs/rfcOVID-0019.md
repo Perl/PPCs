@@ -107,20 +107,26 @@ consistent API with the `Exporter` module.
 The grammar for the tag is:
 
     <export>  ::= ':export' [ <options> ]
-    <options> ::=  '(' ( 'DEFAULT' | <tags> ) ')'
-    <tags>    ::=  <tag> {',' <tag> }
-    <tag>     ::=  \w+
+    <options> ::=  '(' <tags> ')'
+    <tags>    ::=  <tag> { ',' <tag> }
+    <tag>     ::=  'DEFAULT' | \w+
 
 
 ### Exporting
 
-* `sub foo :export          {}` Export only on demand
-* `sub foo :export(DEFAULT) {}` Always export
-* `sub foo :export(strings) {}` Export with `:strings` tag or directly
-* `sub foo :export(as,df)   {}` Export with either the `:as` or `:df` tags, or directly
+* `sub foo :export                  {}` Export only on demand
+* `sub foo :export(DEFAULT)         {}` Always export
+* `sub foo :export(strings)         {}` Export with `:strings` tag or directly
+* `sub foo :export(DEFAULT,strings) {}` Export with `:strings` tag or automatically
+* `sub foo :export(as,df)           {}` Export with either the `:as` or `:df` tags, or directly
 
 Any function that has a tag or tags (such as `strings` in the above example),
 can also be imported directly by name.
+
+If a function has a tag, such as in the `:export(strings)` example, it's
+automatically a function which can be exported on demand. If you wish that
+function to be exported automatically if the tag is not supplied, you must
+also use the special `DEFAULT` tag: `:export(DEFAULT,strings)`.
 
 ### Importing
 
