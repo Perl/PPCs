@@ -112,7 +112,7 @@ The grammar for the tag is:
     <tag>     ::=  \w+
 
 
-### Declarations:
+### Exporting
 
 * `sub foo :export          {}` Export only on demand
 * `sub foo :export(DEFAULT) {}` Always export
@@ -122,7 +122,7 @@ The grammar for the tag is:
 Any function that has a tag or tags (such as `strings` in the above example),
 can also be imported directly by name.
 
-### Consumption
+### Importing
 
 * `use Mod;` Import only functions declared with `:export(DEFAULT)`
 * `use Mod qw(foo bar baz)` Import functions iff declared with `:export`
