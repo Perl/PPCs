@@ -284,7 +284,7 @@ use My::Package;           # imports quux
 
 use My::Package ();        # imports nothing
 
-use My::Package qw/bar :strings -quux/; # don't import quux
+use My::Package qw/bar :strings !quux/; # don't import quux
 
 use My::Module 'whee'; # fatal error
 ```
@@ -323,7 +323,7 @@ None?
 
 ## Copyright
 
-Copyright (C) 20222-23, Curtis "Ovid" Poe
+Copyright (C) 20222-2023, Curtis "Ovid" Poe
 
 This document and code and documentation within it may be used, redistributed
 and/or modified under the same terms as Perl itself.
