@@ -247,15 +247,9 @@ If an `import()` method is defined in the package, it will need to call
 sub import ($class, @args) {
     my ( $import, $mine ) = separate_args(@args);
     # do stuff with $mine
-    UNIVERSAL::import($import->@*);
+    $class->UNIVERSAL::import($import->@*);
 }
 ```
-
-For the above, how do we tell `UNIVERSAL::import` which class its importing
-into? I suppose we could do `local @_ = $import->@*; goto &UNIVERSAL::import`,
-but that's finicky, it's going to break, and we're trying to discourage use of
-`@_` in signatured subs. I expect there's some new work done in Perl which I'm
-missing here.
 
 ## Security Implications
 
