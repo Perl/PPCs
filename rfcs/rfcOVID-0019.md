@@ -111,6 +111,24 @@ The grammar for the tag is:
     <tags>    ::=  <tag> {',' <tag> }
     <tag>     ::=  \w+
 
+
+### Declarations:
+
+* `sub foo :export          {}` Export only on demand
+* `sub foo :export(DEFAULT) {}` Always export
+* `sub foo :export(strings) {}` Export with `:strings` tag or directly
+* `sub foo :export(as,df)   {}` Export with either the `:as` or `:df` tags, or directly
+
+Any function that has a tag or tags (such as `strings` in the above example),
+can also be imported directly by name.
+
+### Consumption
+
+* `use Mod;` Import only functions declared with `:export(DEFAULT)`
+* `use Mod qw(foo bar baz)` Import functions iff declared with `:export`
+* `use Mod ':strings';` Import only functions tagged with `strings`
+* `use Mod ':all';` All function with any form of `:export` tag are imported
+
 ### Implementation
 
 The `builtin::export_lexically` function will be used to provide the actual
@@ -222,36 +240,28 @@ package My::Module {
 }
 ```
 
-If an `import()` method is defined, it's possible that it might have special
-importing functionality provided, but we will _still_ allowing importing of
-functions with `:export` tags. We pass the import arguments unchanged to the
-`import()` method (in `@args`, above) and the module author will be
-responsible for filtering those manually. This seems unfortunate, but if
-someone uses `use v5XX`, their import mechanism shouldn't suddenly break.
-
-As a counter-argument, it's unlikely someone will be using `:export`
-attributes, so we could simply filter out all subnames so they don't populate
-`@args`, or filter out all subnames tagged with `:export`.
-
-For the above, that means that these are problematic:
+If an `import()` method is defined in the package, it will need to call
+`UNIVERSAL::import()` to have the lexical importing handled correctly.
 
 ```perl
-use My::Module ':srtings';
-use My::Module 'whee';
+sub import ($class, @args) {
+    my ( $import, $mine ) = separate_args(@args);
+    # do stuff with $mine
+    UNIVERSAL::import($import->@*);
+}
 ```
 
-For `:srtings`, that's almost certainly misspelled. For `whee`, that's not
-supposed to be exported, but perhaps the module author wants to allow that in
-the argument list.
-
-To side-step this, we could create an alternate to the `import()` method,
-perhaps as something analogous to a phaser, but taking arguments, or a new
-`IMPORT` method. Bike-shedding may now commence!
+For the above, how do we tell `UNIVERSAL::import` which class its importing
+into? I suppose we could do `local @_ = $import->@*; goto &UNIVERSAL::import`,
+but that's finicky, it's going to break, and we're trying to discourage use of
+`@_` in signatured subs. I expect there's some new work done in Perl which I'm
+missing here.
 
 ## Security Implications
 
 None anticipated, but by having the imports being lexical, it means outside
-code might have a harder time replacing these functions.
+code might have a harder time replacing these functions. Thus, it might be
+more secure.
 
 ## Examples
 
