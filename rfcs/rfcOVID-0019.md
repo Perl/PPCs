@@ -54,11 +54,11 @@ future Perl since it doesn't conflict with anything default.
 package My::Module {
     use v5.38;
 
-    sub bar  :export            {...} # @EXPORT_OK
-    sub baz  :export(:strings)  {...} # %EXPORT_TAGS
-    sub bay  :export(:strings)  {...} # %EXPORT_TAGS
-    sub quux :export(:DEFAULT)  {...} # @EXPORT
-    sub whee                    {...} # not exported
+    sub bar  :export           {...} # @EXPORT_OK
+    sub baz  :export(strings)  {...} # %EXPORT_TAGS
+    sub bay  :export(strings)  {...} # %EXPORT_TAGS
+    sub quux :export(DEFAULT)  {...} # @EXPORT
+    sub whee                   {...} # not exported
 }
 ```
 
@@ -87,11 +87,12 @@ package My::Module {
 }
 ```
 
-The requested functions are imported lexically, rather than appearing in the
-package symbol table. This means that code within that lexical scope can see
-and call them as normal, but they are not visible from outside the scope to
-which they are exported, such as from other callers or as object or class
-methods. This removes the need for `namespace::clean` and related modules.
+The requested functions are imported lexically via the
+`builtin::export_lexically` function, rather than appearing in the package
+symbol table. This means that code within that lexical scope can see and call
+them as normal, but they are not visible from outside the scope to which they
+are exported, such as from other callers or as object or class methods. This
+removes the need for `namespace::clean` and related modules.
 
 Upper-case `:export` attribute arguments are reserved for Perl to avoid
 clashing with user-defined tags. This is because in this author's experience,
@@ -103,32 +104,23 @@ The various incantations of `:export` should populate the respective
 `@EXPORT`, `@EXPORT_OK`, and `%EXPORT_TAGS` package variables to maintain a
 consistent API with the `Exporter` module.
 
+The grammar for the tag is:
+
+    <export>  ::= ':export' [ <options> ]
+    <options> ::=  '(' ( 'DEFAULT' | <tags> ) ')'
+    <tags>    ::=  <tag> {',' <tag> }
+    <tag>     ::=  \w+
+
 ### Implementation
 
-Per [an email from Ricardo
-Signes](https://www.nntp.perl.org/group/perl.perl5.porters/2022/02/msg262791.html),
-the basic lexical exporting functionality should be implemented via a core
-module that we will call `lexport` (for the sake of argument). The interface
-might look similar to this:
-
-```perl
-lexport->export(
-    name1 => coderef1,
-    name2 => coderef2,
-    ...
-);
-```
-
-That would export lexical functions into the current namespace.
+The `builtin::export_lexically` function will be used to provide the actual
+functionality. `:export` tags, if used, their options, will be used to decide
+which functions used to decide which functions are lexically exported.
 
 This module will not allow unexporting lexical functions.
 
 Only coderefs are supported (variables can be wrapped in coderefs). We may
 revisit this decision in the future.
-
-We might also wish to [implement `UNIVERSAL::import()` in `universal.c` to
-deal with some historical
-baggage](https://www.nntp.perl.org/group/perl.perl5.porters/2022/02/msg262979.html).
 
 ## Backwards Compatibility
 
@@ -173,10 +165,18 @@ our @EXPORT_OK = qw(
 our %EXPORT_TAGS = qw(
     'all'     => \@EXPORT_OK,
     'strings' => qw(bay baz),
+    'other'   => qw(bay)
 );
 ```
 
-Note that there is a need to duplicate some function names.
+That would be rewritten as this:
+
+```perl
+sub quux :export(DEFAULT)       {...}
+sub bar  :export                {...}
+sub baz  :export(strings)       {...}
+sub bay  :export(strings,other) {...}
+```
 
 Some developers like a single exporting spec at the top of a module. Others
 like viewing a function and seeing directly if it can be exported:
@@ -191,9 +191,8 @@ sub foo :export () {
 
 This one is tricky because we have to maintain backwards-compatibility.
 
-If there is no `import()` method defined in the class (inheriting does not
-count?), then any attempt to import a function not designated for export should
-be a fatal error:
+If there is no `import()` method defined in the class  then any attempt to
+import a function not designated for export should be a fatal error:
 
 ```
 $ perl -MMy::Module=whee -E 1
@@ -201,6 +200,9 @@ $ perl -MMy::Module=whee -E 1
 Can't continue after import errors at -e line 0.
 BEGIN failed--compilation aborted.
 ```
+
+Any attempt to import a non-existent export (e.g., `use Foo ':bar'`) should
+also be fatal.
 
 For the following, we'll use the following stub example of an `import()`
 method:
@@ -212,11 +214,11 @@ package My::Module {
     sub import ($class, @args) {
         ...
     }
-    sub bar  :export            {...} # @EXPORT_OK
-    sub baz  :export(:strings)  {...} # %EXPORT_TAGS
-    sub bay  :export(:strings)  {...} # %EXPORT_TAGS
-    sub quux :export(:DEFAULT)  {...} # @EXPORT
-    sub whee                    {...} # not exported
+    sub bar  :export           {...} # @EXPORT_OK
+    sub baz  :export(strings)  {...} # %EXPORT_TAGS
+    sub bay  :export(strings)  {...} # %EXPORT_TAGS
+    sub quux :export(DEFAULT)  {...} # @EXPORT
+    sub whee                   {...} # not exported
 }
 ```
 
@@ -257,11 +259,11 @@ code might have a harder time replacing these functions.
 package My::Module {
     use v5.38;
 
-    sub bar  :export            {...} # @EXPORT_OK
-    sub baz  :export(:strings)  {...} # %EXPORT_TAGS
-    sub bay  :export(:strings)  {...} # %EXPORT_TAGS
-    sub quux :export(:DEFAULT)  {...} # @EXPORT
-    sub whee                    {...} # not exported
+    sub bar  :export           {...} # @EXPORT_OK
+    sub baz  :export(strings)  {...} # %EXPORT_TAGS
+    sub bay  :export(strings)  {...} # %EXPORT_TAGS
+    sub quux :export(DEFAULT)  {...} # @EXPORT
+    sub whee                   {...} # not exported
 }
 
 use My::Package 'bar';     # imports bar() and quux
@@ -311,7 +313,7 @@ None?
 
 ## Copyright
 
-Copyright (C) 2022, Curtis "Ovid" Poe
+Copyright (C) 20222-23, Curtis "Ovid" Poe
 
 This document and code and documentation within it may be used, redistributed
 and/or modified under the same terms as Perl itself.
