@@ -152,7 +152,9 @@ The `builtin::export_lexically` function will be used to provide the actual
 functionality. `:export` tags, if used, their options, will be used to decide
 which functions used to decide which functions are lexically exported.
 
-This module will not allow unexporting lexical functions.
+This RFC does not propose unimporting lexical functions. Give that functions
+are expported locally, the primary need for unimporting methods (not leaving
+them available in the symbol table) is handled by lexical exports.
 
 Only coderefs are supported (variables can be wrapped in coderefs). We may
 revisit this decision in the future.
