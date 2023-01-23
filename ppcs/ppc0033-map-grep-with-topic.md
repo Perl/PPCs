@@ -152,8 +152,8 @@ my %pair_grep = grep my ($f, $g) { $f =~ /sec/ } %my_hash;
     my $found = any { /ab/ } qw( 1234 abcd );
     ```
 
-    It would be desirable to be able to to write a function that accepted the
-    same syntax this this PPC proposes.
+    It would be desirable to be able to to write a perl function that accepted
+    the same syntax this this PPC proposes.
 
 ## Rejected Ideas
 
