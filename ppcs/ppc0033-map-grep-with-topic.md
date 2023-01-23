@@ -88,6 +88,8 @@ On the last iteration, there may not be enough elements remaining to fill
 every `VAR` slot. In this case, a warning will be issued, and the extra `VAR`
 slots will be filled with `undef`.
 
+In scalar context, the return value will be the number of elements generated.
+
 ### `grep my (VAR, VAR) BLOCK LIST`
 
 This will evaluate `BLOCK` for each set of two elements in `LIST`, aliasing
@@ -98,6 +100,10 @@ On the last iteration, there may not be enough elements remaining to fill
 every `VAR` slot. In this case, a warning will be issued, and the extra `VAR`
 slots will be filled with `undef`. The extra `undef` values used will also be
 included in the returned list.
+
+In scalar context, this will return number of elements that would have been
+generated. This means it will always be a multiple of the count of `VAR`
+slots.
 
 ## Backwards Compatibility
 
