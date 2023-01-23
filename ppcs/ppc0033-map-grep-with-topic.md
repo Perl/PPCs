@@ -75,11 +75,12 @@ possible to use `my` variables for this.
 ### `map my (VAR, VAR) BLOCK LIST`
 
 This will evaluate `BLOCK` for each set of two elements in `LIST`, aliasing
-the `VAR` to the first of each set, and the second `VAR` to the second. If
-there is not a multiple of two items in `LIST`, the last run of `BLOCK` will
-assign `undef` to the extra `VAR` slot not corresponding to an element in
-`LIST`. More than two variables can be used to iterate over sets of three or
-more items.
+the `VAR` to the first of each set, and the second `VAR` to the second. More
+than two variables can be used to iterate over sets of three or more items.
+
+On the last iteration, there may not be enough elements remaining to fill
+every `VAR` slot. In this case the extra `VAR` slots will be filled with
+`undef`.
 
 ## Backwards Compatibility
 
