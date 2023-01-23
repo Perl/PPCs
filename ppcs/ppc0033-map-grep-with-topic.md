@@ -123,7 +123,7 @@ my %pair_grep = grep my ($f, $g) { $f =~ /sec/ } %my_hash;
 ## Prototype Implementation
 
   - List::Util includes the functions `pairmap` and `pairgrep` which can do
-    n-at-a-time iteration. These use the "magic" `$a` and `$b` variables.
+    2-at-a-time iteration. These use the "magic" `$a` and `$b` variables.
 
 ## Future Scope
 
