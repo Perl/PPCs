@@ -79,8 +79,8 @@ the `VAR` to the first of each set, and the second `VAR` to the second. More
 than two variables can be used to iterate over sets of three or more items.
 
 On the last iteration, there may not be enough elements remaining to fill
-every `VAR` slot. In this case the extra `VAR` slots will be filled with
-`undef`.
+every `VAR` slot. In this case, a warning will be issued, and the extra `VAR`
+slots will be filled with `undef`.
 
 ## Backwards Compatibility
 
