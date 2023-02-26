@@ -32,4 +32,5 @@ These files describe the process we are trialling
 
 The status of proposals is tracked in "[the RFC
 Tracker](https://docs.google.com/spreadsheets/d/1hVOS7ePuLbVkYcf5S-e_eAodj4izm9Cj7AVs25HvngI)",
-a Google Sheets spreadsheet.  Keep up to date there!
+a Google Sheets spreadsheet.  Keep up to date there! It may take several days from when you send
+the email till you see your proposal appear there. If it never shows up that means it was rejected.
