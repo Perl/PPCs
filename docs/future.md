@@ -12,27 +12,27 @@ so there's a deliberately a lot of hand holding and centralisation, so that we c
 
 ## If the process works, I'd like to progress to
 
-* people submit draft RFCs, not just ideas
+* people submit draft PPCs, not just ideas
 * they've actually consulted other people *before* submitting
-* the person submitting the RFC knows that it they don't help, it dies
+* the person submitting the PPC knows that it they don't help, it dies
 * there's a clearer set of requirements needed to progress
 
-## What does the Author do/Where do RFCs live?
+## What does the Author do/Where do PPCs live?
 
-The Author is the champion for the RFC. Their motivation and enthusiasm to have the feature successfully implemented and shipped drives the process.  Their task is to eliminate each "lowest hanging excuse" in turn to get to shipping code. They are responsible for
+The Author is the champion for the PPC. Their motivation and enthusiasm to have the feature successfully implemented and shipped drives the process.  Their task is to eliminate each "lowest hanging excuse" in turn to get to shipping code. They are responsible for
 
 * seeking input
 * shepherding discussion to some sort of consensus (or appealing to the PSC to resolve an impasse)
-* ensuring all sections in the RFC are complete (working with implementers and others as necessary)
+* ensuring all sections in the PPC are complete (working with implementers and others as necessary)
 
-RFCs live in version control. Anyone can create an "Draft" RFC, self-assign it an ID, and start to flesh it out. "Exploratory" status gets you an official RFC ID, and from that point onward the RFC and history is mirrored/merged into the official repository.
+PPCs live in version control. Anyone can create an "Draft" PPC, self-assign it an ID, and start to flesh it out. "Exploratory" status gets you an official PPC ID, and from that point onward the PPC and history is mirrored/merged into the official repository.
 
-To make this workable, the RFC should be in a source code repository that the *Author* can edit directly (GitHub, GitLab, Bitbucket, self-hosted git, etc). The minimal workable requirements are that
+To make this workable, the PPC should be in a source code repository that the *Author* can edit directly (GitHub, GitLab, Bitbucket, self-hosted git, etc). The minimal workable requirements are that
 
 1. it gives a well-known stable URL for the rendered current version
 2. it can tag (or identify) specific previous revisions
 3. history can be mirrored into the official repo, and merged on status change
-4. discussion can be archived once RFC is "Accepted" and "Implemented"
+4. discussion can be archived once PPC is "Accepted" and "Implemented"
 
 Hence GitHub PRs might not be the best forum for discussion, unless they can be archived. Basically we want to avoid the situation were we have a feature live, and some third party can delete the historical discussion related to it.
 
@@ -41,7 +41,7 @@ As we get better at this, I think that the status transitions should aim for the
 
 ## Draft
 
-* *Author* self-assigns RFC ID
+* *Author* self-assigns PPC ID
 * *Author* seeks input/feedback
 
 ## Exploratory
@@ -49,7 +49,7 @@ As we get better at this, I think that the status transitions should aim for the
 * MUST have *Sponsor* (on the core team, or PSC can delegate externally)
 * MUST have (at least minimal) Motivation, Rational and Examples
 * SHOULD have (at least a minimal) Specification
-* Gets an official RFC ID
+* Gets an official PPC ID
 
 Means "we think this idea is worth exploring"
 
@@ -85,9 +85,9 @@ Means "it's good to merge - we think we can support it in the future"
 
 where (at least) "Provisional" and "Shipped" can be skipped.
 
-## RFC IDs, and how to self-assign
+## PPC IDs, and how to self-assign
 
-* Official RFC IDs are 4 digits
+* Official PPC IDs are 4 digits
 * Self-assigned IDs should be `CPANID-#### or` `githubid-####`
 
 These are the obvious likely popular two, and done case sensitively will not clash. These two should be sufficient for a workable globally unique system.
