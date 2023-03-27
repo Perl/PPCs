@@ -1,4 +1,4 @@
-This repository is for *Requests For Comments* - proposals to change the Perl language.
+This repository is for *Proposed Perl Changes* - proposals to change the Perl language.
 
 Right now, we're [trialling the process](docs/process.md). If you would like to submit a feature request, please [email an *elevator pitch*](mailto:perl5-porters@perl.org) - a short message with 4 paragraphs:
 
@@ -12,7 +12,7 @@ and if a "paragraph" is 1 sentence, great.
 That will be enough to make it obvious whether the idea is
 
 0) actually a **bug** - a change we'd also consider back porting to maintenance releases (so should be a opened as [*Report a Perl 5 bug*](https://github.com/Perl/perl5/issues/new/choose))
-0) worth drafting an RFC for
+0) worth drafting an PPC for
 0) better on CPAN first
 0) "nothing stops you putting it on CPAN, but it doesn't seem viable"
 
@@ -24,12 +24,12 @@ These files describe the process we are trialling
 
 * [motivation.md](docs/motivation.md) - why do we want to do something
 * [process.md](docs/process.md) - the initial version of the process
-* [template.md](docs/template.md) - the RFC template
+* [template.md](docs/template.md) - the PPC template
 * [future.md](docs/future.md) - how we see the process evolving
 * [others.md](docs/others.md) - what others do (or did), and what we can learn from them
 
 ## The Tracker
 
-The status of proposals is tracked in "[the RFC
+The status of proposals is tracked in "[the PPC
 Tracker](https://docs.google.com/spreadsheets/d/1hVOS7ePuLbVkYcf5S-e_eAodj4izm9Cj7AVs25HvngI)",
 a Google Sheets spreadsheet.  Keep up to date there!

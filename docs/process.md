@@ -1,4 +1,6 @@
-# Bootstrapping an RFC process
+# Bootstrapping a PPC process
+
+PPC is the acronym for "Perl Proposed Change".
 
 80% of our feature requests are for changes to the language.
 
@@ -19,7 +21,7 @@ Hence we need a process that
 We'd like to record proposals to improve the language and their status as "Request For Comment" documents in their own repository under the Perl organisation on GitHub.
 
 
-We have a [template](template.md) for what an completed implemented RFC should end up as, but if all you have is an idea - don't worry, we'll help you get there.  We're still figuring this process out, so for now we're doing it as mail messages sent to p5p, not as "pull requests" to the RFC repository (or "issues" on the source repository). This way we can see if the process works as hoped, and fix the parts that don't.
+We have a [template](template.md) for what an completed implemented PPC should end up as, but if all you have is an idea - don't worry, we'll help you get there.  We're still figuring this process out, so for now we're doing it as mail messages sent to p5p, not as "pull requests" to the PPC repository (or "issues" on the source repository). This way we can see if the process works as hoped, and fix the parts that don't.
 
 
 ## What makes a good idea?
@@ -40,22 +42,22 @@ Costs are
 * linearly more implementation to maintain
 * exponentially more combinations of features to define and debug
 
-Not every good idea belongs in the Perl core. Some are better implemented on CPAN. For some ideas, the RFC process is overkill. And the other way - for some issues or PRs, the reviewer is going to realise that it's more complex than it seemed, and needs to become an RFC.
+Not every good idea belongs in the Perl core. Some are better implemented on CPAN. For some ideas, the PPC process is overkill. And the other way - for some issues or PRs, the reviewer is going to realise that it's more complex than it seemed, and needs to become a PPC.
 
 ## The Process
 
 ![a flowchart of the process described below](/images/flowchart.png)
 
 
-### Pre-RFC
+### Pre-PPC
 
-The RFC process starts with a formal proposal to add or change a language feature in Perl.  But you, the prospective author of an RFC, shouldn't start by writing that formal proposal.  Start by posting to p5p that you have an idea.  Explain what problem you're solving, how you think you can solve it, and what prior art you looked at.  Be clear and concise.  Make it easy for the rest of the list to see what you're suggesting without reading an enormous wall of text, but don't lose so much detail as to be meaningless.
+The PPC process starts with a formal proposal to add or change a language feature in Perl.  But you, the prospective author of a PPC, shouldn't start by writing that formal proposal.  Start by posting to p5p that you have an idea.  Explain what problem you're solving, how you think you can solve it, and what prior art you looked at.  Be clear and concise.  Make it easy for the rest of the list to see what you're suggesting without reading an enormous wall of text, but don't lose so much detail as to be meaningless.
 
 You are taking the temperature of the list.  If there is a great outcry that this is a bad idea, or has been tried before, or was explicitly rejected before, you should probably stop.  No hard feelings!
 
 Otherwise, you're ready to move on to the next step. You should post a follow-up, requesting that the PSC approve producing a draft.  If they do, move on to "Draft Proposal" below.  If not, they'll provide more feedback like "this is definitely impossible" or "you need to provide more information" or so on.
 
-During this "Pre-RFC" phase, your proposal isn't in the RFC tracker.  It's not an RFC yet!
+During this "Pre-PPC" phase, your proposal isn't in the PPC tracker.  It's not a PPC yet!
 
 During this phase, you (the proposer) are responsible for moving things forward.  If you contact the PSC for approval to file a draft, and the PSC does not respond, it's you who should be keeping track of that.
 
@@ -102,13 +104,13 @@ If no progress is reported for three months, the document moves to **Expired**.
 
 During the Testing phase, the PSC and the proposer (or implementor) will be working together and communicating regularly to keep track of what work remains to complete the testing phase.
 
-## What needs an RFC? What can just be a PR?
+## What needs a PPC? What can just be a PR?
 
-There's no obvious answer, because there's no clear cut off, and there never will be, even when the process is "out of beta". For now we think we should use RFCs for
+There's no obvious answer, because there's no clear cut off, and there never will be, even when the process is "out of beta". For now we think we should use PPCs for
 
 1. Language changes (feature changes to the parser, tokeniser)
 2. Command line options
 3. Adding/removing warnings (entries in `perldiag.pod`)
 4. Significant changes to when an existing warning triggers
 
-A case that came up recently was moving the reporting of an error from runtime to compile time (GH #18785). We think that this wouldn't warrant an RFC (just regular code review) because no correct code should be relying on when an error is reported. However, there is still a judgement call here, as it would **not** be correct for constant folding to report errors (such as divide by zero) as this might only happen on some platforms as a side effect of the values of constants, and those expressions were unreachable on those platforms.
+A case that came up recently was moving the reporting of an error from runtime to compile time (GH #18785). We think that this wouldn't warrant a PPC (just regular code review) because no correct code should be relying on when an error is reported. However, there is still a judgement call here, as it would **not** be correct for constant folding to report errors (such as divide by zero) as this might only happen on some platforms as a side effect of the values of constants, and those expressions were unreachable on those platforms.

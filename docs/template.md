@@ -12,7 +12,7 @@ Author, Sponsor and similar should be valid e-mail addresses, or CPAN IDs.
 
 ## Abstract
 
-* 100 to 200 words summarising the entire RFC.
+* 100 to 200 words summarising the entire PPC.
 * The most important section is **Motivation**.
 
 ## Motivation
@@ -57,7 +57,7 @@ CVEs are not fun. Try to foresee problems.
 
 PEPs have this as "How to Teach This". That's a valid goal, but there are different audiences (from newcomers, to experienced Perl programmers unfamiliar with your plan).
 
-Most of us are not experienced teachers, but many folks reading your RFC are experienced programmers. So probably the best way to demonstrate the benefits of your proposal is to take some existing code in the core or on CPAN (and not your own code) and show how using your new feature can improve it (easier to read, less buggy, etc)
+Most of us are not experienced teachers, but many folks reading your PPC are experienced programmers. So probably the best way to demonstrate the benefits of your proposal is to take some existing code in the core or on CPAN (and not your own code) and show how using your new feature can improve it (easier to read, less buggy, etc)
 
 ## Prototype Implementation
 
@@ -83,7 +83,7 @@ eg *Why not have different behaviour in void context?*
 
 Likely the answer is in the previous discussion **somewhere**, but most people won't stop to read all the comments. It needs to be easy to find, and updated as it becomes clear which questions are common.
 
-Hence it **needs** to be in the RFC itself. Without this, the RFC process as a whole won't scale.
+Hence it **needs** to be in the PPC itself. Without this, the PPC process as a whole won't scale.
 
 ## Open Issues
 
