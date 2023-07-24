@@ -23,8 +23,18 @@ use feature 'lexical_require`;
 use Some::Module;
 ```
 
-With the above, code outside of the above scope cannot see `Some::Module` unless
-it explicitly requires it.
+Within a given lexical scope, **ß**, if the 'lexical_require' feature is used,
+code outside of scope **ß** cannot call methods against class names that have
+not been explicitly required within the current package, and doing so would
+throw an exception. Methods would be allowed against any object (blessed
+reference), but not against a class.
+
+Note: that doesn't mean the transitive dependencies aren't available. If
+scope **ß** uses `lexical_require` and `Hash::Ordered`, but scope **∂** uses
+`Hash::Ordered` but _doesn't_ use `lexical_require`, then `Hash::Ordered` is
+still available to everyone as a transitive dependency. However, individual module
+authors will still have greater safety in knowing that people are not directly
+relying on their internals.
 
 ## Motivation
 
@@ -69,6 +79,14 @@ package Foo {
 my $object = Some::Class->new; # succeeds if `Some::Class` has a `new` method
 my $cache  = Hash::Ordered->new; # fails
 ```
+
+Note that, if possible, this should also apply to package variables. In the
+above, `$Hash::Ordered::VERSION` should fail. This is again, to prevent
+accidentally relying on code that might not be there. If `Foo` switches from
+`Hash::Ordered` to a similar module, all code relying on `Hash::Ordered` as a
+transitive dependency would break.  As a module author, I don't want to break
+someone else's code just because I changed internal details that they should
+not know about.
 
 ## Backwards Compatibility
 
