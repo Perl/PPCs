@@ -88,26 +88,27 @@ could be used to provide a compatible polyfill.
 Nothing specific predicted.
 
 ## Examples
+```perl
+use builtin qw(created_as_number created_as_string);
 
-  use builtin qw(created_as_number created_as_string);
+my $value1 = "1";
+my $string1 = created_as_string $value1; # true
+my $number1 = created_as_number $value1; # false
 
-  my $value1 = "1";
-  my $string1 = created_as_string $value1; # true
-  my $number1 = created_as_number $value1; # false
+my $value2 = 1;
+my $string2 = created_as_string $value2; # false
+my $number2 = created_as_number $value2; # true
 
-  my $value2 = 1;
-  my $string2 = created_as_string $value2; # false
-  my $number2 = created_as_number $value2; # true
+my $value3 = "1";
+my $used_as_number3 = 0+$value3;
+my $string3 = created_as_string $value3; # true
+my $number3 = created_as_number $value3; # false
 
-  my $value3 = "1";
-  my $used_as_number3 = 0+$value3;
-  my $string3 = created_as_string $value3; # true
-  my $number3 = created_as_number $value3; # false
-
-  my $value4 = 1;
-  my $used_as_string4 = "$value4";
-  my $string4 = created_as_string $value4; # false
-  my $number4 = created_as_number $value4; # true
+my $value4 = 1;
+my $used_as_string4 = "$value4";
+my $string4 = created_as_string $value4; # false
+my $number4 = created_as_number $value4; # true
+```
 
 ## Prototype Implementation
 
