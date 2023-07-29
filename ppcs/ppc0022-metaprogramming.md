@@ -17,7 +17,7 @@ As a dynamic language, programs written in Perl have the ability to be aware of 
 
 Originally, Perl provided some abilities in the form of operations on glob references. Gradually over time, authors have required more abilities than this and increasingly have used a variety of CPAN modules to extend these abilities. As many of the operations provided ought to be considered fundamental language abilities for a dynamic language, it would be better if these were provided by core Perl itself.
 
-This RFC aims to provide a set of API functions to cover many of these abilities. Similar to the case of RFC 0009 having added a namespace for general "builtin" functions, it is not intended that this RFC covers a total and complete list; but instead sets out an initial set of functions. It is expected that more would be added over time on an individual basis, as the need arises. In particular, this RFC does not address any additional API that may be needed by the new object system currently being developed under the `use feature 'class'` flag.
+This PPC aims to provide a set of API functions to cover many of these abilities. Similar to the case of PPC 0009 having added a namespace for general "builtin" functions, it is not intended that this PPC covers a total and complete list; but instead sets out an initial set of functions. It is expected that more would be added over time on an individual basis, as the need arises. In particular, this PPC does not address any additional API that may be needed by the new object system currently being developed under the `use feature 'class'` flag.
 
 ## Rationale
 
@@ -25,7 +25,7 @@ This RFC aims to provide a set of API functions to cover many of these abilities
 
 ## Specification
 
-As this RFC adds a number of functions all on an overall-similar theme, they are all collected into a new toplevel namespace. For now this namespace is called `meta::`; though as per the rest of the details in this RFC that is currently very much up for debate.
+As this PPC adds a number of functions all on an overall-similar theme, they are all collected into a new toplevel namespace. For now this namespace is called `meta::`; though as per the rest of the details in this PPC that is currently very much up for debate.
 
 Objects that are returned by these functions will be instances of some named package within the `meta::` namespace, though we do not yet specify exactly what they will be. Furthermore we make no statement about what actual container type of objects those actually are. Users should not attempt to interact with these objects except via the API specified here.
 
@@ -79,7 +79,7 @@ $metavar = meta::get_variable($varref);
 
 Given a reference to a package variable, returns a meta-variable object instance to represent it. If `$varref` is not a SCALAR, ARRAY or HASH reference, an exception is thrown.
 
-*Note:* It is currently unspecified what happens if the reference refers to a lexical or anonymous variable, rather than a package one. This RFC does not specify any useful behaviour for such instances, but it's possible that future abilities may be added that become useful on lexical variables or anonymous containers.
+*Note:* It is currently unspecified what happens if the reference refers to a lexical or anonymous variable, rather than a package one. This PPC does not specify any useful behaviour for such instances, but it's possible that future abilities may be added that become useful on lexical variables or anonymous containers.
 
 #### `get_subroutine`
 
@@ -282,9 +282,9 @@ Returns the meta-subroutine object instance itself so as to be useful for chaini
 
 ## Backwards Compatibility
 
-As this RFC only adds new functions in a new namespace there are not expected to be any large concerns about backwards compatibility. The individual abilities added are all things that perl already has the ability to do - either natively, or with the help of existing core or CPAN modules - so these functions are not able to put the interpreter into any new states that could not already be encountered.
+As this PPC only adds new functions in a new namespace there are not expected to be any large concerns about backwards compatibility. The individual abilities added are all things that perl already has the ability to do - either natively, or with the help of existing core or CPAN modules - so these functions are not able to put the interpreter into any new states that could not already be encountered.
 
-Additionally, the entire API specified by this RFC should be possible to implement on top of existing perl core using only an additional XS module. As such it would be easily possible to provide it as a dual-life XS module on CPAN for the benefit of at least a few previous versions of perl.
+Additionally, the entire API specified by this PPC should be possible to implement on top of existing perl core using only an additional XS module. As such it would be easily possible to provide it as a dual-life XS module on CPAN for the benefit of at least a few previous versions of perl.
 
 ## Security Implications
 
@@ -306,7 +306,7 @@ Several CPAN modules provide inspiration for abilities and function names:
 
 ## Future Scope
 
-* Currently this RFC makes no consideration for whatever extra abilities may be needed when the `feature-class` branch is introduced. It is expected that additional abilities will be wanted that can operate on classes and members of them (fields, methods, etc...). An insipration can be taken from `Object::Pad::MOP::Class` and related.
+* Currently this PPC makes no consideration for whatever extra abilities may be needed when the `feature-class` branch is introduced. It is expected that additional abilities will be wanted that can operate on classes and members of them (fields, methods, etc...). An insipration can be taken from `Object::Pad::MOP::Class` and related.
 
 * A tangentially-related topic is that of extended API/semantics for declarative attributes. The existing Perl attributes on variables and subroutines are nowhere near as powerful as the ones that will eventually be required by `feature-class` and are already implemented by `Object::Pad`. Whatever extensions are added to core perl to eventually support this will likely have meta-programming accessor methods associated with these object instances too.
 
@@ -322,7 +322,7 @@ These do not seem useful at the current time.
 
 * B::CompilerPhase::Hook
 
-It may be useful to add support for these kinds of abilities somewhere in core perl, but this metaprogramming RFC does not seem to be the place for them.
+It may be useful to add support for these kinds of abilities somewhere in core perl, but this metaprogramming PPC does not seem to be the place for them.
 
 ## Open Issues
 
