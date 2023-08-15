@@ -69,25 +69,17 @@ Returns a list of sub-packages within the given base package name, each as a met
 
 Some less common functions that may still be useful in some situations. These functions can be used to obtain meta-programming object instances in ways other than walking the symbol table for given names.
 
-#### `get_variable`
+#### `for_reference`
 
 ```perl
-$metavar = meta::get_variable($varref);
+$metavar = meta::for_reference($ref);
 ```
 
-Given a reference to a package variable, returns a meta-variable object instance to represent it. If `$varref` is not a SCALAR, ARRAY or HASH reference, an exception is thrown.
+Given a reference to a package variable or subroutine, returns a meta-object instance to represent it. If `$varref` is not a SCALAR, ARRAY, HASH or CODE reference, an exception is thrown.
+
+Anonymous subroutines should be supported; at least in order to obtain a meta-object to represent them so that methods like `set_subname` can be called on them.
 
 *Note:* It is currently unspecified what happens if the reference refers to a lexical or anonymous variable, rather than a package one. This PPC does not specify any useful behaviour for such instances, but it's possible that future abilities may be added that become useful on lexical variables or anonymous containers.
-
-#### `get_subroutine`
-
-```perl
-$metasub = meta::get_subroutine($subref);
-```
-
-Given a CODE reference, returns a meta-subroutine object instance to represent it. If `$subref` is not a CODE reference, an exception is thrown.
-
-This is primarily useful for working with newly-constructed anonymous functions, in order to give them a valid name by calling `set_subname` for instance.
 
 ### Methods on Meta-Package Objects
 
