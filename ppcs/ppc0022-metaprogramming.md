@@ -33,8 +33,6 @@ The get-like functions come in pairs, consisting of a function named `get_...` a
 
 It is currently still an undecided question on what ought to be the correct behaviour for `add`-like functions when asked to create something that already exists, or the `remove`-like functions when asked to remove something that doesn't exist. It may be solved by something similar to above, where there are two differently-named functions that differ in that case. As yet there aren't any particularly compelling solutions.
 
-It is also undecided whether this API should offer an API that exposes the idea of globs as Perl implements them, or whether it should abstract those away to more end-user focused concepts. Some parts of the following API are labelled as optional on that basis.
-
 ### Functions to operate on Packages
 
 These are functions to create, manipulate, and inspect packages themselves.
@@ -103,7 +101,9 @@ $metasymbol = $metapackage->get_symbol($name);
 
 Returns a meta-symbol object instance to represent the symbol within the package, if such a symbol exists. If not either `undef` is returned or an exception is thrown.
 
-**Optionally on globs** If globs are also supported, then the `$name` can be expressed without a sigil to obtain a metaglob instead of a metasymbol.
+The exact type of symbol that is returned depends on the first character of the `$name` parameter - i.e. the sigil. Sigils of `*`, `$`, `@`, `%` and `%` respectively will return a meta-symbol representing a glob itself, or the scalar, array, hash or code slots from it.
+
+(Direct access to the scalar, array, hash or code slots of the glob is provided as a shortcut convenience for the common cases. Access to other more exotic slots of the glob such as filehandles or formats will have to be performed via the metaglob object itself).
 
 #### `add_symbol`
 
@@ -112,8 +112,6 @@ $metasymbol = $metapackage->add_symbol($name, $value);
 ```
 
 Creates a new named symbol. If a value is passed it must be a reference to an item of the compatible type. If no initialisation is provided for variables, an empty variable is created. If no initialisation is provided for a subroutine then a forward declaration is created which has no body yet.
-
-**Optionally on globs** If globs are also supported, then the `$name` can be expressed without a sigil (or maybe the `*` sigil?) to  create and return a metaglob instead of a metasymbol.
 
 #### `remove_symbol`
 
@@ -133,11 +131,9 @@ Returns a list of symbols in the given package, in no particular order. (And in 
 
 TODO: Define what the filters look like. Need to be able to select scalar/array/hash/code as well as sub-stashes. Actually, do we need sub-stashes if we have `list_packages`?
 
-**Optionally on globs** If globs are also supported, this raises the fun question of whether the returned list contains the actual globs or only the symbols from within them. Perhaps there should be another method `->list_globs` that yields just globs?
-
 ### Methods on Meta-Symbol Objects
 
-Several of the above methods return instances of a meta-symbol object. In practice, any meta-symbol object will represent either a variable (when using the "$@%" sigils), or a subroutine (when using the "&"). Each of these cases is described further below. The following methods are available on both kinds.
+Several of the above methods return instances of a meta-symbol object. In practice, any meta-symbol object will represent either a glob (when using the "*" sigil), variable (when using the "$@%" sigils), or a subroutine (when using the "&"). Each of these cases is described further below. The following methods are available on all kinds.
 
 #### `basename`
 
@@ -153,7 +149,7 @@ Returns the final part of the symbol's fully qualified name; the name within the
 $sigil = $metasymbol->sigil;
 ```
 
-Returns the single-character sigil that leads the symbol's name. This will be one of "$", "@", "%" for variables or "&" for subroutines.
+Returns the single-character sigil that leads the symbol's name. This will be one of "*", "$", "@", "%" for variables or "&" for subroutines.
 
 #### `package`
 
@@ -178,6 +174,7 @@ $name = $metasymbol->sigil . join "::", $metasymbol->package->name, $metasymbol-
 #### `is_`*\**
 
 ```perl
+$bool = $metasymbol->is_glob;
 $bool = $metasymbol->is_scalar;
 $bool = $metasymbol->is_array;
 $bool = $metasymbol->is_hash;
@@ -186,36 +183,31 @@ $bool = $metasymbol->is_subroutine;
 
 Returns true in each of the four cases where the object represents the given type of symbol, or false in the other three cases.
 
+These methods should not be considered an exhaustive selection. There may be object types to represent other glob slots such as filehandles, formats, and so on. As more types are defined, more methods would be added to distinguish them.
+
 ### Methods on Meta-Glob Objects
 
-If globs are represented directly, the following methods would be available on them.
-
-#### `basename`
-
-#### `package`
-
-#### `name`
-
-Similar behaviour to on meta-symbols.
+These methods are available on any meta-symbol object that represents a glob - i.e. one whose sigil is "*".
 
 #### `can_scalar`, `get_scalar`
 
 ```perl
 $metasymbol = $metaglob->can_scalar;
-$metasymbol = $metaglob->can_scalar;
+$metasymbol = $metaglob->get_scalar;
 ```
 
 Returns the meta-symbol representing the scalar slot of the glob. If the slot has not been allocated, returns `undef` or throws an exception.
 
 Similar methods would exist for the other slot types; `array`, `hash`, `code` at least.
 
-If the glob API exists, then the various methods on the package *could* be implemented indirectly via these objects. For example something such as the following:
+The various methods on the package *could* be implemented indirectly via these objects. For example something such as the following:
 
 ```perl
 method can_symbol($name)
 {
-    my ($sigil, $basename) = m/^([\$\@\%\&])(.*)$/;
+    my ($sigil, $basename) = m/^([\*\$\@\%\&])(.*)$/;
     my $glob = $self->can_glob($basename) or return undef;
+    $sigil eq "\*" and return $glob;
     $sigil eq "\$" and return $glob->can_scalar;
     $sigil eq "\@" and return $glob->can_array;
     ...
@@ -367,8 +359,6 @@ It may be useful to add support for these kinds of abilities somewhere in core p
 * Currently it is unspecified what the "add"-type functions will do if an existing item is already found under the proposed new name. Do they warn before replacing? Is it an error and the user must delete the old one first? Should we provide a "replace"-type function, for which it is an error for the original *not* to exist? Or maybe the semantic should be "add-or-replace" silently.
 
 * Relatedly, it is unspecified what the "remove"-type functions will do if asked to remove an item that does not even exist. Should it fail, or should it just silently accept that it doesn't have to do anything?
-
-* Currently the above API does not mention glob references, and entirely elides them from the concept of the symbol table, going from names directly to subroutines and variables. It may become necessary to provide access to that layer as well. In deciding whether to provide that, it is inherent to ask the question of what is really being provided here - Are we providing an end-user useful API to allow code to perform the sorts of operations we'd *like to* expose, or are we providing an API that exactly maps to how the internals are actually implemented?
 
 ## Copyright
 
