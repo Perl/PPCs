@@ -29,17 +29,13 @@ As this PPC adds a number of functions all on an overall-similar theme, they are
 
 Objects that are returned by these functions will be instances of some named package within the `meta::` namespace, though we do not yet specify exactly what they will be. Furthermore we make no statement about what actual container type of objects those actually are. Users should not attempt to interact with these objects except via the API specified here.
 
+The get-like functions come in pairs, consisting of a function named `get_...` and one called `can_...`. If the target item exists, then in either case it is returned. The behaviour differs when the item does not exist. The `get` variant will throw an exception, whereas the `can` variant will return `undef`. This allows the caller to decide which behaviour is best for the use-case.
+
+It is currently still an undecided question on what ought to be the correct behaviour for `add`-like functions when asked to create something that already exists, or the `remove`-like functions when asked to remove something that doesn't exist. It may be solved by something similar to above, where there are two differently-named functions that differ in that case. As yet there aren't any particularly compelling solutions.
+
 ### Functions to operate on Packages
 
 These are functions to create, manipulate, and inspect packages themselves.
-
-#### `has_package`
-
-```perl
-$bool = meta::has_package($name);
-```
-
-Returns true if the named package exists.
 
 #### `get_package`
 
@@ -49,6 +45,8 @@ $metapackage = meta::get_package($name);
 
 Returns a meta-package object instance to represent the named package, if such a package exists. If not an exception is thrown.
 
+[[TODO: Decide whether "all packages exist", and thus this can never fail]]
+
 #### `add_package`
 
 ```perl
@@ -56,8 +54,6 @@ $metapackage = meta::add_package($name);
 ```
 
 Creates a new package of the given name, and returns a meta-package object instance to represent it.
-
-It remains an open question on what the behaviour should be if asked to add a package that already exists. See below.
 
 #### `list_packages`
 
@@ -103,21 +99,15 @@ $name = $metapackage->name;
 
 Returns the fully-qualified name of the package as a plain string. This will match the string passed to `meta::get_package` used to obtain it, for example.
 
-#### `has_symbol`
+#### `can_symbol`, `get_symbol`
 
 ```perl
-$bool = $metapackage->has_symbol($name);
-```
+$metasymbol = $metapackage->can_symbol($name);
 
-Returns true if the named symbol exists. `$name` must begin with a sigil; one of the characters "$@%&". 
-
-#### `get_symbol`
-
-```perl
 $metasymbol = $metapackage->get_symbol($name);
 ```
 
-Returns a meta-symbol object instance to represent the symbol within the package, if such a symbol exists. If not an exception is thrown.
+Returns a meta-symbol object instance to represent the symbol within the package, if such a symbol exists. If not either `undef` is returned or an exception is thrown.
 
 #### `add_symbol`
 
@@ -127,8 +117,6 @@ $metasymbol = $metapackage->add_symbol($name, $value);
 
 Creates a new named symbol. If a value is passed it must be a reference to an item of the compatible type. If no initialisation is provided for variables, an empty variable is created. If no initialisation is provided for a subroutine then a forward declaration is created which has no body yet.
 
-It remains an open question on what the behaviour should be if asked to add a symbol that already exists. See below.
-
 #### `remove_symbol`
 
 ```perl
@@ -136,8 +124,6 @@ $metapackage->remove_symbol($name);
 ```
 
 Removes a symbol. Nothing is returned.
-
-It remains an open question on what the behaviour should be if asked to remove a symbol that does not exist. See below.
 
 #### `list_symbols`
 
@@ -306,9 +292,9 @@ Several CPAN modules provide inspiration for abilities and function names:
 
 ## Future Scope
 
-* Currently this PPC makes no consideration for whatever extra abilities may be needed when the `feature-class` branch is introduced. It is expected that additional abilities will be wanted that can operate on classes and members of them (fields, methods, etc...). An insipration can be taken from `Object::Pad::MOP::Class` and related.
+* Currently this PPC makes no consideration for whatever extra abilities may be needed for `feature 'class'`. It is expected that additional abilities will be wanted that can operate on classes and members of them (fields, methods, etc...). An insipration can be taken from `Object::Pad::MOP::Class` and related. The extensible design of the meta-objects provided here should make those additions easy by simply adding more methods and classes to represent them.
 
-* A tangentially-related topic is that of extended API/semantics for declarative attributes. The existing Perl attributes on variables and subroutines are nowhere near as powerful as the ones that will eventually be required by `feature-class` and are already implemented by `Object::Pad`. Whatever extensions are added to core perl to eventually support this will likely have meta-programming accessor methods associated with these object instances too.
+* A tangentially-related topic is that of extended API/semantics for declarative attributes. The existing Perl attributes on variables and subroutines are nowhere near as powerful as the ones that will eventually be required by `feature 'class'` and are already implemented by `Object::Pad`. Whatever extensions are added to core perl to eventually support this will likely have meta-programming accessor methods associated with these object instances too.
 
 * The set of functions provided here is fairly minimal, and no convenient shortcuts are currently considered. As use-cases arise, it may turn out that common patterns, such as reading the value of a given variable in a given package, turn out to be useful. Wrapper functions around these common behaviours could be added on a case-by-case basis.
 
@@ -330,10 +316,10 @@ It may be useful to add support for these kinds of abilities somewhere in core p
 
 * Relatedly, it is unspecified what the "remove"-type functions will do if asked to remove an item that does not even exist. Should it fail, or should it just silently accept that it doesn't have to do anything?
 
-* For that matter, is the specified behaviour of the "get"-type functions the best approach? They are specified to throw an exception if the requested item does not exist. It might be more helpful to return `undef` instead and let the caller deal with it, avoiding the separate need to "has"-test it first.
+* Currently the above API does not mention glob references, and entirely elides them from the concept of the symbol table, going from names directly to subroutines and variables. It may become necessary to provide access to that layer as well. In deciding whether to provide that, it is inherent to ask the question of what is really being provided here - Are we providing an end-user useful API to allow code to perform the sorts of operations we'd *like to* expose, or are we providing an API that exactly maps to how the internals are actually implemented?
 
 ## Copyright
 
-Copyright (C) 2022, Paul Evans.
+Copyright (C) 2022-2023, Paul Evans.
 
 This document and code and documentation within it may be used, redistributed and/or modified under the same terms as Perl itself.
