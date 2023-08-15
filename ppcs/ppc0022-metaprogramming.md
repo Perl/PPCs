@@ -33,6 +33,8 @@ The get-like functions come in pairs, consisting of a function named `get_...` a
 
 It is currently still an undecided question on what ought to be the correct behaviour for `add`-like functions when asked to create something that already exists, or the `remove`-like functions when asked to remove something that doesn't exist. It may be solved by something similar to above, where there are two differently-named functions that differ in that case. As yet there aren't any particularly compelling solutions.
 
+It is also undecided whether this API should offer an API that exposes the idea of globs as Perl implements them, or whether it should abstract those away to more end-user focused concepts. Some parts of the following API are labelled as optional on that basis.
+
 ### Functions to operate on Packages
 
 These are functions to create, manipulate, and inspect packages themselves.
@@ -109,6 +111,8 @@ $metasymbol = $metapackage->get_symbol($name);
 
 Returns a meta-symbol object instance to represent the symbol within the package, if such a symbol exists. If not either `undef` is returned or an exception is thrown.
 
+**Optionally on globs** If globs are also supported, then the `$name` can be expressed without a sigil to obtain a metaglob instead of a metasymbol.
+
 #### `add_symbol`
 
 ```perl
@@ -116,6 +120,8 @@ $metasymbol = $metapackage->add_symbol($name, $value);
 ```
 
 Creates a new named symbol. If a value is passed it must be a reference to an item of the compatible type. If no initialisation is provided for variables, an empty variable is created. If no initialisation is provided for a subroutine then a forward declaration is created which has no body yet.
+
+**Optionally on globs** If globs are also supported, then the `$name` can be expressed without a sigil (or maybe the `*` sigil?) to  create and return a metaglob instead of a metasymbol.
 
 #### `remove_symbol`
 
@@ -134,6 +140,8 @@ Removes a symbol. Nothing is returned.
 Returns a list of symbols in the given package, in no particular order. (And in particular, we make no guarantees about the order of the results as compared to the order of the source code which declared it).
 
 TODO: Define what the filters look like. Need to be able to select scalar/array/hash/code as well as sub-stashes. Actually, do we need sub-stashes if we have `list_packages`?
+
+**Optionally on globs** If globs are also supported, this raises the fun question of whether the returned list contains the actual globs or only the symbols from within them. Perhaps there should be another method `->list_globs` that yields just globs?
 
 ### Methods on Meta-Symbol Objects
 
@@ -185,6 +193,58 @@ $bool = $metasymbol->is_subroutine;
 ```
 
 Returns true in each of the four cases where the object represents the given type of symbol, or false in the other three cases.
+
+### Methods on Meta-Glob Objects
+
+If globs are represented directly, the following methods would be available on them.
+
+#### `basename`
+
+#### `package`
+
+#### `name`
+
+Similar behaviour to on meta-symbols.
+
+#### `can_scalar`, `get_scalar`
+
+```perl
+$metasymbol = $metaglob->can_scalar;
+$metasymbol = $metaglob->can_scalar;
+```
+
+Returns the meta-symbol representing the scalar slot of the glob. If the slot has not been allocated, returns `undef` or throws an exception.
+
+Similar methods would exist for the other slot types; `array`, `hash`, `code` at least.
+
+If the glob API exists, then the various methods on the package *could* be implemented indirectly via these objects. For example something such as the following:
+
+```perl
+method can_symbol($name)
+{
+    my ($sigil, $basename) = m/^([\$\@\%\&])(.*)$/;
+    my $glob = $self->can_glob($basename) or return undef;
+    $sigil eq "\$" and return $glob->can_scalar;
+    $sigil eq "\@" and return $glob->can_array;
+    ...
+}
+```
+
+#### `add_scalar`
+
+```perl
+$metasymbol = $metaglob->add_scalar;
+```
+
+Creates a scalar variable and adds it to the glob, returning a meta-symbol object to represent it.
+
+Likewise, similar would exist for the other slot types.
+
+#### `remove_scalar`
+
+Removes the scalar slot from the glob.
+
+Likewise, similar would exist for the other slot types.
 
 ### Methods on Meta-Variable Objects
 
