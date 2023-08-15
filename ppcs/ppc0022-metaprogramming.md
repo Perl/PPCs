@@ -233,10 +233,10 @@ method can_symbol($name)
 #### `add_scalar`
 
 ```perl
-$metasymbol = $metaglob->add_scalar;
+$metasymbol = $metaglob->add_scalar($ref);
 ```
 
-Creates a scalar variable and adds it to the glob, returning a meta-symbol object to represent it.
+Creates a scalar variable and adds it to the glob, returning a meta-symbol object to represent it. Optionally a reference to an existing item of the compatible type can be provided.
 
 Likewise, similar would exist for the other slot types.
 
