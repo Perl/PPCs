@@ -73,7 +73,7 @@ Some less common functions that may still be useful in some situations. These fu
 $metavar = meta::for_reference($ref);
 ```
 
-Given a reference to a package variable or subroutine, returns a meta-object instance to represent it. If `$varref` is not a SCALAR, ARRAY, HASH or CODE reference, an exception is thrown.
+Given a reference to a package variable or subroutine, returns a meta-object instance to represent it. If `$varref` is not a GLOB, SCALAR, ARRAY, HASH or CODE reference, an exception is thrown.
 
 Anonymous subroutines should be supported; at least in order to obtain a meta-object to represent them so that methods like `set_subname` can be called on them.
 
