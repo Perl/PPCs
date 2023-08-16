@@ -101,7 +101,7 @@ $metasymbol = $metapackage->get_symbol($name);
 
 Returns a meta-symbol object instance to represent the symbol within the package, if such a symbol exists. If not either `undef` is returned or an exception is thrown.
 
-The exact type of symbol that is returned depends on the first character of the `$name` parameter - i.e. the sigil. Sigils of `*`, `$`, `@`, `%` and `%` respectively will return a meta-symbol representing a glob itself, or the scalar, array, hash or code slots from it.
+The exact type of symbol that is returned depends on the first character of the `$name` parameter - i.e. the sigil. Sigils of `*`, `$`, `@`, `%` and `&` respectively will return a meta-symbol representing a glob itself, or the scalar, array, hash or code slots from it.
 
 (Direct access to the scalar, array, hash or code slots of the glob is provided as a shortcut convenience for the common cases. Access to other more exotic slots of the glob such as filehandles or formats will have to be performed via the metaglob object itself).
 
