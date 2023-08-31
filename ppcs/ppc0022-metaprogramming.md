@@ -133,7 +133,7 @@ TODO: Define what the filters look like. Need to be able to select scalar/array/
 
 ### Methods on Meta-Symbol Objects
 
-Several of the above methods return instances of a meta-symbol object. In practice, any meta-symbol object will represent either a glob (when using the "*" sigil), variable (when using the "$@%" sigils), or a subroutine (when using the "&"). Each of these cases is described further below. The following methods are available on all kinds.
+Several of the above methods return instances of a meta-symbol object. In practice, any meta-symbol object will represent either a glob (when using the "\*" sigil), variable (when using the "$@%" sigils), or a subroutine (when using the "&"). Each of these cases is described further below. The following methods are available on all kinds.
 
 #### `basename`
 
@@ -149,7 +149,7 @@ Returns the final part of the symbol's fully qualified name; the name within the
 $sigil = $metasymbol->sigil;
 ```
 
-Returns the single-character sigil that leads the symbol's name. This will be one of "*", "$", "@", "%" for variables or "&" for subroutines.
+Returns the single-character sigil that leads the symbol's name. This will be one of "\*", "$", "@", "%" for variables or "&" for subroutines.
 
 #### `package`
 
@@ -187,7 +187,7 @@ These methods should not be considered an exhaustive selection. There may be obj
 
 ### Methods on Meta-Glob Objects
 
-These methods are available on any meta-symbol object that represents a glob - i.e. one whose sigil is "*".
+These methods are available on any meta-symbol object that represents a glob - i.e. one whose sigil is "\*".
 
 #### `can_scalar`, `get_scalar`
 
