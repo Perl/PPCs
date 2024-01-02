@@ -9,7 +9,7 @@
 
 ## Abstract
 
-As of Perl version 5.34, `overload` is incomplete and surprising for
+As of Perl version 5.38, `overload` is incomplete and surprising for
 string operations:
 
 * the `join` builtin should be using the `concat` (`.`) overload
@@ -98,11 +98,14 @@ We do not yet foresee security issues. Guidance is welcome.
 For `join`:
 
 ```perl
-# when @list contains elements with concat overloading,
-# we expect this code:
+# When @list contains elements with concat overloading, we expect this code:
+
 my $ret = join $sep, @list;
 
-# to behave like this code:
+# To behave like this code:
+
+use List::Util 'reduce';
+
 my $ret = reduce { ( $a . $sep ) . $b } @list;
 ```
 
