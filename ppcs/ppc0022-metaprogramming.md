@@ -326,6 +326,10 @@ Some of these issues can be mitigated by careful use of the metapackage objects.
 
 ## Prototype Implementation
 
+An initial implementation of a CPAN module now exists. It is anticipated that this will eventually be shipped with core Perl and become a dual-life module.
+
+[`meta`](https://metacpan.org/pod/meta)
+
 Several CPAN modules provide inspiration for abilities and function names:
 
 * [`Package::Stash`](https://metacpan.org/pod/Package::Stash)
