@@ -33,27 +33,17 @@ The get-like functions come in pairs, consisting of a function named `get_...` a
 
 It is currently still an undecided question on what ought to be the correct behaviour for `add`-like functions when asked to create something that already exists, or the `remove`-like functions when asked to remove something that doesn't exist. It may be solved by something similar to above, where there are two differently-named functions that differ in that case. As yet there aren't any particularly compelling solutions.
 
-### Functions to operate on Packages
+### Methods to operate on Packages
 
-These are functions to create, manipulate, and inspect packages themselves.
+These are methods to create, manipulate, and inspect packages themselves. Packages are represented by instances in the class `meta::package`.
 
-#### `get_package`
-
-```perl
-$metapackage = meta::get_package($name);
-```
-
-Returns a meta-package object instance to represent the named package, if such a package exists. If not an exception is thrown.
-
-[[TODO: Decide whether "all packages exist", and thus this can never fail]]
-
-#### `add_package`
+#### `get`
 
 ```perl
-$metapackage = meta::add_package($name);
+$metapackage = meta::package->get($name);
 ```
 
-Creates a new package of the given name, and returns a meta-package object instance to represent it.
+Returns a meta-package object instance to represent the named package. As conceptually all packages exist, it will be implicitly created if necessary.
 
 #### `list_packages`
 
@@ -181,13 +171,21 @@ $bool = $metasymbol->is_hash;
 $bool = $metasymbol->is_subroutine;
 ```
 
-Returns true in each of the four cases where the object represents the given type of symbol, or false in the other three cases.
+Returns true in each of the five cases where the object represents the given type of symbol, or false in the other four cases.
 
 These methods should not be considered an exhaustive selection. There may be object types to represent other glob slots such as filehandles, formats, and so on. As more types are defined, more methods would be added to distinguish them.
 
 ### Methods on Meta-Glob Objects
 
 These methods are available on any meta-symbol object that represents a glob - i.e. one whose sigil is "\*".
+
+#### `get`
+
+```perl
+$metaglob = meta::glob->get($name);
+```
+
+Returns a meta-glob object instance to represent the named glob from a fully-qualified name, if it exists. If not an exception is thrown.
 
 #### `can_scalar`, `get_scalar`
 
@@ -362,6 +360,6 @@ It may be useful to add support for these kinds of abilities somewhere in core p
 
 ## Copyright
 
-Copyright (C) 2022-2023, Paul Evans.
+Copyright (C) 2022-2024, Paul Evans.
 
 This document and code and documentation within it may be used, redistributed and/or modified under the same terms as Perl itself.
