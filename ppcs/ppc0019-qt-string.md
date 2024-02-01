@@ -70,6 +70,36 @@ will be equivalent to
 qq{A ${ \scalar(TEXT) } B};
 ```
 
+The `qt` operator recognises the same escape sequences as `qq` that represent
+other literal characters (such as `\n` for newline or `\x00` for a NUL byte).
+
+```perl
+print qt{This message ends in a newline\n};
+
+print qt{As does this message\x0d\x0a};
+
+print qt{It's Christmas! \N{SNOWMAN} };
+```
+
+The `$` and `@` symbols are *not* considered special and will act literally,
+as they behave inside a `q` string.
+
+```perl
+print qt{This apple will cost you $1.\n};
+# will print a literal '$' symbol followed by the digit 1, it does not
+# interpolate the contents of the first regexp capture buffer
+```
+
+Likewise, the escape sequences `\L`, `\l`, `\U`, `\u`, `\Q` and `\E`, which in
+`qq` strings control the way that variables are interpolated, are also not
+considered special here.  It would be helpful to users to at least issue a
+warning in this case, to remind them of this fact.
+
+```
+$ perl -E 'say qt{This does not uppercase the variable \U{ $var }};'
+Unrecognised escape \U passed through at FILE line LINE.
+```
+
 To provide a heredoc version of qt, this:
 
 ```
