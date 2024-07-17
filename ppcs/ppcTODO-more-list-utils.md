@@ -29,8 +29,6 @@ all { BLOCK } LIST
 
 These operators are similar to `grep` in scalar context, though yield a simple boolean truth value relating to how many input values made the filter block yield true. `any` yields true when its block yields true for at least one of its input values, or false if they all yield false. `all` yields true only if every input value makes the block yield true, or false if at least one yields false.
 
-These operators only yield a single scalar; in list context therefore they will just provide a single-element list containing that boolean scalar.
-
 A consequence of these rules is what happens when given an empty list. A call to `any` with an empty list does not have any input values which made the block return true, so its result is false. Conversely, a call to `all` with an empty list does not have any input values which made the block return false, so its result is true.
 
 The key difference between these operators and `grep` is that these will short-circuit and stop evaluating the block once its result is determined. In particular, the first time `any` sees a true result, it knows its result so it can stop; only testing more input values while each yields false. Conversely, `all` will stop as soon as it sees a false result, knowing that to be its answer; it only continues while each value yields true from the block. This short-circuiting is a key reason to choose these over the `grep` operator.
@@ -38,6 +36,17 @@ The key difference between these operators and `grep` is that these will short-c
 Additionally, because each operator returns a fixed boolean truth value, the caller does not have to take special precautions against a value that would appear false, which satisfies the filter code block. Such a value would cause the operator to return true, even if the matching value itself appears false.
 
 Like `grep`, each is a true operator, evaluating its block expression without an interposed function call frame. Thus any `caller` or `return` expression or similar within the block will directly affect the function containing the `any` or `all` expression itself.
+
+These operators only yield a single scalar; in list context therefore they will just provide a single-element list containing that boolean scalar. This is so that there are no "surprises" if the operator is used in a list context, such as when building a key/value pair list for the constructor of an object. By returning a single false value even as a list, rather than an empty list, such constructions do no cause issues.
+
+For example:
+
+```
+Some::Class->new(
+    option => (any { TEST } list, of, things),
+    other  => $parameter,
+);
+```
 
 ## Backwards Compatibility
 
