@@ -95,7 +95,22 @@ If this feature is to be considered, it will require careful thought on how it m
 
 ## Rejected Ideas
 
-* Supporting syntax analogous to the "deferred-expression" form of `grep EXPR, LIST`.
+### Block-less syntax
+
+Supporting syntax analogous to the "deferred-expression" form of `grep EXPR, LIST`.
+
+### Keywords as Junctions
+
+Using the `any` and `all` keywords to make junction-like behaviour. Such is already provided by other modules, for example [`Data::Checks`](https://metacpan.org/pod/Data::Checks) in a title-case form and thus would not collide with the all-lowercase keywords provided here. This is already possible:
+
+```
+use Data::Checks qw( Any ... );
+use Syntax::Operator::Is;
+
+if( $x is Any( things... ) ) { ... }
+```
+
+In any case, as junctions behave like values, they do not require special syntax like the block-invoking keywords proposed here, so they can be provided by regular function-call syntax from regular modules.
 
 ## Open Issues
 
