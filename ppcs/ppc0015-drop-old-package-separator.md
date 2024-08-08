@@ -84,7 +84,7 @@ The following issues are slowly being sorted out independently of this PPC.
 
 * ~~cpan/Term-Cap `isn't` in test [trivial to replace] https://github.com/jonathanstowe/Term-Cap/pull/13~~ [fixed]
 * ~~dist/PathTools `isn't` in test [trivial to replace] https://github.com/Perl/perl5/pull/19865~~ [fixed]
-* cpan/autodie test in Klingon [not THAT trivial to replace, don't know Klingon] https://github.com/pjf/autodie/issues/115
+* ~~cpan/autodie test in Klingon [not THAT trivial to replace, don't know Klingon] https://github.com/pjf/autodie/issues/115̃~~
 
 The following issues might need to synchronize with the perl releases by checking versions or feature flags 
 
