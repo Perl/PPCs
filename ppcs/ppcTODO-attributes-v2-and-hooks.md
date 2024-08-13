@@ -69,13 +69,25 @@ It is the aim of this specification to provide a new generation of magic-like be
 
 Attributes defined by this specification will be lexical in scope, much like that of a `my` variable, `my sub` function, or any of the builtin function exports provided by the `builtin` module. This provides a clean separation of naming within the code.
 
-An attribute is defined in its base layer, by a single C callback function, to be invoked by the parser _as soon as_ it has finished parsing the declaration syntax. This callback function will be passed the target (i.e. the item to which the attribute is being attached), and the optional contents of the parentheses used as an argument to the attribute. There is no interesting return value from this callback function.
+An attribute is defined in its base layer, by a C callback function, to be invoked by the parser _as soon as_ it has finished parsing the declaration syntax. This callback function will be passed the target (i.e. the item to which the attribute is being attached), and the optional contents of the parentheses used as an argument to the attribute. There is no interesting return value from this callback function.
+
+An optional second callback function can be provided, for the purpose of parsing the incoming text from the source code into a value that the main apply function will use. Experience with the meta-programming layer in `Object::Pad` suggests this is useful, as often when meta-programming it is inconvenience to have to represent the parameters to an attribute as a flat text string.
 
 ```c
-typedef void PerlAttributeCallback(pTHX_ SV *target, SV *attrvalue);
+struct PerlAttributeDefinition
+{
+    U32 ver;
+    U32 flags;
+    SV * (*parse)(pTHX_ SV *text);
+    void (*apply)(pTHX_ SV *target, SV *attrvalue);
+};
 ```
 
-In order to create a new attribute, a third-party module author would create such a C function containing whatever behaviour is required, and wrap it in some kind of SV - whose type is still yet to be determined (see "Open Issues" below). This wrapping SV is then placed into the importing scope's lexical pad, using a `:` sigil and the name the attribute should use. It is important to stress that this SV represents the abstract concept of the attribute _in general_, rather than its application to any particular target. As the definition of an attribute itself is not modified or consumed by any particular application of it, a single SV to represent it can be shared and reused by any module that imports it.
+Additionally, the `ver` and `flags` fields are standard in all the structures defined by this specification. The `ver` field must be initialised by the code that defines the structure, to indicate what ABI version it is intended for. A suitable value is derived from the Perl version number; for example Perl version 5.41.3 would set the value `(5 << 16) | (41 << 8) | (3)`. In this way, a later version of the interpreter can operate correctly with code expecting earlier structure layouts.
+
+The `flags` field may contain either of two mutually-exclusive flags. `PERLATTR_NO_VALUE` indicates that the attribute definition does not expect to receive a value at all and asks that it be a parser error if the user supplied anything. Alternatively, `PERLATTR_MUST_VALUE` indicates that a value is required; it shall be a parser error for there not to be a value. If neither flag is supplied then any such value becomes optional - the `attrvalue` parameter may be given a valid SV, or may be `NULL`.
+
+In order to create a new attribute, a third-party module author would create such a C structure containing a pointer to a function that provides whatever behaviour is required, and wrap it in some kind of SV - whose type is still yet to be determined (see "Open Issues" below). This wrapping SV is then placed into the importing scope's lexical pad, using a `:` sigil and the name the attribute should use. It is important to stress that this SV represents the abstract concept of the attribute _in general_, rather than its application to any particular target. As the definition of an attribute itself is not modified or consumed by any particular application of it, a single SV to represent it can be shared and reused by any module that imports it.
 
 When the parser is parsing perl code and finds an attribute declaration attached to some entity, it can immediately inspect the lexical pad (and recurse up to parent scopes if applicable) in an attempt to find one of these lexical definitions. The first one that is found is invoked immediately, before the parser moves on in the source code. If such an attempt does not find a suitable handler, the declaration can be stored using the existing mechanism for a later attempt via the previous implementation.
 
@@ -86,7 +98,7 @@ Additionally, new callsites can be added to the parser to invoke attribute callb
 Note that this specification does not provide a mechanism by which attributes can declare what kinds of targets they are applicable to. Any particular named attribute will be attempted for _any_ kind of target that the parser finds. It is the job of the attribute callback itself to enquire what kind of target it has been invoked on, and reject it if necessary - likely with a `croak()` call of some appropriate message.
 
 ```c
-void attribute_callback_CallMeOnce(pTHX_ SV *target, SV *attrvalue)
+void apply_attribute_CallMeOnce(pTHX_ SV *target, SV *attrvalue)
 {
   if(SvTYPE(target) != SVt_PVCV)
     croak("Can only apply :CallMeOnce to a subroutine");
@@ -131,6 +143,12 @@ print debug("start"), "middle", debug("end");
 
 This kind of attribute would be easy to implement with some optree adjustment in the hook applied by the attribute, but would not be possible to create by the existing mechanisms because they cannot run at the right times.
 
+```perl
+method __add__ :overload(+) ( $other, $swap = false ) { ... }
+```
+
+needs to check signature.
+
 ## Prototype Implementation
 
 As both mechanisms proposed by this document would need to be implemented by perl core itself, it is difficult to provide a decent prototype for as an experimental basis.
@@ -166,18 +184,20 @@ It would first appear that lexical variables and subroutine parameters can be re
 This might suggest that actually the target should be specified as two - or maybe even three - parameters, some of which would be zero / NULL depending on circumstance.
 
 ```c
-typedef void PerlAttributeCallback(pTHX_
-    SV *target, GV *targetname, /* for package targets, or NULL/NULL */
-    PADOFFSET targetix,         /* for lexical targets, or zero */
-    SV *attrvalue);
+    void (*apply)(pTHX_
+        SV *target, GV *targetname, /* for package targets, or NULL/NULL */
+        PADOFFSET targetix,         /* for lexical targets, or zero */
+        SV *attrvalue);
 ```
 
 But perhaps at that point, it makes more sense to have two different callbacks, one for GV-named targets and one for lexicals?
 
 ```c
-struct PerlAttributeCallbacks {
-  void (*apply_pkg)(pTHX_ SV *target, SV *targetname, SV *attrvalue);
-  void (*apply_lex)(pTHX_ PADOFFSET targetix,         SV *attrvalue);
+struct PerlAttributeDefinition
+{
+    ...
+    void (*apply_pkg)(pTHX_ SV *target, GV *targetname, SV *attrvalue);
+    void (*apply_lex)(pTHX_ PADOFFSET targetix,         SV *attrvalue);
 };
 ```
 
@@ -185,18 +205,22 @@ Or perhaps one function that takes a distinguishing enum and union type to conve
 
 ```c
 enum PerlAttributeTargetKind {
-  ATTRTARGET_PKGSCOPED,
-  ATTRTARGET_LEXICAL,
+    ATTRTARGET_PKGSCOPED,
+    ATTRTARGET_LEXICAL,
 };
 
 union PerlAttributeTarget {
-  struct { SV *sv, GV *namegv; } pkgscoped;
-  struct { PADOFFSET padix;    } lexical;
-}
+    struct { SV *sv, GV *namegv; } pkgscoped;
+    struct { PADOFFSET padix;    } lexical;
+};
 
-typedef void PerlAttributeCallback(pTHX_ 
-    enum PerlAttributeTargetKind kind, union PerlAttributeTarget target,
-    SV *attrvalue);
+struct PerlAttributeDefinition
+{
+    ...
+    void (*apply)(pTHX_ 
+        enum PerlAttributeTargetKind kind, union PerlAttributeTarget target,
+        SV *attrvalue);
+};
 ```
 
 ### Split the Pad into Scope + Scratchpad
