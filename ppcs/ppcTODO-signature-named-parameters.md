@@ -86,7 +86,49 @@ There are no anticipated security concerns with expanding the way that subroutin
 
 As the intention of this syntax addition is to make existing code practice more consise and simple to write, it would be illustrative to compare pairs of functions written in the newly proposed vs. the existing style.
 
-TODO
+One example comes from [`IPC::MicroSocket::Server`](https://metacpan.org/pod/IPC::MicroSocket::Server). This is currently using the `Sublike::Extended` module (see "Prototype Implementation" below) to provide the syntax. The actual module also uses `Object::Pad` to provide the `method` keyword; this example is paraphrased to avoid that. This module requires a `path` named argument, and optionally takes a `listen` argument, defaulting its value to 5 if the caller did not provide a defined value.
+
+```perl
+extended sub new_unix ( $class, :$path, :$listen //= 5 )
+{
+    ...
+}
+```
+
+This replaces the previous version of the code which handled arguments by the more traditional approach of assigning into a hash:
+
+```perl
+sub new_unix ( $class, %args )
+{
+    my $path   = $args{path};
+    my $listen = $args{listen} // 5;
+    ...
+}
+```
+
+Already the new code is shorter and more consise. Additionally it contains error checking that complains about missing mandatory keys, or unrecognised keys, which the previous version of the code did not include.
+
+Another example, this time from [`Text::Treesitter::QueryCursor`](https://metacpan.org/pod/Text::Treesitter::QueryCursor). This method takes an optional argument named `multi`, tested for truth. If absent it should default to false.
+
+```perl
+sub next_match_captures ( $self, :$multi = 0 )
+{
+    ...
+}
+```
+
+The previous version of this code did include complaints about unrecognised keys, and was rather longer because of it:
+
+```perl
+sub next_match_captures ( $self, %options )
+{
+    my $multi = delete $options{multi};
+    keys %options and
+        croak "Unrecognised options to ->next_captures: " . join( ", ", keys %options );
+
+    ...
+}
+```
 
 ## Prototype Implementation
 
