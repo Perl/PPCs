@@ -154,7 +154,29 @@ All of these use the leading-colon syntax in a signature declaration to provide 
 
 ## Open Issues
 
-* How to specify a named parameter whose name is anything other than the name of the lexical variable into which its value is assigned? This is more of note when considering that traditional argument handling techniques involving assignment into hashes can handle more styles of name that would be invalid for lexical variables - for example, names including hyphens.
+### Parameter Names
+
+How to specify a named parameter whose name is anything other than the name of the lexical variable into which its value is assigned? This is more of note when considering that traditional argument handling techniques involving assignment into hashes can handle more styles of name that would be invalid for lexical variables - for example, names including hyphens.
+
+Perhaps a solution would be to permit attributes on parameter variables, then define a `:name` attribute for this purpose.
+
+```perl
+sub display ( $message, :$no_colour :name(no-colour) ) {
+    ...
+}
+```
+
+Further thoughts in that direction suggested that this could also support multiple names with aliases:
+
+```perl
+sub display ( $message, :$no_colour :name(no-colour no-color) ) {
+    ...
+}
+```
+
+The attribute syntax starting with a leading colon does visiually look quite similar to the named parameter syntax which also uses. This is a little unfortunate, but perhaps an inevitable consequence of the limited set of characters available from ASCII. As attributes are already well-established as leading with a colon, the only other option would be to pick a different character for named attributes; but this would be contrary to the established convention of the existing modules listed above.
+
+Perl does not currently support attributes being applied to parameters in signatures, named or otherwise, but this is the subject of a future PPC document I am currently drafting. I will add a reference here when it is published.
 
 ## Copyright
 
