@@ -134,6 +134,16 @@ sub next_match_captures ( $self, %options )
 
 The [`XS::Parse::Sublike`](https://metacpan.org/pod/XS::Parse::Sublike) module contains parsing to allow third-party syntax modules to parse subroutine-like constructions, and includes a parser for named parameters already having this syntax. These are also made available to regular subroutines via the `extended` keyword provided by [`Sublike::Extended`](https://metacpan.org/pod/Sublike::Extended).
 
+Additionally, other existing CPAN modules already parse syntax in this, or a very similar format:
+
+* [`Function::Parameters`](https://metacpan.org/pod/Function::Parameters)
+
+* [`Kavorka`](https://metacpan.org/dist/Kavorka/view/lib/Kavorka/Manual/Signatures.pod)
+
+* [`Method::Signatures`](https://metacpan.org/pod/Method::Signatures)
+
+All of these use the leading-colon syntax in a signature declaration to provide named parameters in the same style as this proposal. It would appear we are in good company here.
+
 ## Future Scope
 
 * If the Metaprogramming API (PPC0022) gains introspection abilities to enquire about subroutine signature parameters, further consideration will need to be made in that API on how to represent the extra kinds of parameters added by this specification.
