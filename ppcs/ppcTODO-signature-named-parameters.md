@@ -42,6 +42,20 @@ Each element provides a new lexical variable that is visible during the body of 
 
 The value of a named parameter is taken from the argument values passed by the caller, in a manner familiar to existing uses of hash assignment. The caller should pass an even-sized name-value pair list. The values corresponding to names of parameters will be assigned into the variables. The order in which the values are passed by the caller is not significant.
 
+Since it is a relatively common pattern in callsites in existing code to rely on the semantics of assignment of name-value pair lists into hashes, the beahviour on encountering duplicate key names needs to be preserved. This is that duplicated key names do not raise an error or a warning, and simply accept the last value associated with that name. This allows callers to collect values from multiple sources with different orders of priority to override them; for example using a hash of values combined with individual elements:
+
+```perl
+sub func ( :$abc, :$xyz, ... ) { ... }
+
+func(
+    abc => 123,
+    %args,
+    xyz => 789,
+);
+```
+
+In this example, the given `abc` value will take effect unless overridden by a later value in `%args`, but the given `xyz` value will replace an earlier one given in `%args`. Neither situation will result in a warning or error.
+
 Furthemore, all of the new behaviour is performed within the body of the invoked subroutine entirely by inspecting the values of the arguments that were passed. The subroutine is not made aware of how those values came to be passed in - whether from literal name-value syntax, a hash or array variable expansion, or any other expression yielding such a list of argument name and value pairs.
 
 ```perl
@@ -65,6 +79,8 @@ make_colour( red => 1.0, blue => 0.5 );
 #   $green = 0
 #   $blue  = 0.5
 ```
+
+Since defaulting expressions are full expressions and not necessarily simple constant values, the time at which they are evaluated is significant. Much like with positional parameters, each is evaluated in order that it is written in source, left to right, and each can make use of values assigned by earlier expressions. This means they are evaluated in the order that is written in the function's declaration, which may not match the order that values were passed from the caller in the arguments list.
 
 A subroutine is permitted to use a combination of *mandatory* positional and named parameters in its definition, provided that all named parameters appear after all the positional ones. Any named parameters may be optional; there are no ordering constraints here.
 
