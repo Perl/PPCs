@@ -3,8 +3,8 @@
 ## Preamble
 
     Author:     Graham Knop <haarg@haarg.org>
-    ID:         0033
-    Status:     Draft
+    ID:         0023
+    Status:     Exploratory
 
 ## Abstract
 
