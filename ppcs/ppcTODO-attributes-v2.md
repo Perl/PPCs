@@ -9,7 +9,7 @@
 
 ## Abstract
 
-Define a new way that attribute definitions can be introduced such that the parser can invoke the third-party custom logic they provide; and additionally
+Define a new way that attribute definitions can be introduced such that the parser can invoke the third-party custom logic they provide; and additionally permit them to be attached to more types of target than Perl currently allows.
 
 Throughout this document, the term "third-party" means any behaviour provided by additional modules loaded into the interpreter; whether these modules are shipped with the core perl distribution, on CPAN, or privately implemented by other means. This is distinct from true "builtin" behaviours, which are provided by the interpreter itself natively.
 
@@ -47,25 +47,27 @@ It is the aim of this specification to provide a better and more flexible way fo
 
 Attributes defined by this specification will be lexical in scope, much like that of a `my` variable, `my sub` function, or any of the builtin function exports provided by the `builtin` module. This provides a clean separation of naming within the code.
 
-An attribute is defined in its base layer, by a C callback function, to be invoked by the parser _as soon as_ it has finished parsing the declaration syntax. This callback function will be passed the target (i.e. the item to which the attribute is being attached), and the optional contents of the parentheses used as an argument to the attribute. There is no interesting return value from this callback function.
+An attribute is defined primarily by a C callback function, to be invoked by the parser _as soon as_ it has finished parsing the declaration syntax. This callback function will be passed the target (i.e. the item to which the attribute is being attached), and the optional contents of the parentheses used as an argument to the attribute. There is no interesting return value from this callback function.
 
 An optional second callback function can be provided, for the purpose of parsing the incoming text from the source code into a value that the main apply function will use. Experience with the meta-programming layer in `Object::Pad` suggests this is useful, as often when meta-programming it is inconvenience to have to represent the parameters to an attribute as a flat text string.
+
+Pointers to these two functions are found by a structure that is associated with the name of the new attribute, perhaps defined as the following (though exact parameter types are still an open issue; see below):
 
 ```c
 struct PerlAttributeDefinition
 {
     U32 ver;
     U32 flags;
-    SV * (*parse)(pTHX_ SV *text);
+    SV * (*parse)(pTHX_ SV *text);   /* optional, may be NULL */
     void (*apply)(pTHX_ SV *target, SV *attrvalue);
 };
 ```
 
-Additionally, the `ver` and `flags` fields are standard in all the structures defined by this specification. The `ver` field must be initialised by the code that defines the structure, to indicate what ABI version it is intended for. A suitable value is derived from the Perl version number; for example Perl version 5.41.3 would set the value `(5 << 16) | (41 << 8) | (3)`. In this way, a later version of the interpreter can operate correctly with code expecting earlier structure layouts.
+Additionally, the `ver` and `flags` fields are added for future flexibility. The `ver` field must be initialised by the code that defines the structure, to indicate what ABI version it is intended for. A suitable value is derived from the Perl version number; for example Perl version 5.41.3 would set the value `(5 << 16) | (41 << 8) | (3)`. In this way, a later version of the interpreter can operate correctly with code expecting earlier structure layouts. It is likely that a macro would be provided to compute the correct value at compile-time.
 
 The `flags` field may contain either of two mutually-exclusive flags. `PERLATTR_NO_VALUE` indicates that the attribute definition does not expect to receive a value at all and asks that it be a parser error if the user supplied anything. Alternatively, `PERLATTR_MUST_VALUE` indicates that a value is required; it shall be a parser error for there not to be a value. If neither flag is supplied then any such value becomes optional - the `attrvalue` parameter may be given a valid SV, or may be `NULL`.
 
-In order to create a new attribute, a third-party module author would create such a C structure containing a pointer to a function that provides whatever behaviour is required, and wrap it in some kind of SV - whose type is still yet to be determined (see "Open Issues" below). This wrapping SV is then placed into the importing scope's lexical pad, using a `:` sigil and the name the attribute should use. It is important to stress that this SV represents the abstract concept of the attribute _in general_, rather than its application to any particular target. As the definition of an attribute itself is not modified or consumed by any particular application of it, a single SV to represent it can be shared and reused by any module that imports it.
+In order to create a new attribute, a third-party module author would create such a C structure containing a pointers to the C functions to handle the attribute, and wrap it in some kind of SV - whose type is still yet to be determined (see "Open Issues" below). This wrapping SV is then placed into the importing scope's lexical pad, using a `:` sigil and the name the attribute should use. It is important to stress that this SV represents the abstract concept of the attribute _in general_, rather than its application to any particular target. As the definition of an attribute itself is not modified or consumed by any particular application of it, a single SV to represent it can be shared and reused by any module that imports it.
 
 When the parser is parsing perl code and finds an attribute declaration attached to some entity, it can immediately inspect the lexical pad (and recurse up to parent scopes if applicable) in an attempt to find one of these lexical definitions. The first one that is found is invoked immediately, before the parser moves on in the source code. If such an attempt does not find a suitable handler, the declaration can be stored using the existing mechanism for a later attempt via the previous implementation.
 
@@ -73,7 +75,7 @@ When attached to a package variable or package-named function, the target can be
 
 Additionally, new callsites can be added to the parser to invoke attribute callbacks in new situations that previously were not permitted; such as package declarations or subroutine parameters.
 
-Note that this specification does not provide a mechanism by which attributes can declare what kinds of targets they are applicable to. Any particular named attribute will be attempted for _any_ kind of target that the parser finds. It is the job of the attribute callback itself to enquire what kind of target it has been invoked on, and reject it if necessary - likely with a `croak()` call of some appropriate message.
+Note that this specification does not provide a mechanism by which attributes can declare what kinds of targets they are applicable to. Any particular named attribute will be attempted for _any_ kind of target that the parser finds. This is intentional, as it leads to a simpler model both for the interpreter and for human readers of the code, as it means any particular attribute name has at most one definition; its definition does not depend on the type of target to which it is applied. It is the job of the attribute callback itself to enquire what kind of target it has been invoked on, and reject it if necessary - likely with a `croak()` call of some appropriate message.
 
 ```c
 void apply_attribute_CallMeOnce(pTHX_ SV *target, SV *attrvalue)
@@ -182,7 +184,7 @@ enum PerlAttributeTargetKind {
 };
 
 union PerlAttributeTarget {
-    struct { SV *sv, GV *namegv; } pkgscoped;
+    struct { SV *sv; GV *namegv; } pkgscoped;
     struct { PADOFFSET padix;    } lexical;
 };
 
