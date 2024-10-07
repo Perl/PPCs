@@ -1,4 +1,4 @@
-# Attributes v2 and Hooks
+# Attributes v2
 
 ## Preamble
 
@@ -9,19 +9,11 @@
 
 ## Abstract
 
-Jointly:
-
-* define a new way that attribute definitions can be introduced such that the parser can invoke the third-party custom logic they provide; and additionally
-
-* define more extensive kinds of magic-like structure for attaching custom behaviour onto existing Perl data structures, such as variables, subroutines, and parts thereof.
-
-These two ideas are presented together in one document because, while there could be some valid use cases of each on its own, it is the combination of the two that provides most of the power to create extension modules that can extend the language in new ways.
+Define a new way that attribute definitions can be introduced such that the parser can invoke the third-party custom logic they provide; and additionally
 
 Throughout this document, the term "third-party" means any behaviour provided by additional modules loaded into the interpreter; whether these modules are shipped with the core perl distribution, on CPAN, or privately implemented by other means. This is distinct from true "builtin" behaviours, which are provided by the interpreter itself natively.
 
 ## Motivation
-
-### Attributes
 
 The Perl parser allows certain syntax elements, namely the declaration of variables and subroutines, to be annotated with additional information, called "attributes". Each attribute consists of a name and optionally a plain string argument, supplied after a leading colon after the declaration of the name of the element it is attached to.
 
@@ -47,25 +39,11 @@ Many of these restrictions come from the way that third-party attributes are pro
 
 It is the aim of this specification to provide a better and more flexible way for third-party modules to declare and use attributes to allow authors to declare more interesting behaviours on elements of their code.
 
-### Hooks
-
-In addition to the limitations of attribute syntax described above, there are very limited options available to the would-be implementors of attributes, as ways to provide the behaviour their attribute would have.
-
-Scalar variables in Perl support a concept called "magic", by which custom behaviour can be attached onto a variable, to be invoked whenever the variable is read from, written to, or goes out of scope. While in theory other kinds of variables (arrays and hashes) do support magic, in practice the magic is not truely aware of the container-like nature of the variable to which they are attached, and cannot provide customisation around things like element iteration or access, without a lot of weird tricks. Magic on any other kind of SV (such as subroutines or stashes, the data stores used to implement packages and classes) is virtually non-existent, limited only to passive storage of additional notation data, and notification of the attached entity's destruction. Other concepts that are not even backed by true SVs, such as the abstract notion of a subroutine parameter or an object field, do not support magic at all.
-
-Many limitations of the core magic system can be seen in core perl itself. While magic is used to implement a lot of the interesting scalar variables (such as `$$` for fetching the current process's PID, or `$&`, the result of the most recent regexp match), it is not used directly for creating things like array or hash variables with custom behaviour, or providing tie on these things. While there _is_ magic involved in these concepts, that magic is often just used as a marker to store extra information to allow special-purpose code in the interpreter to implement those other behaviours. Yet other kinds of magic are used for more tagging of additional data that don't provide additional behaviour on their own.
-
-It would seem that the existing concept of "magic" in the Perl core is simultanously too limited and inflexible to provide most interesting custom behaviours, and at the same time overly elaborate for simply attaching additional data or destruction notification onto non-scalar variables.
-
-It is the aim of this specification to provide a new generation of magic-like behaviour, both for core perl to use for its own purposes in a far more uniform way, and to allow third-party module authors to attach more interesting behaviours when requested; perhaps by using an attribute.
-
 ## Rationale
 
 (explain why the (following) proposed solution will solve it)
 
 ## Specification
-
-### Attributes
 
 Attributes defined by this specification will be lexical in scope, much like that of a `my` variable, `my sub` function, or any of the builtin function exports provided by the `builtin` module. This provides a clean separation of naming within the code.
 
@@ -107,11 +85,7 @@ void apply_attribute_CallMeOnce(pTHX_ SV *target, SV *attrvalue)
 }
 ```
 
-As there is no interesting result returned from the attribute callback function, it must perform whatever work it needs to implement the requested behaviour purely as a side-effect of running it. While a few built-in attributes can be implemented perhaps by adjusting SV flags (such as `:lvalue` simply calling `CvLVALUE_on(cv)`), the majority of interesting use-cases would need to apply some form of extension hook to the target entity. These hooks are described in the other half of this proposal.
-
-### Hooks
-
-(details on how the thing is intended to work)
+As there is no interesting result returned from the attribute callback function, it must perform whatever work it needs to implement the requested behaviour purely as a side-effect of running it. While a few built-in attributes can be implemented perhaps by adjusting SV flags (such as `:lvalue` simply calling `CvLVALUE_on(cv)`), the majority of interesting use-cases would need to apply some form of extension to the target entity, such as Magic or the newly-proposed "Hooks" mechanism. These hooks are described in a separate PPC document.
 
 ## Backwards Compatibility
 
@@ -119,13 +93,11 @@ As there is no interesting result returned from the attribute callback function,
 
 The new mechanism proposed here is entirely lexically scoped. Any attributes introduced into a scope will not be visible from outside. As such, it is an entirely opt-in effect that would not cause issues for existing code that is not expecting it.
 
-### Hooks
-
 ## Security Implications
 
 ## Examples
 
-As both parts of this proposal are interpreter internal components that are intended for XS authors to use to provide end-user features, it would perhaps be more useful to consider examples of the kinds of modules that the combination of these two features would permit to be created.
+As both this proposal and the companion "Hooks" are internal interpreter components that are intended for XS authors to use to provide end-user features, it would perhaps be more useful to consider examples of the kinds of modules that the combination of these two features would permit to be created.
 
 For example, a subroutine attribute `:void` could be created that forces the caller context of any `return` ops within the body of the subroutine, or its implicit end-of-scope expressions, to make them always run in void context.
 
@@ -151,7 +123,7 @@ needs to check signature.
 
 ## Prototype Implementation
 
-As both mechanisms proposed by this document would need to be implemented by perl core itself, it is difficult to provide a decent prototype for as an experimental basis.
+As both these mechanisms would need to be implemented by perl core itself, it is difficult to provide a decent prototype for as an experimental basis.
 
 However, both parts of the mechanism are similar to existing technology currently used in [`Object::Pad`](https://metacpan.org/pod/Object::Pad) for providing third-party extension attributes. In `Object::Pad` the two mechanisms are conflated together - extension hooks can be provided, but must be registered with an attribute name. Source code that requests that attribute then gets that set of hooks attached.
 
