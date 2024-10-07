@@ -29,9 +29,9 @@ The parser supports additional attributes that can be provided by modules, thoug
 
 * Only lexical or package variables, and subroutines, support attribute syntax. It is not possible to declare attributes on other entities such as packages, or subroutine parameters.
 
-* Attributes on anonymous subroutines are invoked only at "clonecv"-time; the time when an anonymous function gets turned into a closure with variable captures. It cannot perform any behaviour before this time.
+* Attributes on anonymous subroutines are invoked only once at compiletime on the protosub, before any "clonecv" operation that would make a real closure. It cannot perform any behaviour after this time, and does not get to see the real closure CVs that Perl code gets references to.
 
-* Attribute handling is looked up via the package heirarchy expressed in `@ISA`, rather than by lexical scope.
+* Attribute handling is looked up via the package hierarchy expressed in `@ISA`, rather than by lexical scope.
 
 * Third-party attributes are implemented by providing a single `MODIFY_*_ATTRIBUTES` shouty-named method in a package, which is required to understand all the attributes at once. There is no standard mechanism to create individual attributes independently.
 
@@ -49,7 +49,7 @@ Attributes defined by this specification will be lexical in scope, much like tha
 
 An attribute is defined primarily by a C callback function, to be invoked by the parser _as soon as_ it has finished parsing the declaration syntax. This callback function will be passed the target (i.e. the item to which the attribute is being attached), and the optional contents of the parentheses used as an argument to the attribute. There is no interesting return value from this callback function.
 
-An optional second callback function can be provided, for the purpose of parsing the incoming text from the source code into a value that the main apply function will use. Experience with the meta-programming layer in `Object::Pad` suggests this is useful, as often when meta-programming it is inconvenience to have to represent the parameters to an attribute as a flat text string.
+An optional second callback function can be provided, for the purpose of parsing the incoming text from the source code into a value that the main apply function will use. Experience with the meta-programming layer in `Object::Pad` suggests this is useful, as often when meta-programming it is inconvenient to have to represent the parameters to an attribute as a flat text string.
 
 Pointers to these two functions are found by a structure that is associated with the name of the new attribute, perhaps defined as the following (though exact parameter types are still an open issue; see below):
 
@@ -58,7 +58,7 @@ struct PerlAttributeDefinition
 {
     U32 ver;
     U32 flags;
-    SV * (*parse)(pTHX_ SV *text);   /* optional, may be NULL */
+    SV * (*parse)(pTHX_ const SV *text);   /* optional, may be NULL */
     void (*apply)(pTHX_ SV *target, SV *attrvalue);
 };
 ```
@@ -139,7 +139,7 @@ The mechanism proposed here makes the following improvements over the existing a
 
 ## Rejected Ideas
 
-* Filtering or flags on attribute definitions to say what kind of target they apply to. By omitting this, a simpler model is provided. It avoids complex questions on how to handle heirarchial classifications, such as that classes are packages, or subroutine parameters are lexical variables. By ensuring that any particular attribute name has at most one definition in any scope, end-users can more easily understand the model provided.
+* Filtering or flags on attribute definitions to say what kind of target they apply to. By omitting this, a simpler model is provided. It avoids complex questions on how to handle hierarchial classifications, such as that classes are packages, or subroutine parameters are lexical variables. By ensuring that any particular attribute name has at most one definition in any scope, end-users can more easily understand the model provided.
 
 ## Open Issues
 
