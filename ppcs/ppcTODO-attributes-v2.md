@@ -11,6 +11,8 @@
 
 Define a new way that attribute definitions can be introduced such that the parser can invoke the third-party custom logic they provide; and additionally permit them to be attached to more types of target than Perl currently allows.
 
+This document is largely concerned with C-level details of how the interpreter works, and the interface it exposes to authors of third-party XS modules. A few small extensions to existing syntax are made by extending existing concepts. Any larger ideas of extending the Perl-visible syntax of attributes are left for future discussion at a later time.
+
 Throughout this document, the term "third-party" means any behaviour provided by additional modules loaded into the interpreter; whether these modules are shipped with the core perl distribution, on CPAN, or privately implemented by other means. This is distinct from true "builtin" behaviours, which are provided by the interpreter itself natively.
 
 ## Motivation
@@ -37,7 +39,7 @@ The parser supports additional attributes that can be provided by modules, thoug
 
 Many of these restrictions come from the way that third-party attributes are provided in the perl core, quite apart from its own built-in handling. Built-in attributes get to run their logic much earlier in the parser.
 
-It is the aim of this specification to provide a better and more flexible way for third-party modules to declare and use attributes to allow authors to declare more interesting behaviours on elements of their code.
+It is the aim of this specification to provide a better and more flexible way for third-party modules to declare and use attributes to allow authors to declare more interesting behaviours on elements of their code. These extensions come in the form of additional elements of the interpreter that are visible to XS modules.
 
 ## Rationale
 
@@ -90,8 +92,6 @@ void apply_attribute_CallMeOnce(pTHX_ SV *target, SV *attrvalue)
 As there is no interesting result returned from the attribute callback function, it must perform whatever work it needs to implement the requested behaviour purely as a side-effect of running it. While a few built-in attributes can be implemented perhaps by adjusting SV flags (such as `:lvalue` simply calling `CvLVALUE_on(cv)`), the majority of interesting use-cases would need to apply some form of extension to the target entity, such as Magic or the newly-proposed "Hooks" mechanism. These hooks are described in a separate PPC document.
 
 ## Backwards Compatibility
-
-### Attributes
 
 The new mechanism proposed here is entirely lexically scoped. Any attributes introduced into a scope will not be visible from outside. As such, it is an entirely opt-in effect that would not cause issues for existing code that is not expecting it.
 
