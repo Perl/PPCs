@@ -184,8 +184,8 @@ It may make sense to have two different callbacks, one for GV-named targets and 
 struct PerlAttributeDefinition
 {
     ...
-    void (*apply_pkg)(pTHX_ SV *target, GV *targetname, SV *attrvalue, void *data);
-    void (*apply_lex)(pTHX_ PADOFFSET targetix,         SV *attrvalue, void *data);
+    void (*apply_pkg)(pTHX_ SV *target, GV *namegv,      SV *attrvalue, void *data);
+    void (*apply_lex)(pTHX_ SV *target, PADOFFSET padix, SV *attrvalue, void *data);
 };
 ```
 
@@ -198,8 +198,8 @@ enum PerlAttributeTargetKind {
 };
 
 union PerlAttributeTarget {
-    struct { SV *sv; GV *namegv; } pkgscoped;
-    struct { PADOFFSET padix;    } lexical;
+    struct { SV *sv; GV *namegv;      } pkgscoped;
+    struct { SV *sv; PADOFFSET padix; } lexical;
 };
 
 struct PerlAttributeDefinition
