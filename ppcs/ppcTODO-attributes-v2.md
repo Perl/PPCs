@@ -95,7 +95,7 @@ void apply_attribute_CallMeOnce(pTHX_ SV *target, SV *attrvalue)
 }
 ```
 
-As there is no interesting result returned from the attribute callback function, it must perform whatever work it needs to implement the requested behaviour purely as a side-effect of running it. While a few built-in attributes can be implemented perhaps by adjusting SV flags (such as `:lvalue` simply calling `CvLVALUE_on(cv)`), the majority of interesting use-cases would need to apply some form of extension to the target entity, such as Magic or the newly-proposed "Hooks" mechanism. These hooks are described in a separate PPC document.
+As there is no interesting result returned from the attribute callback function, it must perform whatever work it needs to implement the requested behaviour purely as a side-effect of running it. While a few built-in attributes can be implemented perhaps by adjusting SV flags (such as `:lvalue` simply calling `CvLVALUE_on(cv)`), the majority of interesting use-cases would need to apply some form of extension to the target entity, such as Magic or the newly-proposed "Hooks" mechanism. These hooks will be described in a separate PPC document.
 
 ## Backwards Compatibility
 
