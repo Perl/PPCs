@@ -75,7 +75,13 @@ When the parser is parsing perl code and finds an attribute declaration attached
 
 When attached to a package variable or package-named function, the target can be the entity itself (or maybe indirectly, its GV). When attached to a lexical, it is important to pass in the abstract concept of the target in general, rather than the current item in its scope pad. There is currently no suitable kind of SV to represent this - this remains another interesting open issue.
 
-Additionally, new callsites can be added to the parser to invoke attribute callbacks in new situations that previously were not permitted; such as package declarations or subroutine parameters.
+Additionally, new callsites can be added to the parser to invoke attribute callbacks in new situations that previously were not permitted. It would be a simple extension of the syntax of attributes on lexical variables to additionally have them apply to subroutine signature parameters.
+
+```perl
+sub func ( $x, $y :Attr, $z :Attr(Value) ) { ... }
+```
+
+Beyond this, this particular specification does not suggest any other places to accept attribute syntax, but this is noted in the "Future Scope" section below.
 
 Note that this specification does not provide a mechanism by which attributes can declare what kinds of targets they are applicable to. Any particular named attribute will be attempted for _any_ kind of target that the parser finds. This is intentional, as it leads to a simpler model both for the interpreter and for human readers of the code, as it means any particular attribute name has at most one definition; its definition does not depend on the type of target to which it is applied. It is the job of the attribute callback itself to enquire what kind of target it has been invoked on, and reject it if necessary - likely with a `croak()` call of some appropriate message.
 
@@ -94,6 +100,15 @@ As there is no interesting result returned from the attribute callback function,
 ## Backwards Compatibility
 
 The new mechanism proposed here is entirely lexically scoped. Any attributes introduced into a scope will not be visible from outside. As such, it is an entirely opt-in effect that would not cause issues for existing code that is not expecting it.
+
+The only Perl-level change of syntax suggested here is to permit applying attributes to subroutine parameters. The suggested syntax for this is currently a compile-time syntax error in Perl, so this should cause no problem.
+
+```
+$ perl -E 'use feature "signatures"; sub f ( $x :Attr ) { }'
+Illegal operator following parameter in a subroutine signature at -e line 1, near "( $x :Attr "
+syntax error at -e line 1, near "( $x :Attr "
+Execution of -e aborted due to compilation errors.
+```
 
 ## Security Implications
 
