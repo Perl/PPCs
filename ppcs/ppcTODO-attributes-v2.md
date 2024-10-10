@@ -60,8 +60,8 @@ struct PerlAttributeDefinition
 {
     U32 ver;
     U32 flags;
-    SV * (*parse)(pTHX_ const SV *text);   /* optional, may be NULL */
-    void (*apply)(pTHX_ SV *target, SV *attrvalue);
+    SV * (*parse)(pTHX_ const SV *text, void *data);   /* optional, may be NULL */
+    void (*apply)(pTHX_ SV *target, SV *attrvalue, void *data);
 };
 ```
 
@@ -69,7 +69,17 @@ Additionally, the `ver` and `flags` fields are added for future flexibility. The
 
 The `flags` field may contain either of two mutually-exclusive flags. `PERLATTR_NO_VALUE` indicates that the attribute definition does not expect to receive a value at all and asks that it be a parser error if the user supplied anything. Alternatively, `PERLATTR_MUST_VALUE` indicates that a value is required; it shall be a parser error for there not to be a value. If neither flag is supplied then any such value becomes optional - the `attrvalue` parameter may be given a valid SV, or may be `NULL`.
 
-In order to create a new attribute, a third-party module author would create such a C structure containing a pointers to the C functions to handle the attribute, and wrap it in some kind of SV - whose type is still yet to be determined (see "Open Issues" below). This wrapping SV is then placed into the importing scope's lexical pad, using a `:` sigil and the name the attribute should use. It is important to stress that this SV represents the abstract concept of the attribute _in general_, rather than its application to any particular target. As the definition of an attribute itself is not modified or consumed by any particular application of it, a single SV to represent it can be shared and reused by any module that imports it.
+In order to create a new attribute, a third-party module author would create such a C structure containing pointers to the C functions to handle the attribute, and wrap it in some kind of SV - whose type is still yet to be determined (see "Open Issues" below). This would be done by a new API function:
+
+```c
+SV *newSVinternal_attribute_definition(const struct PerlAttributeDefinition *def, void *data);
+```
+
+(This is named "newSVinternal_..." to point out that it creates an SV intended for internal use by the interpreter, and not directly exposed to Perl code. This naming scheme should be followed by any other later additions of a similar theme).
+
+The extra `data` parameter is not directly used by Perl itself, and is simply passed into any of the callback functions given in the structure itself, in case the module wishes to store extra data there.
+
+This wrapping SV is then placed into the importing scope's lexical pad, using a `:` sigil and the name the attribute should use. It is important to stress that this SV represents the abstract concept of the attribute _in general_, rather than its application to any particular target. As the definition of an attribute itself is not modified or consumed by any particular application of it, a single SV to represent it can be shared and reused by any module that imports it.
 
 When the parser is parsing perl code and finds an attribute declaration attached to some entity, it can immediately inspect the lexical pad (and recurse up to parent scopes if applicable) in an attempt to find one of these lexical definitions. The first one that is found is invoked immediately, before the parser moves on in the source code. If such an attempt does not find a suitable handler, the declaration can be stored using the existing mechanism for a later attempt via the previous implementation.
 
@@ -162,10 +172,6 @@ The mechanism proposed here makes the following improvements over the existing a
 
 Attribute definitions need to be SVs in order to live in the lexical pad. There is currently no suitable SV type for this, so one will have to be created. Will it be specific to attributes, or would one type of SV suffice to be shared by various other possible future use-cases of C-level entities visible in the lexical pad, while not intended to be visible to actual perl code as first-class values directly?
 
-### Passing Attribute Definition SV into the Callback
-
-It may be the case that at import time, extra information is attached to the (unique) SV that gets imported into the caller's scope, which is intended for inspection by the attribute callback. Perhaps it makes sense to pass in the definition's SV as another argument to the callback function.
-
 ### Passing Lexical Target Information
 
 It would first appear that lexical variables and subroutine parameters can be represented by their PADNAME structure, but notably the padname itself does not actually store the pad offset of the named entity. Perhaps the target argument for these should just be the pad offset of the target entity, leaving the invoked callback to find the offset in the compliing pad itself?
@@ -178,8 +184,8 @@ It may make sense to have two different callbacks, one for GV-named targets and 
 struct PerlAttributeDefinition
 {
     ...
-    void (*apply_pkg)(pTHX_ SV *target, GV *targetname, SV *attrvalue);
-    void (*apply_lex)(pTHX_ PADOFFSET targetix,         SV *attrvalue);
+    void (*apply_pkg)(pTHX_ SV *target, GV *targetname, SV *attrvalue, void *data);
+    void (*apply_lex)(pTHX_ PADOFFSET targetix,         SV *attrvalue, void *data);
 };
 ```
 
@@ -201,7 +207,7 @@ struct PerlAttributeDefinition
     ...
     void (*apply)(pTHX_ 
         enum PerlAttributeTargetKind kind, union PerlAttributeTarget target,
-        SV *attrvalue);
+        SV *attrvalue, void *data);
 };
 ```
 
