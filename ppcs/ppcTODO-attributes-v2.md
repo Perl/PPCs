@@ -53,7 +53,7 @@ An attribute is defined primarily by a C callback function, to be invoked by the
 
 An optional second callback function can be provided, for the purpose of parsing the incoming text from the source code into a value that the main apply function will use. Experience with the meta-programming layer in `Object::Pad` suggests this is useful, as often when meta-programming it is inconvenient to have to represent the parameters to an attribute as a flat text string.
 
-Pointers to these two functions are found by a structure that is associated with the name of the new attribute, perhaps defined as the following (though exact parameter types are still an open issue; see below):
+Pointers to these two functions are found by a structure that is associated with the name of the new attribute, perhaps defined as the following (though exact type is still an open issue; see below):
 
 ```c
 struct PerlAttributeDefinition
@@ -170,16 +170,9 @@ It may be the case that at import time, extra information is attached to the (un
 
 It would first appear that lexical variables and subroutine parameters can be represented by their PADNAME structure, but notably the padname itself does not actually store the pad offset of the named entity. Perhaps the target argument for these should just be the pad offset of the target entity, leaving the invoked callback to find the offset in the compliing pad itself?
 
-This might suggest that actually the target should be specified as two - or maybe even three - parameters, some of which would be zero / NULL depending on circumstance.
+This suggests that the actual values passed to specify the target will depend on what kind of target it is. Package-named targets can be passed the target SV itself and its naming GV, whereas lexical targets need to be specified as its pad offset within the currently-compiling pad.
 
-```c
-    void (*apply)(pTHX_
-        SV *target, GV *targetname, /* for package targets, or NULL/NULL */
-        PADOFFSET targetix,         /* for lexical targets, or zero */
-        SV *attrvalue);
-```
-
-But perhaps at that point, it makes more sense to have two different callbacks, one for GV-named targets and one for lexicals?
+It may make sense to have two different callbacks, one for GV-named targets and one for lexicals
 
 ```c
 struct PerlAttributeDefinition
@@ -211,6 +204,12 @@ struct PerlAttributeDefinition
         SV *attrvalue);
 };
 ```
+
+At present there does not appear to be a distinguishing reason to prefer one style over the other. This remains a question for experimentation with the implementation.
+
+In either case, if the application function wishes to create a new target entity to replace the one it was given, it can do this. In the case of package-named targets, it can replace the appropriate slot in the naming GV. In the case of lexically named targets, it can replace the item in the pad.
+
+Either of these arrangements would make it easy to add other kinds of targets at a later date - for example, perhaps something that operates on optree fragments directly so it can be applied to code fragments like operators or function calls. Whatever later additions are made, it is important to keep in mind that in general an attribute application function may wish to provide a new value for target, so its value must be passed by some kind of mutable storage.
 
 ### Split the Pad into Scope + Scratchpad
 
