@@ -111,6 +111,8 @@ match( $x : equ ) {
 
 * As an entirely alternate proposal, should we instead find ways to apply behaviour-modifying flags to the existing operators? That is, rather than adding a new `equ` and `===` could we instead consider some syntax such as `eq:u` and `==:u` as a modifier flag, similar to the flags on regexp patterns, as a way to modify operators? This would be extensible in a more general way to more operators, while also allowing more flexible flags in future, such as for instance a case-ignoring string comparison to be spelled `eq:i`. This alternate proposal may be the subject of an alternate PPC document.
 
+* How to pronounce the name of this new operator? I suggest "ee-koo", avoiding the "you" part of the sound.
+
 ## Copyright
 
 Copyright (C) 2024, Paul Evans.
