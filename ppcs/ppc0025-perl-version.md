@@ -36,7 +36,7 @@ Both conceptions of Perl’s future posed problems for the outside perception of
 
 The community too, mirroring the versions-then-languages themselves, bifurcated, then separated, becoming two somewhat overlapping but distinct communities.
 
-And then, in October 2019, [Perl&#160;6 changed name](https://github.com/Raku/problem-solving/pull/89#pullrequestreview-300789072). Suddenly, it was no longer the future of Perl, in any shape, not even as the more advanced flavor.
+And then, in October 2019, [Perl&#160;6 changed names](https://github.com/Raku/problem-solving/pull/89#pullrequestreview-300789072). Suddenly, it was no longer the future of Perl, in any shape, not even as the more advanced flavor.
 
 But Perl&#160;5 is bound to being Perl. It has a present, and a 30-year-long past as Perl&#160;5, but is now again in want of a future, and needs a large correction of its outside perception.
 
