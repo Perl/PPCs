@@ -8,7 +8,7 @@
 
 ## Abstract
 
-There is no Perl&#160;6 looming any more, so the only thing “Perl” now refers to is Perl&#160;5. That has also forever been the language people mean when they say just “Perl” rather than specifying “Perl&#160;5”. There were earlier versions of Perl, but they are ancient history. All the history that created a distinction between “Perl” and “Perl&#160;5” has fallen away while nobody was paying conscious attention.
+There is no Perl&#160;6 looming any more, so the only thing “Perl” now refers to is Perl&#160;5. That has also forever been the language that people mean when they say just “Perl” rather than specifying “Perl&#160;5”. There were earlier versions of Perl, but they are ancient history. All the history that created a distinction between “Perl” and “Perl&#160;5” has fallen away while nobody was paying conscious attention.
 
 The interpreter already identifies itself as “perl 5, version 40, subversion 0”. We should just drop the 5 and make it official.
 
