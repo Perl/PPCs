@@ -37,7 +37,7 @@ Additionally, because each operator returns a fixed boolean truth value, the cal
 
 Like `grep`, each is a true operator, evaluating its block expression without an interposed function call frame. Thus any `caller` or `return` expression or similar within the block will directly affect the function containing the `any` or `all` expression itself.
 
-These operators only yield a single scalar; in list context therefore they will just provide a single-element list containing that boolean scalar. This is so that there are no "surprises" if the operator is used in a list context, such as when building a key/value pair list for the constructor of an object. By returning a single false value even as a list, rather than an empty list, such constructions do no cause issues.
+These operators only yield a single scalar; in list context therefore they will just provide a single-element list containing that boolean scalar. This is so that there are no "surprises" if the operator is used in a list context, such as when building a key/value pair list for the constructor of an object. By returning a single false value even as a list, rather than an empty list, such constructions do not cause issues.
 
 For example:
 
