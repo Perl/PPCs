@@ -94,9 +94,9 @@ The following issues might need to synchronize with the perl releases by checkin
 ## References
 
 * [1] Old package separator syntax #16270 (rt.perl.org#132485) https://github.com/Perl/perl5/issues/16270 
-* [2] Discussion from 2009 at perl5-porters: https://markmail.org/message/gaux5xx5jlop3vmk
-* [3] Discussion from 2017 at perl5-porters: https://markmail.org/message/ffmc2k3xafhwajys
-* [4] Discussion from 2021 at perl5-porters: https://markmail.org/message/hms4gy4okkgvnk23
+* [2] Discussion from 2009 at perl5-porters: <https://www.nntp.perl.org/group/perl.perl5.porters/;msgid=alpine.LFD.2.00.0907161629550.8612@ein.m-l.org>
+* [3] Discussion from 2017 at perl5-porters: <https://www.nntp.perl.org/group/perl.perl5.porters/;msgid=rt-4.0.24-6521-1511366701-1855.132485-15-0@perl.org>
+* [4] Discussion from 2021 at perl5-porters: <https://www.nntp.perl.org/group/perl.perl5.porters/;msgid=aaf8c272-30a8-4c49-8dbf-9aeff96e8be3@beta.fastmail.com>
 * [5] Simple grep of `isn't` usage on CPAN: `https://grep.metacpan.org/search?q=%5E%5Cs*isn%27t%7Cisn%27t%5Cs*%5B%28%24%40%25%5D&qd=&qft=*.t` (Note that there quite a few false positives, so I'd guess more like 30 pkgs)
 * [6] Father Chrysostomos added a warning when used apostrophes are used inside string within a variable name: https://github.com/Perl/perl5/commit/2cb35ee012cfe486aa75a422e7bb3cb18ff51336
 
