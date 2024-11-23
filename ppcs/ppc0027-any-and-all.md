@@ -21,7 +21,7 @@ Most code of any appreciable size tends to make use of at least the `any` or `al
 
 New named features that, when enabled, activate syntax analogous to the existing `grep` operator, named `any` and `all`:
 
-```
+```perl
 any { BLOCK } LIST
 
 all { BLOCK } LIST
@@ -41,7 +41,7 @@ These operators only yield a single scalar; in list context therefore they will 
 
 For example:
 
-```
+```perl
 Some::Class->new(
     option => (any { TEST } list, of, things),
     other  => $parameter,
@@ -58,7 +58,7 @@ In the longer term, if these named features become part of a versioned feature b
 
 ## Examples
 
-```
+```perl
 use v5.40;
 use feature 'any';
 
@@ -75,7 +75,7 @@ The overall behaviour of these operators is primarily demonstrated by functions 
 
 The `List::Keywords` module also provides an interesting "named lexical" syntax to its operators, allowing the user to specify a lexical variable, rather than the global `$_`, to store each item for iteration:
 
-```
+```perl
 use List::Keywords qw( any );
 
 if( any my $item { we_want($item) } @items ) {
@@ -103,7 +103,7 @@ Supporting syntax analogous to the "deferred-expression" form of `grep EXPR, LIS
 
 Using the `any` and `all` keywords to make junction-like behaviour. Such is already provided by other modules, for example [`Data::Checks`](https://metacpan.org/pod/Data::Checks) in a title-case form and thus would not collide with the all-lowercase keywords provided here. This is already possible:
 
-```
+```perl
 use Data::Checks qw( Any ... );
 use Syntax::Operator::Is;
 
