@@ -65,7 +65,7 @@ struct Perl_custom_operator {
 
 There is however a possiblity of a conceptual clash with the other "custom operators" idea, which was added in Perl 5.14 and allows new kinds of opcodes in generated optrees whose behaviour is provided by XS functions. Those are not "operators" in the syntax sense of the word.
 
-Likewise, the `XS::Parse;:Infix` module would get renamed to `XS::Parse::Operator`, and allow for expanded API to support these new operator shapes.
+Likewise, the `XS::Parse::Infix` module would get renamed to `XS::Parse::Operator`, and allow for expanded API to support these new operator shapes.
 
 ## Backwards Compatibility
 
@@ -83,7 +83,7 @@ It is easily possible to come up with trivial "syntax neatening" of existing ope
 
 ```perl
 use Syntax::Operator::Square;     ## provides postfix ²
-use Syntax::Operator::SqureRoot;  ## provides prefix √
+use Syntax::Operator::SquareRoot; ## provides prefix √
 
 my $hyp = √($x² + $y²);
 
