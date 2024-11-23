@@ -100,6 +100,25 @@ is equivalent to:
 
 with the important caveat that EXPR1 is only evaluated once.
 
+When used in a longer chain of dereferences, an undef value will short-circuit the entire
+chain, rather than just a single expression:
+
+   EXPR1 ?-> EXPR2 ?-> EXPR3
+
+is equivalent to:
+
+```perl
+    if (defined EXPR1) {
+      if (defined EXPR1->EXPR2) {
+        return EXPR1->EXPR2->EXPR3
+      } else {
+        return ()
+      }
+    } else {
+      return () # empty list
+    }
+```
+
 ## Backwards Compatibility
 
 All code with `?->` currently yields a compile time syntax error, so there
