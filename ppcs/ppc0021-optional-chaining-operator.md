@@ -188,12 +188,6 @@ Expected common uses:
 
     # my $class = 'SomeClass'; $class->new if defined $class;
     my $class = 'SomeClass'; $class?->new;
-
-    # my $obj = %SomeClass:: ? SomeClass->new : ();
-    my $obj = SomeClass?->new;  # TBD: see 'Future Scope' below.
-
-    # my @objs = (%NotValid:: ? NotValid->new : (), %Valid:: ? Valid->new : ());
-    my @objs = ( NotValid?->new, Valid?->new ); # @objs == ( ValidObject )
 ```
 
 Unusual and edge cases, for comprehension:
