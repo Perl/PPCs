@@ -188,6 +188,9 @@ Expected common uses:
 
     # my $class = 'SomeClass'; $class->new if defined $class;
     my $class = 'SomeClass'; $class?->new;
+
+    # defined $aref ? $aref->[0] = 9001 : ()
+    $aref?->[0] = 9001; # $aref remains undef in the undef case
 ```
 
 Unusual and edge cases, for comprehension:
