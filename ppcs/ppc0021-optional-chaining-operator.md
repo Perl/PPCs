@@ -100,6 +100,25 @@ is equivalent to:
 
 with the important caveat that EXPR1 is only evaluated once.
 
+When used in a longer chain of dereferences, an undef value will short-circuit the entire
+chain, rather than just a single expression:
+
+   EXPR1 ?-> EXPR2 ?-> EXPR3
+
+is equivalent to:
+
+```perl
+    if (defined EXPR1) {
+      if (defined EXPR1->EXPR2) {
+        return EXPR1->EXPR2->EXPR3
+      } else {
+        return ()
+      }
+    } else {
+      return () # empty list
+    }
+```
+
 ## Backwards Compatibility
 
 All code with `?->` currently yields a compile time syntax error, so there
@@ -170,11 +189,8 @@ Expected common uses:
     # my $class = 'SomeClass'; $class->new if defined $class;
     my $class = 'SomeClass'; $class?->new;
 
-    # my $obj = %SomeClass:: ? SomeClass->new : ();
-    my $obj = SomeClass?->new;  # TBD: see 'Future Scope' below.
-
-    # my @objs = (%NotValid:: ? NotValid->new : (), %Valid:: ? Valid->new : ());
-    my @objs = ( NotValid?->new, Valid?->new ); # @objs == ( ValidObject )
+    # defined $aref ? $aref->[0] = 9001 : ()
+    $aref?->[0] = 9001; # $aref remains undef in the undef case
 ```
 
 Unusual and edge cases, for comprehension:
