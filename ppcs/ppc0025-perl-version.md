@@ -82,7 +82,9 @@ A number of new environment variables are introduced which supersede existing en
 
 As a result, all Perl environment variables except `PERLIO` now follow the pattern `PERL_*`.
 
-Finally, we edit the documentation to no longer advertise the use of a v-string on the `use VERSION` line. (Cf. [Examples](#examples))
+We edit the documentation to no longer advertise the use of a v-string on the `use VERSION` line. (Cf. [Examples](#examples))
+
+The release email template also needs to be updated.
 
 PAUSE and MetaCPAN must be made aware of the new versioning cadence.
 
