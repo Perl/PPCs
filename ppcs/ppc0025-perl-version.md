@@ -154,6 +154,8 @@ Moving to version 42 combines (hopefully the best) aspects of all of these optio
 
 1. What do we do about the [perl5.git](https://github.com/Perl/perl5) repository name?
 
+1. What do we do with the [perl5-porters@](mailto:perl5-porters@perl.org) list name? (Probably make it an alias and switch to a new primary list name?) The same question applies to a handful of other lists ([perl5-changes@](mailto:perl5-changes@perl.org) et al). This is anything but urgent.
+
 ## History / Acknowledgements
 
 It all began as [a tongue-in-cheek remark on Reddit](https://www.reddit.com/r/perl/comments/1f9bbhy/other_than_raku_are_there_any_serious_plans_for_a/llvsfjc/?context=3). The details of the [Specification](#specification) owe much to Graham Knop and the [Rationale](#rationale) to Philippe Bruhat, who as co-members of the PSC both contributed to thoughts across the entire document and eventually proofread it. After weeks of deliberation, the Motivation section finally crystallized during a cold early morning walk on Nov 13, 2024 and turned into writing on a riverside bench overlooking the Rhine.
