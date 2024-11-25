@@ -116,6 +116,8 @@ In any case, as junctions behave like values, they do not require special syntax
 
 ## Open Issues
 
+* A little-used behaviour of `grep` and `map` is that the `$_` variable does not merely store a copy of each original list element but actually aliases it. This is almost never used intentionally and can often lead to accidentally modifying the original list values, leading to subtle data corruption bugs. As these proposed operators are new, there will be no compatibility issues in changing the behaviour here to say that they are copies, not aliases. Perhaps they should even be read-only copies.
+
 ## Copyright
 
 Copyright (C) 2024, Paul Evans.
