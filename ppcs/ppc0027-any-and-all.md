@@ -19,9 +19,11 @@ Most code of any appreciable size tends to make use of at least the `any` or `al
 
 ## Specification
 
-New named features that, when enabled, activate syntax analogous to the existing `grep` operator, named `any` and `all`:
+New named features that, when enabled, activate new operators analogous to the existing `grep` operator. The features, and the operators, are named `any` and `all`:
 
 ```perl
+use feature qw( any all );
+
 any { BLOCK } LIST
 
 all { BLOCK } LIST
@@ -50,7 +52,7 @@ Some::Class->new(
 
 ## Backwards Compatibility
 
-As these new operators are guarded by named features, there are no immediate concerns with backward compatiblity in the short-term.
+As each new operator is guarded by a named feature, there are no immediate concerns with backward compatiblity in the short-term.
 
 In the longer term, if these named features become part of a versioned feature bundle that is enabled by a corresponding `use VERSION` declaration there may be concerns that the names collide with functions provided by `List::Util` or similar modules. As the intention of these operators is to provide the same behaviour, this is not considered a major problem. Differences due to caller scope as outlined above may be surprising to a small number of users.
 
@@ -60,7 +62,7 @@ In the longer term, if these named features become part of a versioned feature b
 
 ```perl
 use v5.40;
-use feature 'any';
+use feature qw( any );
 
 if( any { $_ > 10 } 5, 10, 15, 20 ) { say "A number above 10" }
 ```
@@ -113,10 +115,6 @@ if( $x is Any( things... ) ) { ... }
 In any case, as junctions behave like values, they do not require special syntax like the block-invoking keywords proposed here, so they can be provided by regular function-call syntax from regular modules.
 
 ## Open Issues
-
-* There could be anything up to five new operators added by this idea. Do they all get their own named feature flags? Do they all live under one flag?
-
-* Should the flag be called `any`? That might be confusing as compared to the `:any` import tag which would request all features.
 
 ## Copyright
 
