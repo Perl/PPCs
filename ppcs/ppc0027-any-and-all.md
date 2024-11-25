@@ -89,6 +89,12 @@ These lexicals are useful when nesting multiple calls to list-processing operato
 
 If this feature is to be considered, it will require careful thought on how it might interact with the so-far-unspecified idea of accepting `any EXPR, LIST` as `grep` currently does. I would recommend not allowing that variant, to allow for easier implementation of these named lexicals in future as they provide advantages that outweigh the minor inconvenience of having to wrap the expression in brace characters.
 
+### Read-only Copy Rather Than Alias
+
+A little-used behaviour of `grep` and `map` is that the `$_` variable does not merely store a copy of each original list element but actually aliases it. This is almost never used intentionally and can often lead to accidentally modifying the original list values, leading to subtle data corruption bugs. 
+
+A possible future idea is a named feature that alters this behaviour of `grep` and `map`, as well as these new operators, into using read-only copies of the original data, rather than aliases.
+
 ### Other Operators
 
 * The other two variant behaviours of `none` and `notall`. These simply invert the sense of the filter block.
