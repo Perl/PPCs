@@ -58,8 +58,8 @@ Relations between Perl and Raku may (and should, and hopefully will) adjust to e
 
 This type of re-versioning has some precedents:
 
-* Java 1.4 was followed by Java 5. The technical details of that transition differ from what is proposed here, but even there we have a parallel between how Java 5 was mostly still 1.5 internally and how this proposal deals with XS code. Lessons can be had from the unlikeliest of sources.
-* For some readers, the relation between Solaris 7 to SunOS 5.7 and onward may come to mind (although the relationship between Solaris and SunOS in earlier versions is messier).
+* Java&#160;1.4 was followed by Java&#160;5. The technical details of that transition differ from what is proposed here, but even there we have a parallel between how Java&#160;5 was mostly still 1.5 internally and how this proposal deals with XS code. Lessons can be had from the unlikeliest of sources.
+* For some readers, the relation between Solaris&#160;7 to SunOS&#160;5.7 and onward may come to mind (although the relationship between Solaris and SunOS in earlier versions is messier).
 * Having undergone this change, our versioning cadence will match the one followed by Node.js, with a new odd and even version every year, denoting a new development and stable release. Javascript was influenced more than a little by Perl, so this is not such unlikely company as may today seem.
 
 Version 42 specifically is a particularly compelling point in time at which to do this, and not just for the Douglas Adams reference which will be evident even to Perl outsiders: there are further points of significance within Perl culture too, particularly when it comes to versions. 42 happens to be 6 &times; 7, and in ASCII, 42 (and thus the v-string `v42`) happens to be `*`. From a technical perspective, it is also opportune to undergo this transition well before version 48, at which point the fact that `v48 eq '0'` (and `v50 eq '2'` etc.) might cause unanticipated heartburn – so it is useful to have time to have any potential fallout sorted out well ahead of that.
