@@ -103,9 +103,9 @@ A possible future idea is a named feature that alters this behaviour of `grep` a
 
 ## Rejected Ideas
 
-### Block-less syntax
+### Deferred Expression Syntax
 
-Supporting syntax analogous to the "deferred-expression" form of `grep EXPR, LIST`.
+Supporting syntax analogous to the "deferred-expression" form of `grep EXPR, LIST` in the first iteration is likely to get in the way of a possible future idea to add named lexical arguments to the predicate test block (see above). Therefore at this time no attempt is made to support these, so as to leave an easy space in the implementation to allow other behaviours in future.
 
 ### Keywords as Junctions
 
