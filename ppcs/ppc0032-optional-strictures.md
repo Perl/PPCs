@@ -108,7 +108,8 @@ This proposal is explicitly designed to maintain backward compatibility:
 The proposed changes improve security by allowing developers to catch more
 potential programming errors. The stringification case in particular can help
 prevent information leaks where reference addresses might be accidentally
-exposed in output.
+exposed in output, though that seems unlikely to be a significant security
+issue.
 
 ## Examples
 
