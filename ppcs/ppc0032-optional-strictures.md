@@ -151,17 +151,22 @@ op-hooking techniques.
 
 ## Open Issues
 
-1. Should optional strictures be combinable with core strictures in a single statement?
+1. The PPC specifically mentions "non-object" stringification. Should this be
+   more general and apply to all references?
 
-   ```perl
-   use strict qw(vars refs subs strings);  # vs separate statements
-   ```
+2. How should string overloading be handled? Presumably, stringification
+   should be allowed for objects that overload stringification. Hence, the
+   earlier restriction on "non-object" stringification, but it's unclear if
+   that's the best approach.
 
-2. Should there be a way to enable all optional strictures at once?
+3. Should there be a way to enable all optional strictures at once?
 
    ```perl
    use strict 'optional';  # ?
    ```
+
+See also [Grinnz's feature suggestion on this
+matter](https://github.com/Perl/perl5/issues/18543).
 
 ## Copyright
 
