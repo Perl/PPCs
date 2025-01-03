@@ -116,11 +116,19 @@ issue.
 Here's a trivial example:
 
 ```perl
-use strict 'all', 'strings';
+use strict 'refs', 'subs, 'vars', 'strings';
 use warnings;
 
 my $data = [ sensitive_info() ];
 log("Processing $data");  # Dies
+```
+
+Perhaps a new `strict` flag, `strict 'standard'`, could enable the combined
+'refs', 'subs', and 'vars' strictures to make it easier to enable them with
+optional strictures:
+
+```perl
+use strict 'standard', 'strings';
 ```
 
 ## Prototype Implementation
