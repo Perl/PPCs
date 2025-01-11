@@ -109,7 +109,7 @@ match( $x : equ ) {
 
 * Should we also provide negated versions of these operators? While much rarer in practice, it may be useful to provide a "not equ", perhaps spelled `nequ` or `neu`; and likewise `!===` or `!==` for the numerical version. These do not suffer the sorting order problem outlined above for more general comparisons.
 
-* As an entirely alternate proposal, should we instead find ways to apply behaviour-modifying flags to the existing operators? That is, rather than adding a new `equ` and `===` could we instead consider some syntax such as `eq:u` and `==:u` as a modifier flag, similar to the flags on regexp patterns, as a way to modify operators? This would be extensible in a more general way to more operators, while also allowing more flexible flags in future, such as for instance a case-ignoring string comparison to be spelled `eq:i`. This alternate proposal may be the subject of an alternate PPC document.
+* As an entirely alternate proposal, should we instead find ways to apply behaviour-modifying flags to the existing operators? That is, rather than adding a new `equ` and `===` could we instead consider some syntax such as `eq:u` and `==:u` as a modifier flag, similar to the flags on regexp patterns, as a way to modify operators? This would be extensible in a more general way to more operators, while also allowing more flexible flags in future, such as for instance a case-ignoring string comparison to be spelled `eq:i`. This alternate proposal is be the subject of an [alternate PPC document](ppc0031-metaoperator-flags.md).
 
 * How to pronounce the name of this new operator? I suggest "ee-koo", avoiding the "you" part of the sound.
 
