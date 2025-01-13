@@ -56,6 +56,10 @@ for (<images/*>) {
   copy $_, "web/$_";
 }
 
+if (-f 'in/style.css') {
+  copy 'in/style.css', 'web/style.css';
+}
+
 if (-f 'CNAME') {
   copy 'CNAME', "web/CNAME";
 }
