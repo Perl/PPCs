@@ -1,0 +1,52 @@
+name: Generate web page
+
+on:
+  push:
+    branches: 'main'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: perl:latest
+
+    steps:
+    - name: Perl version
+      run: perl -v
+
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Install pandoc and cpanm
+      run: apt-get update && apt-get install -y pandoc cpanminus
+
+    - name: Install modules
+      run: |
+          cpanm --installdeps --notest .
+
+    - name: Create pages
+      env:
+        PERL5LIB: lib
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        mkdir -p web
+        perl bin/build
+
+    - name: Update pages artifact
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: web/
+
+  deploy:
+    needs: build
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
