@@ -5,6 +5,7 @@ use warnings;
 
 use v5.38;
 use File::Copy;
+use JSON;
 use Template;
 use Template::Provider::Pandoc;
 
@@ -63,3 +64,12 @@ if (-f 'in/style.css') {
 if (-f 'CNAME') {
   copy 'CNAME', "web/CNAME";
 }
+
+my $json = JSON->new->pretty->canonical->encode([
+  map { $_->as_data } @ppcs
+]);
+
+open my $json_fh, '>', 'web/ppcs.json' or die $!;
+
+print $json_fh $json;
+
