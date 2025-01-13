@@ -1,0 +1,61 @@
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+
+use v5.38;
+use File::Copy;
+use Template;
+use Template::Provider::Pandoc;
+
+use PPC;
+
+my @ppcs;
+my %status;
+
+my $outpath = './web';
+my $template_path = [ './ppcs', './docs', './in', './ttlib' ];
+
+my $provider = Template::Provider::Pandoc->new({
+  INCLUDE_PATH => $template_path,
+});
+
+my $tt = Template->new({
+  LOAD_TEMPLATES => [ $provider ],
+  INCLUDE_PATH => $template_path,
+  OUTPUT_PATH => $outpath,
+  RELATIVE => 1,
+  WRAPPER => 'page.tt',
+});
+
+for (<ppcs/*.md>) {
+  my $ppc = PPC->new_from_file($_);
+  push @ppcs, $ppc;
+
+  $tt->process($ppc->in_path, {}, $ppc->out_path)
+    or warn $tt->error;
+}
+
+my $vars = {
+  ppcs => \@ppcs,
+};
+
+$tt->process('index.tt', $vars, 'index.html')
+  or die $tt->error;
+
+for (<docs/*.md>) {
+  s|^docs/||;
+  my $out = s|\.md|/index.html|r;
+
+  $tt->process($_, {}, $out)
+    or die $tt->error;
+}
+
+mkdir 'web/images';
+for (<images/*>) {
+  copy $_, "web/$_";
+}
+
+if (-f 'CNAME') {
+  copy 'CNAME', "web/CNAME";
+}
