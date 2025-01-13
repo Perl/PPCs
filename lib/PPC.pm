@@ -26,6 +26,17 @@ method out_path {
   return "$slug/index.html";
 }
 
+method as_data {
+  return {
+    id      => $id,
+    status  => $status,
+    author  => $author,
+    sponsor => $sponsor,
+    slug    => $slug,
+    title   => $title,
+  };
+}
+
 # Very hacky parser
 
 sub new_from_file($class, $ppc_file) {

@@ -2,6 +2,7 @@
 
 <p>Welcome to the Proposed Perl Changes web site.</p>
 
+<p>Download this data <a href="/ppcs.json">as JSON</a></p>
 <table class="table">
   <thead>
     <tr>
