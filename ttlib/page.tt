@@ -84,7 +84,8 @@
 
 <footer class="footer mt-auto py-3 bg-light">
   <div class="container">
-    <span class="text-muted">Place sticky footer content here.</span>
+    <span class="text-muted">Made by <a href="https://links.davecross.co.uk/">Dave Cross</a> / 
+      Code on <a href="https://github.com/Perl/PPCs">Github</a></span>
   </div>
 </footer>
 
