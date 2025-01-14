@@ -72,6 +72,8 @@ sub new_from_file($class, $ppc_file) {
     $ppc{author} = delete $ppc{authors}
   }
 
+  $ppc{author} =~ s|\@.+?>|\@XXXX>|g;
+
   return $class->new(%ppc);
 }
 
