@@ -21,7 +21,7 @@ Hence we need a process that
 We'd like to record proposals to improve the language and their status as "Request For Comment" documents in their own repository under the Perl organisation on GitHub.
 
 
-We have a [template](template.md) for what an completed implemented PPC should end up as, but if all you have is an idea - don't worry, we'll help you get there.  We're still figuring this process out, so for now we're doing it as mail messages sent to p5p, not as "pull requests" to the PPC repository (or "issues" on the source repository). This way we can see if the process works as hoped, and fix the parts that don't.
+We have a [template](./template.md) for what an completed implemented PPC should end up as, but if all you have is an idea - don't worry, we'll help you get there.  We're still figuring this process out, so for now we're doing it as mail messages sent to p5p, not as "pull requests" to the PPC repository (or "issues" on the source repository). This way we can see if the process works as hoped, and fix the parts that don't.
 
 
 ## What makes a good idea?
@@ -46,7 +46,7 @@ Not every good idea belongs in the Perl core. Some are better implemented on CPA
 
 ## The Process
 
-![a flowchart of the process described below](/images/flowchart.png)
+![a flowchart of the process described below](./images/flowchart.png)
 
 
 ### Pre-PPC
@@ -63,7 +63,7 @@ During this phase, you (the proposer) are responsible for moving things forward.
 
 ### Draft Proposal
 
-The PSC has agreed that you should write a formal draft proposal.  You get the [template document](template.md) and fill it out.  You take its advice, thinking hard about what goes in each section.  Then you post it to p5p as an email with the subject "PROPOSAL:  my great idea".  Members of the list will reply with more questions and suggested amendments.  You should read them and amend the proposal to clarify your ideas or react to valid criticism.
+The PSC has agreed that you should write a formal draft proposal.  You get the [template document](./template.md) and fill it out.  You take its advice, thinking hard about what goes in each section.  Then you post it to p5p as an email with the subject "PROPOSAL:  my great idea".  Members of the list will reply with more questions and suggested amendments.  You should read them and amend the proposal to clarify your ideas or react to valid criticism.
 
 During this phase, you (the proposer) are responsible for moving things
 forward.
