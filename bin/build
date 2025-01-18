@@ -17,6 +17,11 @@ my %status;
 my $outpath = './web';
 my $template_path = [ './ppcs', './docs', './in', './ttlib' ];
 
+my $base = shift || $outpath;
+$base =~ s/^\.//;
+$base = "/$base" if $base !~ m|^/|;
+$base = "$base/" if $base !~ m|/$|;
+
 my $provider = Template::Provider::Pandoc->new({
   INCLUDE_PATH => $template_path,
 });
@@ -27,6 +32,9 @@ my $tt = Template->new({
   OUTPUT_PATH => $outpath,
   RELATIVE => 1,
   WRAPPER => 'page.tt',
+  VARIABLES => {
+    base => $base,
+  }
 });
 
 for (<ppcs/*.md>) {

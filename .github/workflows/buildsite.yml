@@ -22,7 +22,11 @@ jobs:
 
     - name: Install modules
       run: |
-          cpanm --installdeps --notest .
+        cpanm --installdeps --notest .
+
+    - name: Get repo name into environment
+      run: |
+        echo "REPO_NAME=${GITHUB_REPOSITORY#$GITHUB_REPOSITORY_OWNER/}" >> $GITHUB_ENV
 
     - name: Create pages
       env:
@@ -30,7 +34,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         mkdir -p web
-        perl bin/build
+        perl bin/build $REPO_NAME
 
     - name: Update pages artifact
       uses: actions/upload-pages-artifact@v3
