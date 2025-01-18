@@ -38,7 +38,7 @@
     </style>
     
     <!-- Custom styles for this template -->
-    <link href="/style.css" rel="stylesheet">
+    <link href="./style.css" rel="stylesheet">
   </head>
   <body class="d-flex flex-column h-100">
     
