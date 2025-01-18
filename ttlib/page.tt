@@ -1,6 +1,9 @@
 <!doctype html>
 <html lang="en" class="h-100">
   <head>
+[% IF base -%]
+    <base href="[% base %]">
+[% END -%]
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
@@ -43,29 +46,29 @@
   <!-- Fixed navbar -->
   <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
     <div class="container-fluid">
-      <a class="navbar-brand" href="/">PPCs</a>
+      <a class="navbar-brand" href="./">PPCs</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav me-auto mb-2 mb-md-0">
           <li class="nav-item">
-            <a class="nav-link active" href="/">Home</a>
+            <a class="nav-link active" href="./">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/process/">Process</a>
+            <a class="nav-link" href="./process/">Process</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/motivation/">Motivation</a>
+            <a class="nav-link" href="./motivation/">Motivation</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/template/">Template</a>
+            <a class="nav-link" href="./template/">Template</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/others/">Others</a>
+            <a class="nav-link" href="./others/">Others</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/future/">Future</a>
+            <a class="nav-link" href="./future/">Future</a>
           </li>
         </ul>
       </div>
