@@ -7,20 +7,20 @@
   <thead>
     <tr>
       <th>ID</th>
+      <th>Title</th>
       <th>Status</th>
       <th>Author(s)</th>
       <th>Sponsor</th>
-      <th>Title</th>
     </tr>
   </thead>
   <tbody>
 [% FOR ppc IN ppcs -%]
     <tr>
       <td>[% ppc.id | html %]</td>
+      <td><a href="./[% ppc.slug %]/">[% ppc.title | html %]</a></td>
       <td>[% ppc.status | html %]</td>
       <td>[% ppc.author | html %]</td>
       <td>[% ppc.sponsor | html %]</td>
-      <td><a href="./[% ppc.slug %]/">[% ppc.title | html %]</a></td>
     </tr>
 [% END -%]
   </tbody>
