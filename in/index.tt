@@ -20,7 +20,7 @@
       <td>[% ppc.status | html %]</td>
       <td>[% ppc.author | html %]</td>
       <td>[% ppc.sponsor | html %]</td>
-      <td><a href="/[% ppc.slug %]/">[% ppc.title | html %]</a></td>
+      <td><a href="./[% ppc.slug %]/">[% ppc.title | html %]</a></td>
     </tr>
 [% END -%]
   </tbody>
