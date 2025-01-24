@@ -3,7 +3,7 @@
 <p>Welcome to the Proposed Perl Changes web site.</p>
 
 <p>Download this data as <a href="./ppcs.json">JSON</a></p>
-<table class="table">
+<table class="table" id="datatable">
   <thead>
     <tr>
       <th>ID</th>
@@ -25,3 +25,13 @@
 [% END -%]
   </tbody>
 </table>
+
+<script>
+  window.dt = new window.simpleDatatables.DataTable("#datatable", {
+    perPageSelect: [5, 10, 15, ["All", -1]],
+    columns: [{
+      select: 0,
+      type: "numeric"
+    }]
+  });
+</script>
