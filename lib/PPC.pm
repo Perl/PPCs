@@ -4,6 +4,8 @@ class PPC;
 
 use builtin 'trim';
 
+use Pandoc;
+
 field $author  :param = '';
 field $id      :param;
 field $slug    :param;
@@ -51,7 +53,7 @@ sub new_from_file($class, $ppc_file) {
   $ppc{slug} =~ s|\.md$||;
 
   while (<$ppc_fh>) {
-    $. == 1 and m|#\s+(.*)| and $ppc{title} = $1;
+    !$ppc{title} and m|^#\s+(.*)| and $ppc{title} = md2text($_);
 
     $is_preamble and /## abstract/i and last;
 
@@ -75,6 +77,10 @@ sub new_from_file($class, $ppc_file) {
   $ppc{$_} =~ s|\@.+?>|\@XXXX>|g for (qw[author sponsor]);
 
   return $class->new(%ppc);
+}
+
+sub md2text($md_string) {
+  return pandoc->convert( markdown => 'plain', $md_string);
 }
 
 1;
