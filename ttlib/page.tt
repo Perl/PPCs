@@ -6,9 +6,9 @@
 [% END -%]
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
-    <meta name="generator" content="Hugo 0.84.0">
+    <meta name="description" content="Proposed Perl Changes - documenting upcoming Perl changes">
+    <meta name="author" content="Dave Cross, the Perl Steering Committee and the Perl 5 Porters">
+    <meta name="generator" content="Perl!">
     <title>Proposed Perl Changes</title>
 
     <link rel="canonical" href="https://ppc.perlhacks.com/">
