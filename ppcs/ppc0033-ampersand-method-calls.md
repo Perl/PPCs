@@ -99,8 +99,11 @@ package Foo {
 my $foo = Foo->new;
 $foo->public;
 
-# this is an error, as there is no sub named private in scope
+# this is an error, as there is no sub named "private" in scope
 $foo->&private;
+
+# this is also an error, as "public" does not exist in the current scope
+$foo->&public;
 ```
 
 ## Prototype Implementation
