@@ -19,7 +19,7 @@ When using a lexical sub inside an object class, the subs must be called as
 `method($object, @args)`. This works, but for many people, this feels wrong
 as a way to call something thought of as a private method. This has resulted
 in some people using syntax like `$object->${\&method}(@args)`, or continuing
-to use code refs stored in a lexical variable.
+to use code refs stored in a lexical variable (`$object->$method(@args)`).
 
 ## Rationale
 
