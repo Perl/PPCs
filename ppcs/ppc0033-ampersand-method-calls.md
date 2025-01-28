@@ -48,6 +48,9 @@ current package's `AUTOLOAD` would be called. If `AUTOLOAD` does not exist, an
 error would be issued. The call would ignore prototypes, just as traditional
 method calls and `&subroutine()` calls do.
 
+Methods defined using the `class` syntax would also be callable using this
+syntax.
+
 ## Backwards Compatibility
 
 The syntax `->&word` is currently a syntax error, so no backwards
@@ -106,8 +109,9 @@ None currently.
 
 ## Future Scope
 
-This syntax would also make sense to use for private method calls in the
-`class` syntax.
+Lexical methods (`my method foo`) are not currently supported under the
+`class` syntax. If they were added, `->&method` would be the preferred way to
+call them.
 
 ## Rejected Ideas
 
