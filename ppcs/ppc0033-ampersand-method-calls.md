@@ -89,7 +89,7 @@ package Foo {
         say "my field: " . private($self);
 
 
-        # can also be used to call package methods. But won't lookup via @ISA
+        # can also be used to call package methods. But won't look up via @ISA
         say "my field: " . $self->&_old_school_private;
         # exactly equivalent to:
         say "my field: " . _old_school_private($self);
