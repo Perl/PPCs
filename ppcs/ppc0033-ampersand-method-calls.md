@@ -108,7 +108,9 @@ $foo->&public;
 
 ## Prototype Implementation
 
-None currently.
+* [Object::Pad::LexicalMethods](https://metacpan.org/pod/Object::Pad::LexicalMethods)
+  implements lexical methods and `->&` method calls for
+  [Object::Pad](https://metacpan.org/pod/Object::Pad).
 
 ## Future Scope
 
