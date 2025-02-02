@@ -12,7 +12,6 @@ use Template::Provider::Pandoc;
 use PPC;
 
 my @ppcs;
-my %status;
 
 my $outpath = './web';
 my $template_path = [ './ppcs', './docs', './in', './ttlib' ];
