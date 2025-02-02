@@ -1,11 +1,8 @@
 #!/usr/bin/perl
 
-use strict;
-use warnings;
-
 use v5.38;
-use File::Copy;
 use JSON;
+use File::Copy;
 use Template;
 use Template::Provider::Pandoc;
 
