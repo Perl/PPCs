@@ -1,3 +1,4 @@
+use v5.38;
 use experimental qw[builtin class signatures];
 
 class PPC;
@@ -82,5 +83,3 @@ sub new_from_file($class, $ppc_file) {
 sub md2text($md_string) {
   return pandoc->convert( markdown => 'plain', $md_string);
 }
-
-1;
