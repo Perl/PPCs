@@ -1,25 +1,16 @@
-use v5.38;
-use experimental qw[builtin class signatures];
+use v5.40;
+use experimental qw[class signatures];
 
 class PPC;
 
-use builtin 'trim';
-
 use Pandoc;
 
-field $author  :param = '';
-field $id      :param;
-field $slug    :param;
-field $sponsor :param = '';
-field $status  :param;
-field $title   :param;
-
-method author  { return $author }
-method id      { return $id }
-method slug    { return $slug }
-method sponsor { return $sponsor }
-method status  { return $status }
-method title  { return $title }
+field $author  :param :reader = '';
+field $id      :param :reader;
+field $slug    :param :reader;
+field $sponsor :param :reader = '';
+field $status  :param :reader;
+field $title   :param :reader;
 
 method in_path {
   return "$slug.md";
