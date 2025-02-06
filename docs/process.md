@@ -46,7 +46,7 @@ Not every good idea belongs in the Perl core. Some are better implemented on CPA
 
 ## The Process
 
-![a flowchart of the process described below](./images/flowchart.png)
+![a flowchart of the process described below](../images/flowchart.png)
 
 
 ### Pre-PPC
