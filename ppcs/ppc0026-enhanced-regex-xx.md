@@ -4,7 +4,7 @@
 
     Author:  Karl Williamson <khw@cpan.org>
     ID:      0026
-    Status:  Draft
+    Status:  Proposed
 
 ## Abstract
 
