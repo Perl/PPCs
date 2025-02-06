@@ -5,7 +5,7 @@
     Author:
     Sponsor: Nicholas Clark <nick@ccl4.org>
     ID:      0001
-    Status:  Implemented
+    Status:  Incorporated
 
 ## Abstract
 

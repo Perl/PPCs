@@ -2,10 +2,10 @@
 
 ## Preamble
 
-    Author: Tomasz Konojacki <me@xenu.pl>
+    Author:  Tomasz Konojacki <me@xenu.pl>
     Sponsor:
     ID: 0011
-    Status: Implemented
+    Status:  Incorporated
 
 ## Abstract
 

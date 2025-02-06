@@ -5,7 +5,7 @@
     Author:  Paul Evans <PEVANS>
     Sponsor:
     ID:      0029
-    Status:  Exploratory
+    Status:  Proposed
 
 ## Abstract
 
