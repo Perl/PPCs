@@ -1,3 +1,5 @@
+(June 2021)
+
 # Top line
 
 80% of our feature requests are for changes to the language, and most seem to come from folks with no experience of core development. Whereas over the past 5 years most work on `toke.c` and `perly.y` is from just 5 people
