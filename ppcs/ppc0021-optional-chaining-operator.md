@@ -5,7 +5,7 @@
     Author:  Breno G. de Oliveira <garu@cpan.org>
     Sponsor:
     ID:      0021
-    Status:  Draft
+    Status:  Proposed
 
 ## Abstract
 

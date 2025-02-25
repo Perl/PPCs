@@ -5,7 +5,7 @@
     Author:  Nicolás Mendoza <mendoza@pvv.ntnu.no>
     Sponsor:
     ID:      0015
-    Status:  Draft
+    Status:  Proposed
 
 ## Abstract
 

@@ -5,7 +5,7 @@
     Author:  Ricardo Signes <rjbs@semiotic.systems>
     Sponsor: Ricardo Signes <rjbs@semiotic.systems>
     ID:      0006
-    Status:  Implemented
+    Status:  Incorporated
 
 ## Abstract
 

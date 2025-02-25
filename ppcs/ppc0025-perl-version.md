@@ -4,7 +4,7 @@
 
     Author:  Aristotle Pagaltzis <pagaltzis@gmx.de>
     ID:      0025
-    Status:  Draft
+    Status:  Proposed
 
 ## Abstract
 

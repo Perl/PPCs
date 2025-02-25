@@ -5,7 +5,7 @@
     Author:  Ricardo Signes <rjbs@semiotic.systems>
     Sponsor: RJBS
     ID:      0019
-    Status:  Draft
+    Status:  Proposed
 
 ## Abstract
 
