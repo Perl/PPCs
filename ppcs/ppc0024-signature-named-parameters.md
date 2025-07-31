@@ -42,7 +42,7 @@ Each element provides a new lexical variable that is visible during the body of 
 
 The value of a named parameter is taken from the argument values passed by the caller, in a manner familiar to existing uses of hash assignment. The caller should pass an even-sized name-value pair list. The values corresponding to names of parameters will be assigned into the variables. The order in which the values are passed by the caller is not significant.
 
-Since it is a relatively common pattern in callsites in existing code to rely on the semantics of assignment of name-value pair lists into hashes, the beahviour on encountering duplicate key names needs to be preserved. This is that duplicated key names do not raise an error or a warning, and simply accept the last value associated with that name. This allows callers to collect values from multiple sources with different orders of priority to override them; for example using a hash of values combined with individual elements:
+Since it is a relatively common pattern in callsites in existing code to rely on the semantics of assignment of name-value pair lists into hashes, the behaviour on encountering duplicate key names needs to be preserved. This is that duplicated key names do not raise an error or a warning, and simply accept the last value associated with that name. This allows callers to collect values from multiple sources with different orders of priority to override them; for example using a hash of values combined with individual elements:
 
 ```perl
 sub func ( :$abc, :$xyz, ... ) { ... }
