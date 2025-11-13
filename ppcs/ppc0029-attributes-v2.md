@@ -216,7 +216,7 @@ Attribute definitions need to be SVs in order to live in the lexical pad. There 
 
 ### Passing Lexical Target Information
 
-It would first appear that lexical variables and subroutine parameters can be represented by their PADNAME structure, but notably the padname itself does not actually store the pad offset of the named entity. Perhaps the target argument for these should just be the pad offset of the target entity, leaving the invoked callback to find the offset in the compliing pad itself?
+It would first appear that lexical variables and subroutine parameters can be represented by their PADNAME structure, but notably the padname itself does not actually store the pad offset of the named entity. Perhaps the target argument for these should just be the pad offset of the target entity, leaving the invoked callback to find the offset in the compiling pad itself?
 
 This suggests that the actual values passed to specify the target will depend on what kind of target it is. Package-named targets can be passed the target SV itself and its naming GV, whereas lexical targets need to be specified as its pad offset within the currently-compiling pad.
 
