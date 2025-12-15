@@ -5,7 +5,7 @@
     Author:  Gianni Ceccarelli <dakkar@thenautilus.net>
     Sponsor:
     ID:      0034
-    Status:  Draft
+    Status:  Exploratory
 
 ## Abstract
 
