@@ -15,19 +15,23 @@ Allow declaring ref-aliased parameters in subroutine signatures.
 
 As of Perl version 5.42, we can do:
 
-    use v5.42;
-    use experimental 'declared_refs';
+```perl
+use v5.42;
+use experimental 'declared_refs';
 
-    sub foo {
-        my (\%a) = @_;
-        ...
-    }
+sub foo {
+    my (\%a) = @_;
+    ...
+}
+```
 
 but we cannot do:
 
-    sub foo(\%a) {
-        ...
-    }
+```perl
+sub foo(\%a) {
+    ...
+}
+```
 
 ## Rationale
 
@@ -43,45 +47,57 @@ declared as ref-alias (requires the `refaliasing` feature and the
 `declared_refs` feature, see "Assigning to References" and "Declaring
 a Reference to a Variable" in perlref for more details):
 
-    sub go_over(\@things) { say "Oooh, $_!" for @things }
+```perl
+sub go_over(\@things) { say "Oooh, $_!" for @things }
+```
 
 This subroutine must still be called with a scalar value, but the
 value must now be a reference to an array. Equivalently:
 
-    sub look_at(\%these) {
-        say "$_ means $these{$_}" for sort keys %these;
-    }
+```perl
+sub look_at(\%these) {
+    say "$_ means $these{$_}" for sort keys %these;
+}
+```
 
 must be called with a reference to a hash, and:
 
-    sub normalise(\$string) {
-        $string = lc($string);
-    }
+```perl
+sub normalise(\$string) {
+    $string = lc($string);
+}
+```
 
 must be called with a reference to a scalar. As with normal scalar
 parameters, ref-aliased parameters can be ignored:
 
-    sub ignore(\@) { ... }
+```perl
+sub ignore(\@) { ... }
+```
 
 and have default values:
 
-    sub walk($cb, \@nodes, \%seen ||= {}) {
-        for my $node (@nodes) {
-            next if $seen{$node->id}++;
-            $cb->($node);
-            walk($cb, $node->children, \%seen);
-        }
+```perl
+sub walk($cb, \@nodes, \%seen ||= {}) {
+    for my $node (@nodes) {
+        next if $seen{$node->id}++;
+        $cb->($node);
+        walk($cb, $node->children, \%seen);
     }
+}
+```
 
 The last example is equivalent to:
 
-    sub walk($cb, $nodes, $seen ||= {}) {
-        for my $node ($nodes->@*) {
-            next if $seen->{$node->id}++;
-            $cb->($node);
-            walk($cb, $node->children, $seen);
-        }
+```perl
+sub walk($cb, $nodes, $seen ||= {}) {
+    for my $node ($nodes->@*) {
+        next if $seen->{$node->id}++;
+        $cb->($node);
+        walk($cb, $node->children, $seen);
     }
+}
+```
 
 with different legibility trade-offs.
 
@@ -89,22 +105,28 @@ Notice that arguments are still passed by reference, so any
 modification to their contents will be seen by the caller. In other
 words:
 
-    sub my_push(\@items, $new_one) {
-        push @items, $new_one;
-    }
+```perl
+sub my_push(\@items, $new_one) {
+    push @items, $new_one;
+}
+```
 
 works exactly the same way as:
 
-    sub my_push($items, $new_one) {
-        push $items->@*, $new_one;
-    }
+```perl
+sub my_push($items, $new_one) {
+    push $items->@*, $new_one;
+}
+```
 
 or
 
-    sub my_push {
-        my (\@items, $new_one) = @_;
-        push @items, $new_one;
-    }
+```perl
+sub my_push {
+    my (\@items, $new_one) = @_;
+    push @items, $new_one;
+}
+```
 
 ## Backwards Compatibility
 
@@ -115,7 +137,9 @@ confusion for existing code.
 
 `PPI` can parse it just fine:
 
-    sub foo(\@a=[])
+```perl
+sub foo(\@a=[])
+```
 
 produces:
 
@@ -142,24 +166,28 @@ None foreseen.
 
 `LWP::Protocol::http::hlist_remove` looks like this:
 
-    sub hlist_remove {
-        my($hlist, $k) = @_;
-        $k = lc $k;
-        for (my $i = @$hlist - 2; $i >= 0; $i -= 2) {
-	        next unless lc($hlist->[$i]) eq $k;
-	        splice(@$hlist, $i, 2);
-        }
+```perl
+sub hlist_remove {
+    my($hlist, $k) = @_;
+    $k = lc $k;
+    for (my $i = @$hlist - 2; $i >= 0; $i -= 2) {
+        next unless lc($hlist->[$i]) eq $k;
+        splice(@$hlist, $i, 2);
     }
+}
+```
 
 It could become:
 
-    sub hlist_remove(\@hlist, $k) {
-        $k = lc $k;
-        for (my $i = @hlist - 2; $i >= 0; $i -= 2) {
-	        next unless lc($hlist[$i]) eq $k;
-	        splice(@hlist, $i, 2);
-        }
+```perl
+sub hlist_remove(\@hlist, $k) {
+    $k = lc $k;
+    for (my $i = @hlist - 2; $i >= 0; $i -= 2) {
+        next unless lc($hlist[$i]) eq $k;
+        splice(@hlist, $i, 2);
     }
+}
+```
 
 ## Prototype Implementation
 
@@ -178,17 +206,23 @@ Paul for that expression).
 
 Paul Evans suggested using an attribute instead:
 
-    sub foo (%a :refalias)
+```perl
+sub foo (%a :refalias)
+```
 
 which would extend to named parameters:
 
-    sub foo (:%a :refalias)
+```perl
+sub foo (:%a :refalias)
+```
 
 and be similar to a proposed "aliased scalars" feature:
 
-    sub foo ($a :alias) { $a=1 }
-    # equivalent to:
-    sub foo { $_[0]=1 }
+```perl
+sub foo ($a :alias) { $a=1 }
+# equivalent to:
+sub foo { $_[0]=1 }
+```
 
 One of the problems with the attribute-based approach is that `sub
 foo(%a)` and `sub foo(%a :refalias)` have very different signatures
