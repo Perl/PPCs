@@ -2,9 +2,9 @@
 
 ## Preamble
 
-    Author:     Graham Knop <haarg@haarg.org>
-    ID:         0023
-    Status:     Exploratory
+    Author:  Graham Knop <haarg@haarg.org>
+    ID:      0023
+    Status:  Proposed
 
 ## Abstract
 
