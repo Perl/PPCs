@@ -44,7 +44,9 @@ understand the new form.
 
 For each variable listed in perlvar which includes an `English.pm` name like
 `$OS_ERROR`, provide an alias named `${^OS_ERROR}` as part of the core
-language.
+language. For existing super-global variables that only have english names
+(`%ENV`, `@INC`, `%INC`, `%SIG`), aliases will also be created (e.g.
+`%{^ENV}`).
 
 ## Backwards Compatibility
 
