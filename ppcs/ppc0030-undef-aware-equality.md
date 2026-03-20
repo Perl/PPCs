@@ -53,6 +53,13 @@ $x equ $y
 
 In particular, given two `undef` values, this operator will yield true. Given one `undef` and one defined value, it yields false, or given two defined values it will yield the same answer that `eq` would. In no circumstance will it provoke a warning of undefined values.
 
+Like `eq`, it will stringify any reference value it receives; thus it may still consider that a reference is equal to a string that contains what the reference would stringify to:
+
+```perl
+my $arr = [];
+$arr equ sprintf("ARRAY(0x%x)", $arr)
+```
+
 Likewise, a new operator named `===`, which provides the numerical counterpart:
 
 ```perl
@@ -62,7 +69,7 @@ $x === $y
 #                    (defined $x and defined $y and $x == $y)
 ```
 
-Note that while the `===` operator will not provoke warnings about undefined values, it could still warn about strings that do not look like numbers.
+Note that while the `===` operator will not provoke warnings about undefined values, it could still warn about strings that do not look like numbers. And similarly, it will numify any reference value.
 
 ## Backwards Compatibility
 
