@@ -112,7 +112,39 @@ sub html_escape ( $val ) {
 
 By careful use of these three "supertaint" functions in the lowest level building blocks of the web framework, it can ensure a security model that it has controlled. It has applied something similar in spirit to perl's own "taint" markings, except that it has decided what the policy should be on when to add or remove the annotations, and what operations should be forbidden if they are found. Furthermore, because these annotations are just one label stored in a hash, a given application could maintain multiple concurrent policies - perhaps to track the safeness of using strings in SQL query strings, external API access, executing command strings, opening filehandles, and so on.
 
-### Lineage Tracking
+### Dataflow Tracking
+
+Another possible use for viral value magic is tracking and reporting the dataflow throughout a system. This tracking would provide reports on all of the data dependencies within the system. This can aid in meeting data compliance requirements, and can also provide tools for analysis and refactoring of large systems. For easier analysis, the tracking metadata can be transformed into a standard representation, such as OpenLineage.
+
+This tracking would be done by adding viral value magic onto every data transfer of interest, either when the data enters into the system or when the data is transfered into a different internal module. Any time a new value is derived from an existing value, that tracking metadata will be propagated to the value magic on the new variable. Since any arbitrary data structure can be used as the tracking viral value, each source of input data can record all of the relevant metadata needed for tracking that data, such as row/column for database-sourced values, or endpoint/args for HTTP-sourced values.
+
+The value magic infection logic would de-duplicate the metadata items by the reference of their data structures, so that the resulting tracking metadata only include unique metadata items.
+
+The tracking metadata would typically be captured and reported when a data item is output from the system, or when the item is transferred into a different internal module.
+
+```perl
+use DataTracking qw( add_metadata get_metadata );
+
+# wrap data-retrieval methods to add tracking metadata
+sub select ( $db, $sql, @bind_vals ) {
+    ...
+    # add data source to retrieved column values
+    my $source_data = { db => $db_tag, sql => $sql, bind_vals => \@bind_vals };
+    add_metadata( \$_, $source_data )
+      for @columns;
+    return \@columns;
+};
+
+# capture and report metadata when value is sent as output
+sub build_output ( @variables ) {
+    my $sink_data = { destination => 'foo' };
+    for my $variable (@variables) {
+        stream_metadata( $destination => get_metadata(\$variable) );
+    }
+}
+```
+
+The streamed metadata can then be aggregated and transformed into the desired representation for either further analysis or realtime monitoring.
 
 ## Prototype Implementation
 
@@ -126,6 +158,6 @@ As this proposal creates a set of core perl mechanisms that CPAN modules can use
 
 ## Copyright
 
-Copyright (C) 2026, Paul Evans.
+Copyright (C) 2026, Paul Evans, Noel Maddy.
 
 This document and code and documentation within it may be used, redistributed and/or modified under the same terms as Perl itself.
