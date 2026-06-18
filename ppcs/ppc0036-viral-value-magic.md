@@ -69,6 +69,8 @@ But a much better answer here is to observe that this proposed mechanism adds a 
 
 ## Examples
 
+The [scalar-valuetags-examples](https://github.com/Zhtwn/scalar-valuetags-examples) repository has some example modules that provide interesting tools that are based on Viral Value Magic. All of the modules are based on the [`Scalar::ValueTags`](https://github.com/Zhtwn/Scalar/ValueTags) API that wraps the Viral Value Magic.
+
 Both of the following examples demonstrate the kind of behaviour that could be provided by layering a module on top of this core-provided ability. In each case, the actual module code is elided, in favour of demonstrating various properties of what it can provide.
 
 ### "Supertaint" Security Labelling
