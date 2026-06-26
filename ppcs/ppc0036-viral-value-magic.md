@@ -37,19 +37,19 @@ enum MagicShape {
 
 struct ScalarValueMagicFunctions {
     ..., /* existing fields, where shape == MGv2s_SCALARVALUE */
-    void (*infect)(pTHX_ SV *ssv, MAGIC *smg, SV *dsv, MAGIC *dmg);
+    void (*propagate)(pTHX_ SV *ssv, MAGIC *smg, SV *dsv, MAGIC *dmg);
 };
 ```
 
-The `infect` trigger function is used when copying the annotation from one SV into a different one. There are no other functions associated with other lifetime events on this magic shape. Annotations of this magic shape exist largely to store extra data; attached with a call to `sv_magicv2_add` and looked up again later using `sv_magicv2_find_by_funcs`.
+The `propagate` trigger function is used when copying the annotation from one SV into a different one. There are no other functions associated with other lifetime events on this magic shape. Annotations of this magic shape exist largely to store extra data; attached with a call to `sv_magicv2_add` and looked up again later using `sv_magicv2_find_by_funcs`.
 
 As this magic shape is strongly associated with the value stored in the SV, rather than the SV itself, it has quite different rules for copying, clearing, and performing other calculations than other magic shapes have.
 
-* When copying a value, this magic is propagated from the source to destination SV on calls such as `sv_setsv()` by invoking `infect`.
+* When copying a value, this magic is propagated from the source to destination SV on calls such as `sv_setsv()` by invoking `propagate`.
 
 * When clearing a variable, this magic is removed from the variable SV on calls such as `sv_undef()`. A `free` trigger function on the base magic may be invoked if present.
 
-* When calculating a new value as a result of one *or more* input values that have these annotations attached, the `infect` function on each annotation of each such value is invoked to copy it into the resulting destination. It may be that the result ends up with more than one annotation attached to it.
+* When calculating a new value as a result of one *or more* input values that have these annotations attached, the `propagate` function on each annotation of each such value is invoked to copy it into the resulting destination. It may be that the result ends up with more than one annotation attached to it.
 
 * When a container variable is `local`ised, magic annotations of this shape are not copied into the new temporary container.
 
@@ -120,7 +120,7 @@ Another possible use for viral value magic is tracking and reporting the dataflo
 
 This tracking would be done by adding viral value magic onto every data transfer of interest, either when the data enters into the system or when the data is transfered into a different internal module. Any time a new value is derived from an existing value, that tracking metadata will be propagated to the value magic on the new variable. Since any arbitrary data structure can be used as the tracking viral value, each source of input data can record all of the relevant metadata needed for tracking that data, such as row/column for database-sourced values, or endpoint/args for HTTP-sourced values.
 
-The value magic infection logic would de-duplicate the metadata items by the reference of their data structures, so that the resulting tracking metadata only include unique metadata items.
+The value magic propagation logic would de-duplicate the metadata items by the reference of their data structures, so that the resulting tracking metadata only include unique metadata items.
 
 The tracking metadata would typically be captured and reported when a data item is output from the system, or when the item is transferred into a different internal module.
 
