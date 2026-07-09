@@ -105,49 +105,45 @@ void apply_attribute_CallMeOnce(pTHX_ SV *target, SV *attrvalue)
 }
 ```
 
-As there is no interesting result returned from the attribute callback function, it must perform whatever work it needs to implement the requested behaviour purely as a side-effect of running it. While a few built-in attributes can be implemented perhaps by adjusting SV flags (such as `:lvalue` simply calling `CvLVALUE_on(cv)`), the majority of interesting use-cases would need to apply some form of extension to the target entity, such as Magic or the newly-proposed "Hooks" mechanism. 
+As there is no interesting result returned from the attribute callback function, it must perform whatever work it needs to implement the requested behaviour purely as a side-effect of running it. While a few built-in attributes can be implemented perhaps by adjusting SV flags (such as `:lvalue` simply calling `CvLVALUE_on(cv)`), the majority of interesting use-cases would need to apply some form of extension to the target entity, such as Magic or the newly-proposed "Magic v2" mechanism. 
 
-### An Aside On Hooks
+### An Aside On Magic v2
 
-While hooks will be described in a separate PPC document, it may be useful to provide a brief outline here in order to better evaluate how this proposal would interact with them. This section is specifically not considered part of this specification, but simply gives a high-level overview of the approximate shape these hooks will likely take.
+While Magic v2 will be described in a separate PPC document, it may be useful to provide a brief outline here in order to better evaluate how this proposal would interact with them. This section is specifically not considered part of this specification, but simply gives a high-level overview of the approximate shape that Magic v2 will likely take.
 
-Hooks are an evolution of (or perhaps a replacement of) the existing mechanism that Perl core currently calls "magic". Magic is defined by a set of trigger functions that can be attached to an SV, that provide additional behaviour and associate value storage to certain activities that happen to the SV it is attached to. Hooks will do the same thing.
+Magic is defined by a set of trigger functions that can be attached to an SV, that provide additional behaviour and associate value storage to certain activities that happen to the SV it is attached to. It defines a few trigger functions related to book-keeping the magic mechanism itself (the `clear` and `free` actions), as well as actions related to scalar variables (the `set` and `get` actions, as well as the rarely-used `len`). Magic does not currenty define any actions related to other kinds of variables (arrays, hashes, globs), nor does it provide actions relating to values (such as when they are copied), or to various life-cycle management of subroutines (stored in `SVt_PVCVs`). These are the limitations that Magic v2 attempts to overcome.
 
-The current "magic" mechanism in Perl defines a few trigger functions related to book-keeping the magic mechanism itself (the `clear` and `free` actions), as well as actions related to scalar variables (the `set` and `get` actions, as well as the rarely-used `len`). Magic does not define any actions related to other kinds of variables (arrays, hashes, globs), nor does it provide actions relating to values (such as when they are copied), or to various life-cycle management of subroutines (stored in `SVt_PVCVs`). These are the limitations that "hooks" attempts to overcome.
-
-Hooks will be defined by a similar structure to magic, though having more fields relating to other lifecycle activities. Likely how this will work is that all hooks would start with a standard structure that has a field identifying what kind of hook this particular structure is, as well as the fields common to all such hooks:
+Magic v2 will be defined by a similar structure to legacy Magic, though having more fields relating to other lifecycle activities. Likely how this will work is that all Magic v2 function table structures would start with a field identifying what kind of table this particular structure is, as well as the fields common to all such:
 
 ```c
-struct HookFunctionsCommon {
+struct MagicFunctionsCommon {
     U32 ver;     /* identifies an API version for flexibility */
-    U32 flags;   /* contains some flags indicating what specific shape of hook this is */
-    void (*free)(pTHX_ SV *sv, Hook *hk);
-    void (*clear)(pTHX_ SV *sv, Hook *hk);
+    U32 flags;   /* contains some flags indicating what specific shape of magic this is */
+    void (*free)(pTHX_ SV *sv, MAGIC *hk);
+    void (*clear)(pTHX_ SV *sv, MAGIC *hk);
 };
 ```
 
-Thereafter, specific sets of hook function structures can be defined for various situations, such as viral value-attached hooks, or hooks on different kinds of variables. Two such examples:
+Thereafter, specific sets of magic function structures can be defined for various situations, such as viral value-attached magic, or magic on different kinds of variables. Two such examples:
 
 ```c
-struct HookFunctionsValue {
-    HOOK_COMMON_FIELDS;
-    /* for copying this scalar value-shaped hook from one SV to the next */
-    void (*copy)(pTHX_ SV *osv, SV *nsv, Hook *hk);
+struct MagicFunctionsValue {
+    MAGIC_COMMON_FIELDS;
+    /* for copying this scalar value-shaped magic from one SV to the next */
+    void (*copy)(pTHX_ SV *osv, SV *nsv, MAGIC *hk);
 };
 
-struct HookFunctionsSubroutine {
-    HOOK_COMMON_FIELDS;
+struct MagicFunctionsSubroutine {
+    MAGIC_COMMON_FIELDS;
     /* to handle various stages of parsing the subroutine */
-    void (*pre_blockstart)(pTHX_ SV *sv, Hook *hk);
-    void (*post_blockend)(pTHX_ SV *sv, Hook *hk);
+    void (*pre_blockstart)(pTHX_ SV *sv, MAGIC *hk);
+    void (*post_blockend)(pTHX_ SV *sv, MAGIC *hk);
     ...
     /* to handle calls to this subroutine */
-    OP *(*callchecker)(pTHX_ SV *sv, OP *o, Hook *hk);
+    OP *(*callchecker)(pTHX_ SV *sv, OP *o, MAGIC *hk);
     ...
 };
 ```
-
-This all said, it is still entirely undecided whether this new mechanism will be named "hooks" and replace magic, or simply be a next iteration of the existing "magic" concept and extend from it. Those are discussions for a different PPC document.
 
 ## Backwards Compatibility
 
@@ -166,7 +162,7 @@ Execution of -e aborted due to compilation errors.
 
 ## Examples
 
-As both this proposal and the companion "Hooks" are internal interpreter components that are intended for XS authors to use to provide end-user features, it would perhaps be more useful to consider examples of the kinds of modules that the combination of these two features would permit to be created.
+As both this proposal and the companion "magic v2" are internal interpreter components that are intended for XS authors to use to provide end-user features, it would perhaps be more useful to consider examples of the kinds of modules that the combination of these two features would permit to be created.
 
 For example, a subroutine attribute `:void` could be created that forces the caller context of any `return` ops within the body of the subroutine, or its implicit end-of-scope expressions, to make them always run in void context.
 
@@ -182,7 +178,7 @@ print debug("start"), "middle", debug("end");
 # "1" return value from the print statement inside the function.
 ```
 
-This kind of attribute would be easy to implement with some optree adjustment in the hook applied by the attribute, but would not be possible to create by the existing mechanisms because they cannot run at the right times.
+This kind of attribute would be easy to implement with some optree adjustment in the magic applied by the attribute, but would not be possible to create by the existing mechanisms because they cannot run at the right times.
 
 ```perl
 method __add__ :overload(+) ( $other, $swap = false ) { ... }
